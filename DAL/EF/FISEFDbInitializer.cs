@@ -11,7 +11,7 @@ namespace DAL.EF
     {
         protected override void Seed(FISEFDbContext context)
         {
-            context.SaveChanges();//
+            context.SaveChanges();//test
         }
     }
 }
