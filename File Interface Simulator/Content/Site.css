@@ -22,3 +22,23 @@ select,
 textarea {
     max-width: 280px;
 }
+
+h1 {
+   color: #0072BA;
+}
+
+h2 {
+   color: #F18E00;
+}
+
+h3 {
+    color: #6EA93E;
+}
+
+.row {
+    margin-top: 2%;
+}
+
+.nav {
+    color: #0072BA; 
+}

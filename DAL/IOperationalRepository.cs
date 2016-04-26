@@ -1,4 +1,5 @@
-﻿using System;
+﻿using FIS.BL.Domain.Operational;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -14,10 +15,13 @@ namespace FIS.DAL
         IEnumerable<Message> ReadMessagesOfFileSpecification(int specificationId);
         Message UpdateMessage(Message message);
         Message DeleteMessage(int messageId);
-        Element CreateElement(Element element);
-        IEnumerable<Element> GetElements(int messageId);
+        //Element CreateElement(Element element);
+        //IEnumerable<Element> GetElements(int messageId);
         Workflow CreateWorkflow(Workflow workflow);
         Workflow UpdateWorkflow(Workflow workflow);
-
+        Workflow ReadWorkflow(int workflowId);
+        IEnumerable<Workflow> ReadWorkflows();
+        IEnumerable<Workflow> ReadWorkflowsForTemplate(int workflowTemplateId);
+        Workflow DeleteWorkflow(int workflowId);
     }
 }
