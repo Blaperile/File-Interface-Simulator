@@ -62,8 +62,11 @@
     <Compile Include="EF\FISEFDbInitializer.cs" />
     <Compile Include="IOperationalRepository.cs" />
     <Compile Include="ISpecificationSetupRepository.cs" />
+    <Compile Include="IWorkflowTemplateSetupRepository.cs" />
     <Compile Include="OperationalRepository.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="SpecificationSetupRepository.cs" />
+    <Compile Include="WorkflowTemplateSetupRepository.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Domain\Domain.csproj">

@@ -47,7 +47,7 @@ namespace FIS.DAL
             throw new NotImplementedException();
         }
 
-       /* public Element CreateElement(Element element)
+       public Element CreateElement(Element element)
         {
             throw new NotImplementedException();
         }
@@ -55,7 +55,7 @@ namespace FIS.DAL
         public IEnumerable<Element> GetElements(int messageId)
         {
             throw new NotImplementedException();
-        }*/
+        }
 
         public Workflow CreateWorkflow(Workflow workflow)
         {
