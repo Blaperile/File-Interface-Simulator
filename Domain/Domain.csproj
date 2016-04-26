@@ -7,8 +7,8 @@
     <ProjectGuid>{C65D0008-9A9E-49ED-B036-B08E331ED2B6}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Domain</RootNamespace>
-    <AssemblyName>Domain</AssemblyName>
+    <RootNamespace>FIS.BL.Domain</RootNamespace>
+    <AssemblyName>FIS.BL.Domain</AssemblyName>
     <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
@@ -40,8 +40,25 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Operational\Field.cs" />
+    <Compile Include="Operational\Group.cs" />
+    <Compile Include="Operational\HeaderField.cs" />
+    <Compile Include="Operational\Message.cs" />
+    <Compile Include="Operational\MessageState.cs" />
+    <Compile Include="Operational\Transaction.cs" />
+    <Compile Include="Operational\Workflow.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Setup\Directory.cs" />
+    <Compile Include="Setup\FieldSpecFieldCondition.cs" />
+    <Compile Include="Setup\FieldSpecification.cs" />
+    <Compile Include="Setup\FileSpecFieldCondition.cs" />
+    <Compile Include="Setup\FileSpecification.cs" />
+    <Compile Include="Setup\GroupCondition.cs" />
+    <Compile Include="Setup\HeaderCondition.cs" />
+    <Compile Include="Setup\Specification.cs" />
+    <Compile Include="Setup\WorkflowTemplate.cs" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
