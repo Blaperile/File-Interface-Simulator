@@ -7,8 +7,8 @@
     <ProjectGuid>{15A2DE88-3441-480A-BFB3-139120DB5859}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>DAL</RootNamespace>
-    <AssemblyName>DAL</AssemblyName>
+    <RootNamespace>FIS.DAL</RootNamespace>
+    <AssemblyName>FIS.DAL</AssemblyName>
     <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
@@ -60,6 +60,7 @@
     <Compile Include="EF\FISEFDbConfiguration.cs" />
     <Compile Include="EF\FISEFDbContext.cs" />
     <Compile Include="EF\FISEFDbInitializer.cs" />
+    <Compile Include="IOperationalRepository.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

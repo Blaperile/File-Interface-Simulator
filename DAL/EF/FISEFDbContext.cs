@@ -6,7 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace DAL.EF
+namespace FIS.DAL.EF
 {
     [DbConfigurationType(typeof(FISEFDbConfiguration))]
     public sealed class FISEFDbContext : IdentityDbContext

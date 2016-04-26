@@ -8,7 +8,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace DAL.EF
+namespace FIS.DAL.EF
 {
     class FISEFDbConfiguration : DbConfiguration
     {
