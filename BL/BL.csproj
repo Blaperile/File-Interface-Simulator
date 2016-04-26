@@ -40,6 +40,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="FileSpecFieldFieldCondition.cs" />
     <Compile Include="IOperationalManager.cs" />
     <Compile Include="ISpecificationSetupManager.cs" />
     <Compile Include="IWorkflowTemplateSetupManager.cs" />
