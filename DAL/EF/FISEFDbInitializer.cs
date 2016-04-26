@@ -11,7 +11,7 @@ namespace FIS.DAL.EF
     {
         protected override void Seed(FISEFDbContext context)
         {
-            context.SaveChanges();//test
+            context.SaveChanges();
         }
     }
 }
