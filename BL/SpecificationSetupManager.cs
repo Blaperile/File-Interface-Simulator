@@ -5,66 +5,66 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace BL
+namespace FIS.BL
 {
     class SpecificationSetupManager : ISpecificationSetupManager
     {
-        public FieldSpecification addFieldSpecification(string name, string path, string version)
+        public FieldSpecification AddFieldSpecification(string name, string path, string version)
         {
             throw new NotImplementedException();
         }
 
-        public FileSpecification addFileSpecification(string name, string path, bool isInput, string inDirectoryPath, string archiveDirectoryPath, string errorDirectoryPath, string outDirectoryPath, string fieldSpecificationVersion)
+        public FileSpecification AddFileSpecification(string name, string path, bool isInput, string inDirectoryPath, string archiveDirectoryPath, string errorDirectoryPath, string outDirectoryPath, string fieldSpecificationVersion)
         {
             throw new NotImplementedException();
         }
 
-        public List<FieldSpecification> getFieldSpecificatins()
+        public List<FieldSpecification> GetFieldSpecificatons()
         {
             throw new NotImplementedException();
         }
 
-        public FieldSpecification getFieldSpecification(string fieldSpecificationVersion)
+        public FieldSpecification GetFieldSpecification(string fieldSpecificationVersion)
         {
             throw new NotImplementedException();
         }
 
-        public FieldSpecification getFieldSpecification(int specificationId)
+        public FieldSpecification GetFieldSpecification(int specificationId)
         {
             throw new NotImplementedException();
         }
 
-        public List<FileSpecFieldFieldCondition> getFileSpecFieldConditionsLinkedToFieldSpecFieldCondition(int fieldSpecFieldConditionId)
+        public List<FileSpecFieldCondition> GetFileSpecFieldConditionsLinkedToFieldSpecFieldCondition(int fieldSpecFieldConditionId)
         {
             throw new NotImplementedException();
         }
 
-        public List<FileSpecFieldCondition> getFileSpecFieldConditionsOfGroup(int specificationId, string groupCode)
+        public List<FileSpecFieldCondition> GetFileSpecFieldConditionsOfGroup(int specificationId, string groupCode)
         {
             throw new NotImplementedException();
         }
 
-        public FileSpecification getFileSpecification(int specificationId)
+        public FileSpecification GetFileSpecification(int specificationId)
         {
             throw new NotImplementedException();
         }
 
-        public List<FileSpecification> getFileSpecifications()
+        public List<FileSpecification> GetFileSpecifications()
         {
             throw new NotImplementedException();
         }
 
-        public GroupCondition getGroupCondition(int specificationId, string groupCode)
+        public GroupCondition GetGroupCondition(int specificationId, string groupCode)
         {
             throw new NotImplementedException();
         }
 
-        public FieldSpecification removeFieldSpecification(int specificationId)
+        public FieldSpecification RemoveFieldSpecification(int specificationId)
         {
             throw new NotImplementedException();
         }
 
-        public FileSpecification removeFileSpecification(int specificationId)
+        public FileSpecification RemoveFileSpecification(int specificationId)
         {
             throw new NotImplementedException();
         }

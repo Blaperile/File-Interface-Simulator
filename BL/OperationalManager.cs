@@ -5,71 +5,71 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-namespace BL
+namespace FIS.BL
 {
     class OperationalManager : IOperationalManager
     {
-        public Workflow addWorkflow(Message message)
+        public Workflow AddWorkflow(Message message)
         {
             throw new NotImplementedException();
         }
 
-        public void archiveErrorLines()
+        public void ArchiveErrorLines()
         {
             throw new NotImplementedException();
         }
 
-        public void detectInput()
+        public void DetectInput()
         {
             throw new NotImplementedException();
         }
 
-        public void generateAnswer(Message message, Workflow workflow, WorkflowTemplate workflowTemplate)
+        public void GenerateAnswer(Message message, Workflow workflow, WorkflowTemplate workflowTemplate)
         {
             throw new NotImplementedException();
         }
 
-        public Message getMessage(int messageId)
+        public Message GetMessage(int messageId)
         {
             throw new NotImplementedException();
         }
 
-        public List<Message> getMessages()
+        public List<Message> GetMessages()
         {
             throw new NotImplementedException();
         }
 
-        public List<Message> getMessagesOfFileSpecification(int specificationId)
+        public List<Message> GetMessagesOfFileSpecification(int specificationId)
         {
             throw new NotImplementedException();
         }
 
-        public Workflow getWorkflow(int workflowId)
+        public Workflow GetWorkflow(int workflowId)
         {
             throw new NotImplementedException();
         }
 
-        public List<Workflow> getWorkflows()
+        public List<Workflow> GetWorkflows()
         {
             throw new NotImplementedException();
         }
 
-        public List<Workflow> getWorkflowsForTemplate(int workflowTemplateId)
+        public List<Workflow> GetWorkflowsForTemplate(int workflowTemplateId)
         {
             throw new NotImplementedException();
         }
 
-        public Message removeMessage(int messageId)
+        public Message RemoveMessage(int messageId)
         {
             throw new NotImplementedException();
         }
 
-        public Workflow removeWorkflow(int workflowId)
+        public Workflow RemoveWorkflow(int workflowId)
         {
             throw new NotImplementedException();
         }
 
-        public void validateInput(int messageId)
+        public void ValidateInput(int messageId)
         {
             throw new NotImplementedException();
         }

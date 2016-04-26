@@ -6,23 +6,23 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace BL
+namespace FIS.BL
 {
     interface IOperationalManager
     {
-        Message getMessage(int messageId);
-        List<Message> getMessages();
-        List<Message> getMessagesOfFileSpecification(int specificationId);
-        Message removeMessage(int messageId);
-        Workflow addWorkflow(Message message);
-        Workflow getWorkflow(int workflowId);
-        List<Workflow> getWorkflows();
-        List<Workflow> getWorkflowsForTemplate(int workflowTemplateId);
-        Workflow removeWorkflow(int workflowId);
-        void detectInput();
-        void validateInput(int messageId);
-        void archiveErrorLines();
-        void generateAnswer(Message message, Workflow workflow, WorkflowTemplate workflowTemplate);
+        Message GetMessage(int messageId);
+        List<Message> GetMessages();
+        List<Message> GetMessagesOfFileSpecification(int specificationId);
+        Message RemoveMessage(int messageId);
+        Workflow AddWorkflow(Message message);
+        Workflow GetWorkflow(int workflowId);
+        List<Workflow> GetWorkflows();
+        List<Workflow> GetWorkflowsForTemplate(int workflowTemplateId);
+        Workflow RemoveWorkflow(int workflowId);
+        void DetectInput();
+        void ValidateInput(int messageId);
+        void ArchiveErrorLines();
+        void GenerateAnswer(Message message, Workflow workflow, WorkflowTemplate workflowTemplate);
 
     }
 }

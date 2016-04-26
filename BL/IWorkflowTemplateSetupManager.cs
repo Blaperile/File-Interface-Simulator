@@ -5,18 +5,18 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace BL
+namespace FIS.BL
 {
     interface IWorkflowTemplateSetupManager
     {
-        WorkflowTemplate addStepToWorkflowTemplate(int workFlowTemplateId, int stepNumber, int specificationId);
-        WorkflowTemplate removeStepFromWorkflowTemplate(int workflowTemplateId, int stepNumber);
-        WorkflowTemplate addWorkflowTemplate(String name);
-        WorkflowTemplate getWorkFlowTemplate(int workflowTemplateId);
-        List<WorkflowTemplate> getWorkflowTemplates();
-        WorkflowTemplate getSelectedWorkflowTemplate();
-        WorkflowTemplate removeWorkflowTemplate(int workflowTemplateId);
-        WorkflowTemplate selectWorkflowTemplate(int workflowTemplateId);
+        WorkflowTemplate AddStepToWorkflowTemplate(int workFlowTemplateId, int stepNumber, int specificationId);
+        WorkflowTemplate RemoveStepFromWorkflowTemplate(int workflowTemplateId, int stepNumber);
+        WorkflowTemplate AddWorkflowTemplate(String name);
+        WorkflowTemplate GetWorkFlowTemplate(int workflowTemplateId);
+        List<WorkflowTemplate> GetWorkflowTemplates();
+        WorkflowTemplate GetSelectedWorkflowTemplate();
+        WorkflowTemplate RemoveWorkflowTemplate(int workflowTemplateId);
+        WorkflowTemplate SelectWorkflowTemplate(int workflowTemplateId);
 
     }
 }

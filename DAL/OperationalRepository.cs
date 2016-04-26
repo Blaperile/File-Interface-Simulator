@@ -47,12 +47,12 @@ namespace FIS.DAL
             throw new NotImplementedException();
         }
 
-       public Element CreateElement(Element element)
+       public IElement CreateElement(IElement element)
         {
             throw new NotImplementedException();
         }
 
-        public IEnumerable<Element> GetElements(int messageId)
+        public IEnumerable<IElement> GetElements(int messageId)
         {
             throw new NotImplementedException();
         }
