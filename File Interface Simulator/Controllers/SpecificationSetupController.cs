@@ -26,5 +26,19 @@ namespace File_Interface_Simulator.Controllers
             specSetupManager.AddFieldSpecification(fieldspecificationViewModel.Name, fieldspecificationViewModel.Path, fieldspecificationViewModel.Version);
             return RedirectToAction("Index", "HomeController");
         }
+
+        [HttpGet]
+        public ActionResult UploadFileSpecification()
+        {
+            FileSpecificationViewModel model = new FileSpecificationViewModel();
+            return View("UploadFileSpecification", model);
+        }
+
+        [HttpPost]
+        public ActionResult UploadFileSpecification(FileSpecificationViewModel model)
+        {
+            specSetupManager.AddFileSpecification(model.Name, model.Path, model.IsInput, model.InDirectoryPath, model.ArchiveDirectoryPath, model.ErrorDirectoryPath, model.OutDirectoryPath, model.FieldSpecificationVersion);
+            return RedirectToAction("Index", "HomeController");
+        }
     }
 }
