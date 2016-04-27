@@ -14,7 +14,7 @@ namespace FIS.BL.Domain.Operational
         public int WorkflowId { get; set; }
         public DateTime Date { get; set; }
         public bool IsSuccessful { get; set; }
-        public IEnumerable<Message> Messages { get; set; }
+        public ICollection<Message> Messages { get; set; }
         public WorkflowTemplate WorkflowTemplate { get; set; }
         
     }

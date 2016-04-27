@@ -17,7 +17,7 @@ namespace FIS.BL.Domain.Operational
         public string ErrorDescription { get; set; }
         public Group ParentGroup { get; set; }
         public GroupCondition GroupCondition { get; set; }
-        public IEnumerable<Field> Fields { get; set; }
+        public ICollection<Field> Fields { get; set; }
         public Transaction Transaction { get; set; }
 
     }

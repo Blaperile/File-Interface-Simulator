@@ -19,7 +19,9 @@ namespace FIS.DAL
 
         public FieldSpecification CreateFieldSpecification(FieldSpecification fieldSpecification)
         {
-            throw new NotImplementedException();
+            ctx.FieldSpecifications.Add(fieldSpecification);
+            ctx.SaveChanges();
+            return fieldSpecification;
         }
 
         public FieldSpecification ReadFieldSpecification(int specificationId)

@@ -23,7 +23,7 @@ namespace File_Interface_Simulator.Controllers
         public ActionResult UploadFieldSpecification(FieldSpecificationViewModel fieldspecificationViewModel) //save entered data
         {
             specSetupManager.AddFieldSpecification(fieldspecificationViewModel.Name, fieldspecificationViewModel.Path, fieldspecificationViewModel.Version);
-            return RedirectToAction("Index", "HomeController");
+            return RedirectToAction("Index","HomeController");
         }
 
         [HttpGet]

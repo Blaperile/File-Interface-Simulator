@@ -21,8 +21,8 @@ namespace FIS.BL.Domain.Setup
         public Directory OutDirectory { get; set; }
         public WorkflowTemplate WorkflowTemplate { get; set; }
         public FieldSpecification FieldSpecification { get; set; }
-        public IEnumerable<HeaderCondition> HeaderConditions { get; set; }
-        public IEnumerable<GroupCondition> GroupConditions { get; set; }
-        public IEnumerable<FileSpecFieldCondition> FileSpecFieldConditions { get; set; }
+        public ICollection<HeaderCondition> HeaderConditions { get; set; }
+        public ICollection<GroupCondition> GroupConditions { get; set; }
+        public ICollection<FileSpecFieldCondition> FileSpecFieldConditions { get; set; }
     }
 }
