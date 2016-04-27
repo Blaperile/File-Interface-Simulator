@@ -10,10 +10,11 @@ namespace FIS.BL.Domain.Setup
     {
         /*Contains validation information for one specific type of header field*/
 
-        public int HeaderFieldConditionId { get; set; }
+        public int HeaderConditionId { get; set; }
         public string HeaderFieldCode { get; set; }
         public string Description { get; set; }
         public string Datatype { get; set; }
         public string Size { get; set; }
+        public FileSpecification FileSpecification { get; set; }
     }
 }

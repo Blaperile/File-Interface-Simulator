@@ -17,6 +17,7 @@ namespace FIS.BL.Domain.Setup
         public int MinimumAmountOfOccurences { get; set; }
         public int MaximumAmountOfOccurences { get; set; }
         public int TransactionNumber { get; set; }
+        public FileSpecification FileSpecification { get; set; }
 
     }
 }

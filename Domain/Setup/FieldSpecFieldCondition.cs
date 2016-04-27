@@ -16,5 +16,6 @@ namespace FIS.BL.Domain.Setup
         public int Size { get; set; }
         public string Format { get; set; }
         public IEnumerable<String> AllowedValues { get; set; }
+        public FieldSpecification FieldSpecification { get; set; }
     }
 }

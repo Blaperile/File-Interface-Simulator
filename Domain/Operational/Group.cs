@@ -18,6 +18,7 @@ namespace FIS.BL.Domain.Operational
         public Group ParentGroup { get; set; }
         public GroupCondition GroupCondition { get; set; }
         public IEnumerable<Field> Fields { get; set; }
+        public Transaction Transaction { get; set; }
 
     }
 }

@@ -55,7 +55,6 @@
     <Compile Include="Setup\FileSpecification.cs" />
     <Compile Include="Setup\GroupCondition.cs" />
     <Compile Include="Setup\HeaderCondition.cs" />
-    <Compile Include="Setup\Specification.cs" />
     <Compile Include="Setup\WorkflowTemplate.cs" />
   </ItemGroup>
   <ItemGroup />

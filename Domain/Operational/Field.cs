@@ -17,5 +17,6 @@ namespace FIS.BL.Domain.Operational
         public string Level { get; set; }
         public string ErrorDescription { get; set; }
         public FileSpecFieldCondition FileSpecFieldCondition { get; set; }
+        public Group Group { get; set; }
     }
 }

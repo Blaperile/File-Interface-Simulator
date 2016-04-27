@@ -19,5 +19,6 @@ namespace FIS.BL.Domain.Operational
         public IEnumerable<HeaderField> HeaderFields { get; set; }
         public IEnumerable<Transaction> Transactions { get; set; }
         public FileSpecification FileSpecification { get; set; }
+        public Workflow Workflow { get; set; }
     }
 }

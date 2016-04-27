@@ -16,5 +16,6 @@ namespace FIS.BL.Domain.Operational
         public string Description { get; set; }
         public string ErrorDescription { get; set; }
         public HeaderCondition HeaderCondition { get; set; }
+        public Message Message { get; set; }
     }
 }
