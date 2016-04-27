@@ -8,17 +8,21 @@ namespace File_Interface_Simulator.Controllers
 {
     public class SpecificationSetupController : Controller
     {
-        // GET: SpecificationSetup
-        public ActionResult Index()
-        {
-            return View();
-        }
+        private readonly ISpecificationSetupManager specSetupManager = new SpecificationSetupManager();
 
+        // GET: Operational
         [HttpGet]
         public ActionResult UploadFieldSpecification()
         {
+            var fieldSpecificationViewModel = new FieldSpecificationViewModel();
+            return View("UploadFieldSpecification", fieldSpecificationViewModel);
+        }
 
-            return View();
+        [HttpPost]
+        public ActionResult UploadFieldSpecification(FieldSpecificationViewModel fieldspecificationViewModel) //save entered data
+        {
+            specSetupManager.AddFieldSpecification(fieldspecificationViewModel.Name, fieldspecificationViewModel.Path, fieldspecificationViewModel.Version);
+            return RedirectToAction("Index", "HomeController");
         }
     }
 }
