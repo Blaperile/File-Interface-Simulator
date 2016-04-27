@@ -30,6 +30,7 @@ namespace File_Interface_Simulator.Controllers
         public ActionResult UploadFileSpecification()
         {
             FileSpecificationViewModel model = new FileSpecificationViewModel();
+            model.FieldSpecificationVersions = specSetupManager.GetFieldSpecificationVersions();
             return View("UploadFileSpecification", model);
         }
 

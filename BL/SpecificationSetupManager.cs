@@ -32,7 +32,41 @@ namespace FIS.BL
         public FileSpecification AddFileSpecification(string name, string path, bool isInput, string inDirectoryPath, string archiveDirectoryPath, string errorDirectoryPath, string outDirectoryPath, string fieldSpecificationVersion)
         {
             FieldSpecification fieldSpec = GetFieldSpecification(fieldSpecificationVersion);
-            throw new NotImplementedException();
+            FileSpecification fileSpec = csvReader.ReadFileSpecification(path, fieldSpec);
+
+            Directory inDirectory = new Directory()
+            {
+                 Name = "in",
+                 Location = inDirectoryPath
+            };
+
+            fileSpec.InDirectory = inDirectory;
+
+            Directory errorDirectory = new Directory()
+            {
+                Name = "error",
+                Location = errorDirectoryPath
+            };
+
+            fileSpec.ErrorDirectory = errorDirectory;
+
+            Directory archiveDirectory = new Directory()
+            {
+                Name = "archive",
+                Location = archiveDirectoryPath
+            };
+
+            fileSpec.ArchiveDirectory = archiveDirectory;
+
+            Directory outDirectory = new Directory()
+            {
+                Name = "out",
+                Location = outDirectoryPath
+            };
+
+            fileSpec.OutDirectory = outDirectory;
+
+            return specSetupRepo.CreateFileSpecification(fileSpec);
         }
 
         public List<FieldSpecification> GetFieldSpecificatons()
@@ -42,10 +76,15 @@ namespace FIS.BL
 
         public FieldSpecification GetFieldSpecification(string fieldSpecificationVersion)
         {
-            throw new NotImplementedException();
+            return specSetupRepo.ReadFieldSpecification(fieldSpecificationVersion);
         }
 
         public FieldSpecification GetFieldSpecification(int specificationId)
+        {
+            throw new NotImplementedException();
+        }
+
+        public IEnumerable<String> GetFieldSpecificationVersions()
         {
             throw new NotImplementedException();
         }

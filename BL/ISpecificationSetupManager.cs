@@ -13,6 +13,7 @@ namespace FIS.BL
         FieldSpecification GetFieldSpecification(int specificationId);
         FieldSpecification GetFieldSpecification(String fieldSpecificationVersion);
         List<FieldSpecification> GetFieldSpecificatons();
+        IEnumerable<String> GetFieldSpecificationVersions();
         FieldSpecification RemoveFieldSpecification(int specificationId);
         FileSpecification AddFileSpecification(String name, String path, bool isInput, String inDirectoryPath, String archiveDirectoryPath, String errorDirectoryPath, String outDirectoryPath, String fieldSpecificationVersion);
         FileSpecification GetFileSpecification(int specificationId);
@@ -21,6 +22,5 @@ namespace FIS.BL
         GroupCondition GetGroupCondition(int specificationId, String groupCode);
         List<FileSpecFieldCondition> GetFileSpecFieldConditionsOfGroup(int specificationId, String groupCode);
         List<FileSpecFieldCondition> GetFileSpecFieldConditionsLinkedToFieldSpecFieldCondition(int fieldSpecFieldConditionId);
-
     }
 }

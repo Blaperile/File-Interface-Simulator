@@ -11,6 +11,7 @@ namespace File_Interface_Simulator.Models
         public bool IsInput { get; set; }
         public string Path { get; set; }
         public string Version { get; set; }
+        public IEnumerable<String> FieldSpecificationVersions { get; internal set; }
         public string FieldSpecificationVersion { get; set; }
         public string InDirectoryPath { get; set; }
         public string ArchiveDirectoryPath { get; set; }

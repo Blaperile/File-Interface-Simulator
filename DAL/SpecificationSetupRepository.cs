@@ -29,6 +29,11 @@ namespace FIS.DAL
             throw new NotImplementedException();
         }
 
+        public IEnumerable<String> ReadFieldSpecificationVersions()
+        {
+            throw new NotImplementedException();
+        }
+
         public FieldSpecification DeleteFieldSpecification(int specificationId)
         {
             throw new NotImplementedException();
