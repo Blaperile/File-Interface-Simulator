@@ -163,6 +163,7 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Models\FieldSpecificationViewModel.cs" />
+    <Compile Include="Models\FileSpecificationViewModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -219,6 +220,8 @@
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="images\" />
+    <Folder Include="Models\" />
+    <Folder Include="Views\Operational\" />
     <Folder Include="Views\SpecificationSetup\" />
   </ItemGroup>
   <ItemGroup>
