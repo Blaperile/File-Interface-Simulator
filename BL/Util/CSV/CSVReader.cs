@@ -12,9 +12,9 @@ namespace FIS.BL.Util.CSV
     {
         private ISpecificationSetupManager specSetupManager;
 
-        public CSVReader()
+        public CSVReader(ISpecificationSetupManager specSetupManager)
         {
-            specSetupManager = new SpecificationSetupManager();
+            this.specSetupManager = specSetupManager;
         }
 
         public FieldSpecification ReadFieldSpecification(string path)
@@ -48,6 +48,9 @@ namespace FIS.BL.Util.CSV
         {
             FileSpecification fileSpec = new FileSpecification();
             List<List<String>> fileSpecLines = ReadFile(path);
+            List<FileSpecFieldCondition> fileSpecFieldConditions = new List<FileSpecFieldCondition>();
+            List<GroupCondition> groupConditions = new List<GroupCondition>();
+
             foreach (var fileSpecLine in fileSpecLines)
             {
                 string code = fileSpecLine.First();
@@ -61,6 +64,7 @@ namespace FIS.BL.Util.CSV
                      Level = Convert.ToInt32(fileSpecLine.ElementAt(3)),
                      Group = fileSpecLine.ElementAt(4),
                     };
+                    fileSpecFieldCondition.FileSpecification = fileSpec;
 
                     string optionalOrMandatory = fileSpecLine.ElementAt(2);
 
@@ -74,8 +78,25 @@ namespace FIS.BL.Util.CSV
 
                     FieldSpecFieldCondition fieldSpecFieldCondition = specSetupManager.GetFieldSpecFieldCondition(fieldSpecification.FieldSpecificationId, code);
                     fileSpecFieldCondition.FieldSpecFieldCondition = fieldSpecFieldCondition;
+                    fileSpecFieldConditions.Add(fileSpecFieldCondition);
+                } else if (code.StartsWith("A"))
+                {
+                    GroupCondition groupCondition = new GroupCondition()
+                    {
+                        Code = code,
+                        Description = fileSpecLine.ElementAt(1),
+                        Level = fileSpecLine.ElementAt(3),
+                        ParentGroup = fileSpecLine.ElementAt(4),
+                        MinimumAmountOfOccurences = Convert.ToInt32(fileSpecLine.ElementAt(5)),
+                        MaximumAmountOfOccurences = Convert.ToInt32(fileSpecLine.ElementAt(6))
+                    };
+
+                    groupCondition.FileSpecification = fileSpec;
+                    groupConditions.Add(groupCondition);
                 }
             }
+            fileSpec.FileSpecFieldConditions = fileSpecFieldConditions;
+            fileSpec.GroupConditions = groupConditions;
             return fileSpec;
         }
 

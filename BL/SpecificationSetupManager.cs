@@ -16,7 +16,7 @@ namespace FIS.BL
 
         public SpecificationSetupManager()
         {
-            csvReader = new CSVReader();
+            csvReader = new CSVReader(this);
             specSetupRepo = new SpecificationSetupRepository();
         }
 
