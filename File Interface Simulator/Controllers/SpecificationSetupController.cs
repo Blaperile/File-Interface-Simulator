@@ -12,7 +12,6 @@ namespace File_Interface_Simulator.Controllers
     {
         private readonly ISpecificationSetupManager specSetupManager = new SpecificationSetupManager();
 
-        // GET: Operational
         [HttpGet]
         public ActionResult UploadFieldSpecification()
         {
