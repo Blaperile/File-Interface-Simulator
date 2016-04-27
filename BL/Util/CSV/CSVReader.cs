@@ -22,8 +22,18 @@ namespace FIS.BL.Util.CSV
                 fieldSpecFieldCondition.Datatype = fieldConditionLine[1];
                 fieldSpecFieldCondition.Size = Int32.Parse(fieldConditionLine[2]);
                 fieldSpecFieldCondition.Format = fieldConditionLine[3];
-                
+                List<String> stringAllowedValues = fieldConditionLine[4].Split('-').ToList();
+                List<AllowedValue> allowedValues = new List<AllowedValue>();
+                foreach(var stringAllowedValue in stringAllowedValues)
+                {
+                    AllowedValue allowedValue = new AllowedValue();
+                    allowedValue.Value = stringAllowedValue;
+                    allowedValues.Add(allowedValue);
+                }
+                fieldSpecFieldCondition.AllowedValues = allowedValues;
+                fieldSpecFieldConditions.Add(fieldSpecFieldCondition);
             }
+            fieldspec.FieldSpecFieldConditions = fieldSpecFieldConditions;
             return fieldspec;
         }
 
