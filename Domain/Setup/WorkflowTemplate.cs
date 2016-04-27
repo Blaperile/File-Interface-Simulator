@@ -14,6 +14,6 @@ namespace FIS.BL.Domain.Setup
         public string Name { get; set; }
         public DateTime CreationDate { get; set; }
         public bool IsChosen { get; set; }
-        public IEnumerable<FileSpecification> FileSpecifications { get; set; }
+        public ICollection<FileSpecification> FileSpecifications { get; set; }
     }
 }
