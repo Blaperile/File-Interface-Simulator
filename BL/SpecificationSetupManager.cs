@@ -86,7 +86,7 @@ namespace FIS.BL
 
         public IEnumerable<String> GetFieldSpecificationVersions()
         {
-            throw new NotImplementedException();
+            return specSetupRepo.ReadFieldSpecificationVersions();
         }
 
         public List<FileSpecFieldCondition> GetFileSpecFieldConditionsLinkedToFieldSpecFieldCondition(int fieldSpecFieldConditionId)
