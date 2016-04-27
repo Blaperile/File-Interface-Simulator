@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace FIS.BL
 {
-    class SpecificationSetupManager : ISpecificationSetupManager
+    public class SpecificationSetupManager : ISpecificationSetupManager
     {
         public FieldSpecification AddFieldSpecification(string name, string path, string version)
         {

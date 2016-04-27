@@ -13,5 +13,12 @@ namespace File_Interface_Simulator.Controllers
         {
             return View();
         }
+
+        [HttpGet]
+        public ActionResult UploadFieldSpecification()
+        {
+
+            return View();
+        }
     }
 }
