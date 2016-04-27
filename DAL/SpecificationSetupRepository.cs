@@ -29,7 +29,7 @@ namespace FIS.DAL
 
         public FieldSpecification ReadFieldSpecification(string fieldSpecificationVersion)
         {
-            throw new NotImplementedException();
+            return ctx.FieldSpecifications.Where(fs => fs.Version.Equals(fieldSpecificationVersion)).First();
         }
 
         public IEnumerable<FieldSpecification> ReadFieldSpecifications()
@@ -39,14 +39,19 @@ namespace FIS.DAL
 
         public IEnumerable<String> ReadFieldSpecificationVersions()
         {
+            IList<String> versions = new List<String>();
             var fieldSpecifications = (
                 from fieldSpecification in ctx.FieldSpecifications
-                select new
+                select /*fieldSpecification.Version*/ new
                 {
                    Version = fieldSpecification.Version 
                 }
                 ).ToList();
-            throw new NotImplementedException();
+            foreach (var fieldSpecification in fieldSpecifications)
+            {
+                versions.Add(fieldSpecification.Version);
+            }
+            return versions;
         }
 
         public FieldSpecification DeleteFieldSpecification(int specificationId)
