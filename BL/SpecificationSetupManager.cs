@@ -1,5 +1,6 @@
 ﻿using FIS.BL.Domain.Setup;
 using FIS.BL.Util.CSV;
+using FIS.DAL;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,10 +12,12 @@ namespace FIS.BL
     public class SpecificationSetupManager : ISpecificationSetupManager
     {
         CSVReader csvReader;
+        ISpecificationSetupRepository specSetupRepo;
 
         public SpecificationSetupManager()
         {
             csvReader = new CSVReader();
+            specSetupRepo = new SpecificationSetupRepository();
         }
 
         public FieldSpecification AddFieldSpecification(string name, string path, string version)
@@ -28,6 +31,7 @@ namespace FIS.BL
 
         public FileSpecification AddFileSpecification(string name, string path, bool isInput, string inDirectoryPath, string archiveDirectoryPath, string errorDirectoryPath, string outDirectoryPath, string fieldSpecificationVersion)
         {
+            FieldSpecification fieldSpec = GetFieldSpecification(fieldSpecificationVersion);
             throw new NotImplementedException();
         }
 
