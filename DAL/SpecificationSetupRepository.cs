@@ -19,6 +19,10 @@ namespace FIS.DAL
 
         public FieldSpecification CreateFieldSpecification(FieldSpecification fieldSpecification)
         {
+            if (ctx.FieldSpecifications.Any(f => f.Name == fieldSpecification.Name) && ctx.FieldSpecifications.Any(f => f.Version == fieldSpecification.Version))
+            {
+                return null;
+            }
             ctx.FieldSpecifications.Add(fieldSpecification);
             ctx.SaveChanges();
             return fieldSpecification;

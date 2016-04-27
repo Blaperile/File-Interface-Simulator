@@ -1,5 +1,6 @@
 ﻿using File_Interface_Simulator.Models;
 using FIS.BL;
+using FIS.BL.Domain.Setup;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -22,8 +23,14 @@ namespace File_Interface_Simulator.Controllers
         [HttpPost]
         public ActionResult UploadFieldSpecification(FieldSpecificationViewModel fieldspecificationViewModel) //save entered data
         {
-            specSetupManager.AddFieldSpecification(fieldspecificationViewModel.Name, fieldspecificationViewModel.Path, fieldspecificationViewModel.Version);
-            return RedirectToAction("Index","HomeController");
+            FieldSpecification fieldSpecification = specSetupManager.AddFieldSpecification(fieldspecificationViewModel.Name, fieldspecificationViewModel.Path, fieldspecificationViewModel.Version);
+            if (fieldSpecification != null)
+            {
+                return RedirectToAction("Index","Home");
+            }
+            else
+            ViewBag.error = "Name combined with version must be unique";
+            return View(fieldspecificationViewModel);
         }
 
         [HttpGet]

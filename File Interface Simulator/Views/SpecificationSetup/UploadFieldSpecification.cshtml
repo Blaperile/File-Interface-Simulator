@@ -37,7 +37,7 @@
                 @Html.ValidationMessageFor(model => model.Version, "", new { @class = "text-danger" })
             </div>
         </div>
-
+        <h3>@ViewBag.error</h3>
         <div class="form-group">
             <div class="col-md-offset-2 col-md-10">
                 <input type="submit" value="Create" class="btn btn-default" />
