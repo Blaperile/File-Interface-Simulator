@@ -37,7 +37,7 @@ namespace File_Interface_Simulator.Controllers
         [HttpPost]
         public ActionResult UploadFileSpecification(FileSpecificationViewModel model)
         {
-            specSetupManager.AddFileSpecification(model.Name, model.Path, model.IsInput, model.InDirectoryPath, model.ArchiveDirectoryPath, model.ErrorDirectoryPath, model.OutDirectoryPath, model.FieldSpecificationVersion);
+            specSetupManager.AddFileSpecification(model.Name, model.Path, model.IsInput, model.InDirectoryPath, model.ArchiveDirectoryPath, model.ErrorDirectoryPath, model.OutDirectoryPath, model.Version, model.FieldSpecificationVersion);
             return RedirectToAction("Index", "HomeController");
         }
     }

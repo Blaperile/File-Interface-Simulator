@@ -30,43 +30,63 @@ namespace FIS.BL
             return specSetupRepo.CreateFieldSpecification(fieldSpec);
         }
 
-        public FileSpecification AddFileSpecification(string name, string path, bool isInput, string inDirectoryPath, string archiveDirectoryPath, string errorDirectoryPath, string outDirectoryPath, string fieldSpecificationVersion)
+        public FileSpecification AddFileSpecification(string name, string path, bool isInput, string inDirectoryPath, string archiveDirectoryPath, string errorDirectoryPath, string outDirectoryPath, string version, string fieldSpecificationVersion)
         {
             FieldSpecification fieldSpec = GetFieldSpecification(fieldSpecificationVersion);
             FileSpecification fileSpec = csvReader.ReadFileSpecification(path, fieldSpec);
+            fileSpec.Name = name;
+            fileSpec.UploadDate = DateTime.Now;
+            fileSpec.IsInput = isInput;
+            fileSpec.Version = version;
+            fileSpec.FieldSpecification = fieldSpec;
 
-            Directory inDirectory = new Directory()
+            if (isInput)
             {
-                 Name = "in",
-                 Location = inDirectoryPath
-            };
 
-            fileSpec.InDirectory = inDirectory;
+                Directory inDirectory = new Directory()
+                {
+                    Name = "in",
+                    Location = inDirectoryPath,
+                    FileSpecification = fileSpec
+                };
 
-            Directory errorDirectory = new Directory()
+                fileSpec.InDirectory = inDirectory;
+
+                Directory errorDirectory = new Directory()
+                {
+                    Name = "error",
+                    Location = errorDirectoryPath,
+                    FileSpecification = fileSpec
+                };
+
+                fileSpec.ErrorDirectory = errorDirectory;
+
+                Directory archiveDirectory = new Directory()
+                {
+                    Name = "archive",
+                    Location = archiveDirectoryPath,
+                    FileSpecification = fileSpec
+                };
+
+                fileSpec.ArchiveDirectory = archiveDirectory;
+            }
+            else
             {
-                Name = "error",
-                Location = errorDirectoryPath
-            };
+                Directory outDirectory = new Directory()
+                {
+                    Name = "out",
+                    Location = outDirectoryPath,
+                    FileSpecification = fileSpec
+                };
 
-            fileSpec.ErrorDirectory = errorDirectory;
+                fileSpec.OutDirectory = outDirectory;
+            }
 
-            Directory archiveDirectory = new Directory()
+            if (fieldSpec.FileSpecifications == null)
             {
-                Name = "archive",
-                Location = archiveDirectoryPath
-            };
-
-            fileSpec.ArchiveDirectory = archiveDirectory;
-
-            Directory outDirectory = new Directory()
-            {
-                Name = "out",
-                Location = outDirectoryPath
-            };
-
-            fileSpec.OutDirectory = outDirectory;
-
+                fieldSpec.FileSpecifications = new List<FileSpecification>();
+            }
+            fieldSpec.FileSpecifications.Add(fileSpec);
             return specSetupRepo.CreateFileSpecification(fileSpec);
         }
 

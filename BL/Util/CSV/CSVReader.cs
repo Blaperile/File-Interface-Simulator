@@ -50,9 +50,11 @@ namespace FIS.BL.Util.CSV
         public FileSpecification ReadFileSpecification(string path, FieldSpecification fieldSpecification)
         {
             FileSpecification fileSpec = new FileSpecification();
+            fileSpec.Path = path;
             List<List<String>> fileSpecLines = ReadFile(path);
             List<FileSpecFieldCondition> fileSpecFieldConditions = new List<FileSpecFieldCondition>();
             List<GroupCondition> groupConditions = new List<GroupCondition>();
+            List<HeaderCondition> headerConditions = new List<HeaderCondition>();
 
             foreach (var fileSpecLine in fileSpecLines)
             {
@@ -64,12 +66,12 @@ namespace FIS.BL.Util.CSV
                     {
                      Code = code,
                      Description = fileSpecLine.ElementAt(1),
-                     Level = Convert.ToInt32(fileSpecLine.ElementAt(3)),
-                     Group = fileSpecLine.ElementAt(4),
+                     Level = Convert.ToInt32(fileSpecLine.ElementAt(5)),
+                     Group = fileSpecLine.ElementAt(6),
                     };
                     fileSpecFieldCondition.FileSpecification = fileSpec;
 
-                    string optionalOrMandatory = fileSpecLine.ElementAt(2);
+                    string optionalOrMandatory = fileSpecLine.ElementAt(4);
 
                     if (optionalOrMandatory.Equals("O"))
                     {
@@ -88,18 +90,31 @@ namespace FIS.BL.Util.CSV
                     {
                         Code = code,
                         Description = fileSpecLine.ElementAt(1),
-                        Level = fileSpecLine.ElementAt(3),
-                        ParentGroup = fileSpecLine.ElementAt(4),
-                        MinimumAmountOfOccurences = Convert.ToInt32(fileSpecLine.ElementAt(5)),
-                        MaximumAmountOfOccurences = Convert.ToInt32(fileSpecLine.ElementAt(6))
+                        Level = fileSpecLine.ElementAt(5),
+                        ParentGroup = fileSpecLine.ElementAt(6),
+                        MinimumAmountOfOccurences = fileSpecLine.ElementAt(7),
+                        MaximumAmountOfOccurences = fileSpecLine.ElementAt(8)
                     };
 
                     groupCondition.FileSpecification = fileSpec;
                     groupConditions.Add(groupCondition);
+                } else
+                {
+                    HeaderCondition headerCondition = new HeaderCondition()
+                    {
+                        HeaderFieldCode = code,
+                        Description = fileSpecLine.ElementAt(1),
+                        Datatype = fileSpecLine.ElementAt(2),
+                        Size = fileSpecLine.ElementAt(3)
+                    };
+
+                    headerCondition.FileSpecification = fileSpec;
+                    headerConditions.Add(headerCondition);
                 }
             }
             fileSpec.FileSpecFieldConditions = fileSpecFieldConditions;
             fileSpec.GroupConditions = groupConditions;
+            fileSpec.HeaderConditions = headerConditions;
             return fileSpec;
         }
 

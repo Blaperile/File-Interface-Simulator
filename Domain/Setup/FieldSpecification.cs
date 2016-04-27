@@ -15,5 +15,6 @@ namespace FIS.BL.Domain.Setup
         public string Version { get; set; }
         public string Path { get; set; }
         public ICollection<FieldSpecFieldCondition> FieldSpecFieldConditions { get; set; }
+        public ICollection<FileSpecification> FileSpecifications { get; set; }
     }
 }

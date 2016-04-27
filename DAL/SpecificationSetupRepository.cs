@@ -63,7 +63,9 @@ namespace FIS.DAL
 
         public FileSpecification CreateFileSpecification(FileSpecification fileSpecification)
         {
-            throw new NotImplementedException();
+            ctx.FileSpecifications.Add(fileSpecification);
+            ctx.SaveChanges();
+            return fileSpecification;
         }
 
         public FileSpecification ReadFileSpecification(int specificationId)

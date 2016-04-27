@@ -15,7 +15,7 @@ namespace FIS.BL
         List<FieldSpecification> GetFieldSpecificatons();
         IEnumerable<String> GetFieldSpecificationVersions();
         FieldSpecification RemoveFieldSpecification(int specificationId);
-        FileSpecification AddFileSpecification(String name, String path, bool isInput, String inDirectoryPath, String archiveDirectoryPath, String errorDirectoryPath, String outDirectoryPath, String fieldSpecificationVersion);
+        FileSpecification AddFileSpecification(String name, String path, bool isInput, String inDirectoryPath, String archiveDirectoryPath, String errorDirectoryPath, String outDirectoryPath, String version, String fieldSpecificationVersion);
         FileSpecification GetFileSpecification(int specificationId);
         List<FileSpecification> GetFileSpecifications();
         FileSpecification RemoveFileSpecification(int specificationId);
