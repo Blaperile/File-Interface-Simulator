@@ -13,8 +13,17 @@ namespace FIS.BL.Util.CSV
         public FieldSpecification ReadFieldSpecification(string path)
         {
             FieldSpecification fieldspec = new FieldSpecification();
-            List<List<String>> fieldconditionLines = ReadFile(path);
-
+            List<List<String>> fieldConditionLines = ReadFile(path);
+            List<FieldSpecFieldCondition> fieldSpecFieldConditions = new List<FieldSpecFieldCondition>();
+            foreach (var fieldConditionLine in fieldConditionLines)
+            {
+                FieldSpecFieldCondition fieldSpecFieldCondition = new FieldSpecFieldCondition();
+                fieldSpecFieldCondition.FieldCode = fieldConditionLine[0];
+                fieldSpecFieldCondition.Datatype = fieldConditionLine[1];
+                fieldSpecFieldCondition.Size = Int32.Parse(fieldConditionLine[2]);
+                fieldSpecFieldCondition.Format = fieldConditionLine[3];
+                
+            }
             return fieldspec;
         }
 

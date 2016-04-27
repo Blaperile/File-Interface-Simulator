@@ -12,7 +12,7 @@ namespace FIS.BL
     {
         CSVReader csvReader;
 
-        SpecificationSetupManager()
+        public SpecificationSetupManager()
         {
             csvReader = new CSVReader();
         }

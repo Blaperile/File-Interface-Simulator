@@ -50,6 +50,7 @@
     <Compile Include="Operational\Workflow.cs" />
     <Compile Include="Operational\XMLElement.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Setup\AllowedValue.cs" />
     <Compile Include="Setup\Directory.cs" />
     <Compile Include="Setup\FieldSpecFieldCondition.cs" />
     <Compile Include="Setup\FieldSpecification.cs" />

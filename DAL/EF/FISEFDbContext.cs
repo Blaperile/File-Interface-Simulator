@@ -23,7 +23,7 @@ namespace FIS.DAL.EF
         public DbSet<GroupCondition> GroupConditions { get; set; }
         public DbSet<HeaderCondition> HeaderConditions { get; set; }
         public DbSet<WorkflowTemplate> WorkflowTemplates { get; set; }
-
+        public DbSet<AllowedValue> AllowedValues { get; set; }
 
 
         // Operational
