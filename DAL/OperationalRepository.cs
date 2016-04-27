@@ -55,7 +55,7 @@ namespace FIS.DAL
         public IEnumerable<IElement> GetElements(int messageId)
         {
             throw new NotImplementedException();
-        }*/
+        }
 
         public Workflow CreateWorkflow(Workflow workflow)
         {
