@@ -22,8 +22,11 @@ namespace FIS.BL
 
         public FieldSpecification AddFieldSpecification(string name, string path, string version)
         {
-            
-            return null;
+            FieldSpecification fieldSpec = csvReader.ReadFieldSpecification(path);
+            fieldSpec.Name = name;
+            fieldSpec.Version = version;
+            fieldSpec.UploadDate = DateTime.Now;
+            return fieldSpec;
         }
 
         public FileSpecification AddFileSpecification(string name, string path, bool isInput, string inDirectoryPath, string archiveDirectoryPath, string errorDirectoryPath, string outDirectoryPath, string fieldSpecificationVersion)
