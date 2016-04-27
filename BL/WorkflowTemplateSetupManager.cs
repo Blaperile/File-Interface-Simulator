@@ -5,46 +5,46 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace BL
+namespace FIS.BL
 {
     class WorkflowTemplateSetupManager : IWorkflowTemplateSetupManager
     {
-        public WorkflowTemplate addStepToWorkflowTemplate(int workFlowTemplateId, int stepNumber, int specificationId)
+        public WorkflowTemplate AddStepToWorkflowTemplate(int workFlowTemplateId, int stepNumber, int specificationId)
         {
             throw new NotImplementedException();
         }
 
-        public WorkflowTemplate addWorkflowTemplate(string name)
+        public WorkflowTemplate AddWorkflowTemplate(string name)
         {
             throw new NotImplementedException();
         }
 
-        public WorkflowTemplate getSelectedWorkflowTemplate()
+        public WorkflowTemplate GetSelectedWorkflowTemplate()
         {
             throw new NotImplementedException();
         }
 
-        public WorkflowTemplate getWorkFlowTemplate(int workflowTemplateId)
+        public WorkflowTemplate GetWorkFlowTemplate(int workflowTemplateId)
         {
             throw new NotImplementedException();
         }
 
-        public List<WorkflowTemplate> getWorkflowTemplates()
+        public List<WorkflowTemplate> GetWorkflowTemplates()
         {
             throw new NotImplementedException();
         }
 
-        public WorkflowTemplate removeStepFromWorkflowTemplate(int workflowTemplateId, int stepNumber)
+        public WorkflowTemplate RemoveStepFromWorkflowTemplate(int workflowTemplateId, int stepNumber)
         {
             throw new NotImplementedException();
         }
 
-        public WorkflowTemplate removeWorkflowTemplate(int workflowTemplateId)
+        public WorkflowTemplate RemoveWorkflowTemplate(int workflowTemplateId)
         {
             throw new NotImplementedException();
         }
 
-        public WorkflowTemplate selectWorkflowTemplate(int workflowTemplateId)
+        public WorkflowTemplate SelectWorkflowTemplate(int workflowTemplateId)
         {
             throw new NotImplementedException();
         }

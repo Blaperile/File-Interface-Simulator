@@ -43,10 +43,12 @@
     <Compile Include="Operational\Field.cs" />
     <Compile Include="Operational\Group.cs" />
     <Compile Include="Operational\HeaderField.cs" />
+    <Compile Include="Operational\IElement.cs" />
     <Compile Include="Operational\Message.cs" />
     <Compile Include="Operational\MessageState.cs" />
     <Compile Include="Operational\Transaction.cs" />
     <Compile Include="Operational\Workflow.cs" />
+    <Compile Include="Operational\XMLElement.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Setup\Directory.cs" />
     <Compile Include="Setup\FieldSpecFieldCondition.cs" />

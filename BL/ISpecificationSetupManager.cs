@@ -5,22 +5,22 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace BL
+namespace FIS.BL
 {
     interface ISpecificationSetupManager
     {
-        FieldSpecification addFieldSpecification(String name, String path, String version);
-        FieldSpecification getFieldSpecification(int specificationId);
-        FieldSpecification getFieldSpecification(String fieldSpecificationVersion);
-        List<FieldSpecification> getFieldSpecificatins();
-        FieldSpecification removeFieldSpecification(int specificationId);
-        FileSpecification addFileSpecification(String name, String path, bool isInput, String inDirectoryPath, String archiveDirectoryPath, String errorDirectoryPath, String outDirectoryPath, String fieldSpecificationVersion);
-        FileSpecification getFileSpecification(int specificationId);
-        List<FileSpecification> getFileSpecifications();
-        FileSpecification removeFileSpecification(int specificationId);
-        GroupCondition getGroupCondition(int specificationId, String groupCode);
-        List<FileSpecFieldCondition> getFileSpecFieldConditionsOfGroup(int specificationId, String groupCode);
-        List<FileSpecFieldFieldCondition> getFileSpecFieldConditionsLinkedToFieldSpecFieldCondition(int fieldSpecFieldConditionId);
+        FieldSpecification AddFieldSpecification(String name, String path, String version);
+        FieldSpecification GetFieldSpecification(int specificationId);
+        FieldSpecification GetFieldSpecification(String fieldSpecificationVersion);
+        List<FieldSpecification> GetFieldSpecificatons();
+        FieldSpecification RemoveFieldSpecification(int specificationId);
+        FileSpecification AddFileSpecification(String name, String path, bool isInput, String inDirectoryPath, String archiveDirectoryPath, String errorDirectoryPath, String outDirectoryPath, String fieldSpecificationVersion);
+        FileSpecification GetFileSpecification(int specificationId);
+        List<FileSpecification> GetFileSpecifications();
+        FileSpecification RemoveFileSpecification(int specificationId);
+        GroupCondition GetGroupCondition(int specificationId, String groupCode);
+        List<FileSpecFieldCondition> GetFileSpecFieldConditionsOfGroup(int specificationId, String groupCode);
+        List<FileSpecFieldCondition> GetFileSpecFieldConditionsLinkedToFieldSpecFieldCondition(int fieldSpecFieldConditionId);
 
     }
 }
