@@ -4,11 +4,19 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using FIS.BL.Domain.Setup;
+using FIS.DAL.EF;
 
 namespace FIS.DAL
 {
     public class SpecificationSetupRepository : ISpecificationSetupRepository
     {
+        private readonly FISEFDbContext ctx;
+
+        public SpecificationSetupRepository()
+        {
+            ctx = FISEFDbContext.Instance;
+        }
+
         public FieldSpecification CreateFieldSpecification(FieldSpecification fieldSpecification)
         {
             throw new NotImplementedException();
@@ -26,6 +34,18 @@ namespace FIS.DAL
 
         public IEnumerable<FieldSpecification> ReadFieldSpecifications()
         {
+            throw new NotImplementedException();
+        }
+
+        public IEnumerable<String> ReadFieldSpecificationVersions()
+        {
+            var fieldSpecifications = (
+                from fieldSpecification in ctx.FieldSpecifications
+                select new
+                {
+                   Version = fieldSpecification.Version 
+                }
+                ).ToList();
             throw new NotImplementedException();
         }
 
