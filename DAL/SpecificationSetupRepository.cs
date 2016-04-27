@@ -42,7 +42,7 @@ namespace FIS.DAL
             IList<String> versions = new List<String>();
             var fieldSpecifications = (
                 from fieldSpecification in ctx.FieldSpecifications
-                select /*fieldSpecification.Version*/ new
+                select new
                 {
                    Version = fieldSpecification.Version 
                 }
@@ -87,6 +87,11 @@ namespace FIS.DAL
         public GroupCondition ReadGroupCondition(int specificationId, string groupCode)
         {
             throw new NotImplementedException();
+        }
+
+        public FieldSpecFieldCondition ReadFieldSpecFieldCondition(int fieldSpecificationId, string fieldCode)
+        {
+            return ctx.FieldSpecFieldConditions.Where(fsfc => fsfc.FieldSpecification.FieldSpecificationId == fieldSpecificationId).Where(fsfc => fsfc.FieldCode == fieldCode).First();
         }
 
         public IEnumerable<FileSpecFieldCondition> ReadFileSpecFieldConditionsOfGroup(int specificationId, string groupCode)
