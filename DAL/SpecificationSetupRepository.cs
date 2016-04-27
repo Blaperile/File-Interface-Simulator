@@ -31,7 +31,7 @@ namespace FIS.DAL
 
         public FieldSpecification ReadFieldSpecification(string fieldSpecificationVersion)
         {
-            throw new NotImplementedException();
+            return ctx.FieldSpecifications.Where(fs => fs.Version.Equals(fieldSpecificationVersion)).First();
         }
 
         public IEnumerable<FieldSpecification> ReadFieldSpecifications()
@@ -41,6 +41,7 @@ namespace FIS.DAL
 
         public IEnumerable<String> ReadFieldSpecificationVersions()
         {
+            IList<String> versions = new List<String>();
             var fieldSpecifications = (
                 from fieldSpecification in ctx.FieldSpecifications
                 select new
@@ -48,7 +49,11 @@ namespace FIS.DAL
                    Version = fieldSpecification.Version 
                 }
                 ).ToList();
-            throw new NotImplementedException();
+            foreach (var fieldSpecification in fieldSpecifications)
+            {
+                versions.Add(fieldSpecification.Version);
+            }
+            return versions;
         }
 
         public FieldSpecification DeleteFieldSpecification(int specificationId)
@@ -84,6 +89,11 @@ namespace FIS.DAL
         public GroupCondition ReadGroupCondition(int specificationId, string groupCode)
         {
             throw new NotImplementedException();
+        }
+
+        public FieldSpecFieldCondition ReadFieldSpecFieldCondition(int fieldSpecificationId, string fieldCode)
+        {
+            return ctx.FieldSpecFieldConditions.Where(fsfc => fsfc.FieldSpecification.FieldSpecificationId == fieldSpecificationId).Where(fsfc => fsfc.FieldCode == fieldCode).First();
         }
 
         public IEnumerable<FileSpecFieldCondition> ReadFileSpecFieldConditionsOfGroup(int specificationId, string groupCode)

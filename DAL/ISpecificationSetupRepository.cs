@@ -23,9 +23,10 @@ namespace FIS.DAL
         FileSpecification DeleteFileSpecification(int specificationId);
 
         GroupCondition ReadGroupCondition(int specificationId, string groupCode);
+        FieldSpecFieldCondition ReadFieldSpecFieldCondition(int fieldSpecificationId, string fieldCode);
         IEnumerable<FileSpecFieldCondition> ReadFileSpecFieldConditionsOfGroup(int specificationId, string groupCode);
         IEnumerable<FileSpecFieldCondition> ReadFileSpecFieldConditionsLinkedToFieldSpecFieldCondition(int fieldConditionId);
 
-        IEnumerable<Directory> ReadInputDirectories(); 
+        IEnumerable<Directory> ReadInputDirectories();
     }
 }

@@ -10,6 +10,13 @@ namespace FIS.BL.Util.CSV
 {
     public class CSVReader : ISpecificationReader
     {
+        private ISpecificationSetupManager specSetupManager;
+
+        public CSVReader()
+        {
+            specSetupManager = new SpecificationSetupManager();
+        }
+
         public FieldSpecification ReadFieldSpecification(string path)
         {
             FieldSpecification fieldspec = new FieldSpecification();
@@ -42,14 +49,44 @@ namespace FIS.BL.Util.CSV
 
         public FileSpecification ReadFileSpecification(string path, FieldSpecification fieldSpecification)
         {
-            throw new NotImplementedException();
+            FileSpecification fileSpec = new FileSpecification();
+            List<List<String>> fileSpecLines = ReadFile(path);
+            foreach (var fileSpecLine in fileSpecLines)
+            {
+                string code = fileSpecLine.First();
+
+                if (code.StartsWith("K"))
+                {
+                    FileSpecFieldCondition fileSpecFieldCondition = new FileSpecFieldCondition()
+                    {
+                     Code = code,
+                     Description = fileSpecLine.ElementAt(1),
+                     Level = Convert.ToInt32(fileSpecLine.ElementAt(3)),
+                     Group = fileSpecLine.ElementAt(4),
+                    };
+
+                    string optionalOrMandatory = fileSpecLine.ElementAt(2);
+
+                    if (optionalOrMandatory.Equals("O"))
+                    {
+                        fileSpecFieldCondition.IsOptional = true;
+                    } else if (optionalOrMandatory.Equals("M"))
+                    {
+                        fileSpecFieldCondition.IsOptional = false;
+                    }
+
+                    FieldSpecFieldCondition fieldSpecFieldCondition = specSetupManager.GetFieldSpecFieldCondition(fieldSpecification.FieldSpecificationId, code);
+                    fileSpecFieldCondition.FieldSpecFieldCondition = fieldSpecFieldCondition;
+                }
+            }
+            return fileSpec;
         }
 
         public static List<List<String>> ReadFile(string path)
         {
             var reader = new StreamReader(File.OpenRead(path));
             List<List<String>> lines = new List<List<String>>();
-            reader.ReadLine();
+            reader.ReadLine(); //prevents header line from being read
             while (!reader.EndOfStream)
             {
                 var line = reader.ReadLine();
