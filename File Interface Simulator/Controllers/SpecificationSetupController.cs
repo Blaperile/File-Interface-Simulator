@@ -55,7 +55,7 @@ namespace File_Interface_Simulator.Controllers
             {
                 specSetupManager.AddFileSpecification(model.Name, model.Path, model.IsInput, model.InDirectoryPath, model.ArchiveDirectoryPath, model.ErrorDirectoryPath, model.OutDirectoryPath, model.Version, model.FieldSpecification);
                 return RedirectToAction("FileSpecificationOverview");
-            } catch (FileReadException ex)
+            } catch (Exception ex)
             {
                 ViewBag.Error = ex.Message;
 
