@@ -65,9 +65,9 @@ namespace FIS.DAL
             throw new NotImplementedException();
         }
 
-        public IEnumerable<FileSpecification> ReadFileSpecifications()
+        public List<FileSpecification> ReadFileSpecifications()
         {
-            throw new NotImplementedException();
+            return ctx.FileSpecifications.ToList();
         }
 
         public FileSpecification DeleteFileSpecification(int specificationId)

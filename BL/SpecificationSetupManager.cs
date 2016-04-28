@@ -126,7 +126,7 @@ namespace FIS.BL
 
         public List<FileSpecification> GetFileSpecifications()
         {
-            throw new NotImplementedException();
+            return specSetupRepo.ReadFileSpecifications();
         }
 
         public GroupCondition GetGroupCondition(int specificationId, string groupCode)

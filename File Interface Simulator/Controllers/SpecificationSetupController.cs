@@ -54,7 +54,7 @@ namespace File_Interface_Simulator.Controllers
             try
             {
                 specSetupManager.AddFileSpecification(model.Name, model.Path, model.IsInput, model.InDirectoryPath, model.ArchiveDirectoryPath, model.ErrorDirectoryPath, model.OutDirectoryPath, model.Version, model.FieldSpecification);
-                return RedirectToAction("Index", "Home");
+                return RedirectToAction("FileSpecificationOverview");
             } catch (FileReadException ex)
             {
                 ViewBag.Error = ex.Message;
@@ -70,6 +70,34 @@ namespace File_Interface_Simulator.Controllers
 
                 return View(model);
             }
+        }
+
+        [HttpGet]
+        public ActionResult FileSpecificationOverview()
+        {
+            IList<FileSpecification> fileSpecifications = specSetupManager.GetFileSpecifications();
+            IList<FileSpecificationOverviewDetailModel> fileSpecificationModels = new List<FileSpecificationOverviewDetailModel>();
+            foreach (FileSpecification fileSpecification in fileSpecifications)
+            {
+                FileSpecificationOverviewDetailModel fileSpecificationModel = new FileSpecificationOverviewDetailModel()
+                {
+                    Name = fileSpecification.Name,
+                    CreationDate = fileSpecification.UploadDate,
+                    Path = fileSpecification.Path,
+                    Version = fileSpecification.Version
+                };
+                
+                if (fileSpecification.IsInput)
+                {
+                    fileSpecificationModel.InputOutput = "Input";
+                } else
+                {
+                    fileSpecificationModel.InputOutput = "Output";
+                }
+
+                fileSpecificationModels.Add(fileSpecificationModel);
+            }
+            return View("FileSpecificationOverview", fileSpecificationModels);
         }
     }
 }
