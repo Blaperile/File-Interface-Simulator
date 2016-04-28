@@ -11,11 +11,10 @@ namespace FIS.BL
     {
         FieldSpecification AddFieldSpecification(String name, String path, String version);
         FieldSpecification GetFieldSpecification(int specificationId);
-        FieldSpecification GetFieldSpecification(String fieldSpecificationVersion);
+        FieldSpecification GetFieldSpecification(string name, string version);
         List<FieldSpecification> GetFieldSpecificatons();
-        IEnumerable<String> GetFieldSpecificationVersions();
         FieldSpecification RemoveFieldSpecification(int specificationId);
-        FileSpecification AddFileSpecification(String name, String path, bool isInput, String inDirectoryPath, String archiveDirectoryPath, String errorDirectoryPath, String outDirectoryPath, String version, String fieldSpecificationVersion);
+        FileSpecification AddFileSpecification(String name, String path, bool isInput, String inDirectoryPath, String archiveDirectoryPath, String errorDirectoryPath, String outDirectoryPath, String version, String fieldSpecification);
         FileSpecification GetFileSpecification(int specificationId);
         List<FileSpecification> GetFileSpecifications();
         FileSpecification RemoveFileSpecification(int specificationId);

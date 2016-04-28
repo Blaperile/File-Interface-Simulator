@@ -62,28 +62,36 @@ namespace FIS.BL.Util.CSV
 
                 if (code.StartsWith("K"))
                 {
-                    FileSpecFieldCondition fileSpecFieldCondition = new FileSpecFieldCondition()
-                    {
-                     Code = code,
-                     Description = fileSpecLine.ElementAt(1),
-                     Level = Convert.ToInt32(fileSpecLine.ElementAt(5)),
-                     Group = fileSpecLine.ElementAt(6),
-                    };
-                    fileSpecFieldCondition.FileSpecification = fileSpec;
-
-                    string optionalOrMandatory = fileSpecLine.ElementAt(4);
-
-                    if (optionalOrMandatory.Equals("O"))
-                    {
-                        fileSpecFieldCondition.IsOptional = true;
-                    } else if (optionalOrMandatory.Equals("M"))
-                    {
-                        fileSpecFieldCondition.IsOptional = false;
-                    }
-
                     FieldSpecFieldCondition fieldSpecFieldCondition = specSetupManager.GetFieldSpecFieldCondition(fieldSpecification.FieldSpecificationId, code);
-                    fileSpecFieldCondition.FieldSpecFieldCondition = fieldSpecFieldCondition;
-                    fileSpecFieldConditions.Add(fileSpecFieldCondition);
+
+                    if (fieldSpecFieldCondition != null)
+                    {
+                        FileSpecFieldCondition fileSpecFieldCondition = new FileSpecFieldCondition()
+                        {
+                            Code = code,
+                            Description = fileSpecLine.ElementAt(1),
+                            Level = Convert.ToInt32(fileSpecLine.ElementAt(5)),
+                            Group = fileSpecLine.ElementAt(6),
+                        };
+                        fileSpecFieldCondition.FileSpecification = fileSpec;
+
+                        string optionalOrMandatory = fileSpecLine.ElementAt(4);
+
+                        if (optionalOrMandatory.Equals("O"))
+                        {
+                            fileSpecFieldCondition.IsOptional = true;
+                        }
+                        else if (optionalOrMandatory.Equals("M"))
+                        {
+                            fileSpecFieldCondition.IsOptional = false;
+                        }
+
+                        fileSpecFieldCondition.FieldSpecFieldCondition = fieldSpecFieldCondition;
+                        fileSpecFieldConditions.Add(fileSpecFieldCondition);
+                    } else
+                    {
+                        throw new FileReadException("Field " + code + " is missing in this specification!");
+                    }
                 } else if (code.StartsWith("A"))
                 {
                     GroupCondition groupCondition = new GroupCondition()

@@ -30,9 +30,12 @@ namespace FIS.BL
             return specSetupRepo.CreateFieldSpecification(fieldSpec);
         }
 
-        public FileSpecification AddFileSpecification(string name, string path, bool isInput, string inDirectoryPath, string archiveDirectoryPath, string errorDirectoryPath, string outDirectoryPath, string version, string fieldSpecificationVersion)
+        public FileSpecification AddFileSpecification(string name, string path, bool isInput, string inDirectoryPath, string archiveDirectoryPath, string errorDirectoryPath, string outDirectoryPath, string version, string fieldSpecification)
         {
-            FieldSpecification fieldSpec = GetFieldSpecification(fieldSpecificationVersion);
+            IEnumerable<String> fieldSpecificationProperties = fieldSpecification.Split('-');
+
+            FieldSpecification fieldSpec = GetFieldSpecification(fieldSpecificationProperties.First().Trim(), fieldSpecificationProperties.ElementAt(1).Trim());
+
             FileSpecification fileSpec = csvReader.ReadFileSpecification(path, fieldSpec);
             fileSpec.Name = name;
             fileSpec.UploadDate = DateTime.Now;
@@ -47,7 +50,6 @@ namespace FIS.BL
                 {
                     Name = "in",
                     Location = inDirectoryPath,
-                    FileSpecification = fileSpec
                 };
 
                 fileSpec.InDirectory = inDirectory;
@@ -56,7 +58,6 @@ namespace FIS.BL
                 {
                     Name = "error",
                     Location = errorDirectoryPath,
-                    FileSpecification = fileSpec
                 };
 
                 fileSpec.ErrorDirectory = errorDirectory;
@@ -65,7 +66,6 @@ namespace FIS.BL
                 {
                     Name = "archive",
                     Location = archiveDirectoryPath,
-                    FileSpecification = fileSpec
                 };
 
                 fileSpec.ArchiveDirectory = archiveDirectory;
@@ -76,7 +76,6 @@ namespace FIS.BL
                 {
                     Name = "out",
                     Location = outDirectoryPath,
-                    FileSpecification = fileSpec
                 };
 
                 fileSpec.OutDirectory = outDirectory;
@@ -92,12 +91,12 @@ namespace FIS.BL
 
         public List<FieldSpecification> GetFieldSpecificatons()
         {
-            throw new NotImplementedException();
+            return specSetupRepo.ReadFieldSpecifications();
         }
 
-        public FieldSpecification GetFieldSpecification(string fieldSpecificationVersion)
+        public FieldSpecification GetFieldSpecification(string name, string version)
         {
-            return specSetupRepo.ReadFieldSpecification(fieldSpecificationVersion);
+            return specSetupRepo.ReadFieldSpecification(name, version);
         }
 
         public FieldSpecification GetFieldSpecification(int specificationId)
@@ -108,11 +107,6 @@ namespace FIS.BL
         public FieldSpecFieldCondition GetFieldSpecFieldCondition(int fieldSpecificationId, string fieldCode)
         {
             return specSetupRepo.ReadFieldSpecFieldCondition(fieldSpecificationId, fieldCode);
-        }
-
-        public IEnumerable<String> GetFieldSpecificationVersions()
-        {
-            return specSetupRepo.ReadFieldSpecificationVersions();
         }
 
         public List<FileSpecFieldCondition> GetFileSpecFieldConditionsLinkedToFieldSpecFieldCondition(int fieldSpecFieldConditionId)

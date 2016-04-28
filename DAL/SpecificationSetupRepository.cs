@@ -33,31 +33,14 @@ namespace FIS.DAL
             throw new NotImplementedException();
         }
 
-        public FieldSpecification ReadFieldSpecification(string fieldSpecificationVersion)
+        public FieldSpecification ReadFieldSpecification(string name, string version)
         {
-            return ctx.FieldSpecifications.Where(fs => fs.Version.Equals(fieldSpecificationVersion)).First();
+            return ctx.FieldSpecifications.Where(fs => fs.Name.Equals(name)).Where(fs => fs.Version.Equals(version)).First();
         }
 
-        public IEnumerable<FieldSpecification> ReadFieldSpecifications()
+        public List<FieldSpecification> ReadFieldSpecifications()
         {
-            throw new NotImplementedException();
-        }
-
-        public IEnumerable<String> ReadFieldSpecificationVersions()
-        {
-            IList<String> versions = new List<String>();
-            var fieldSpecifications = (
-                from fieldSpecification in ctx.FieldSpecifications
-                select new
-                {
-                   Version = fieldSpecification.Version 
-                }
-                ).ToList();
-            foreach (var fieldSpecification in fieldSpecifications)
-            {
-                versions.Add(fieldSpecification.Version);
-            }
-            return versions;
+            return ctx.FieldSpecifications.ToList();
         }
 
         public FieldSpecification DeleteFieldSpecification(int specificationId)
@@ -99,7 +82,9 @@ namespace FIS.DAL
 
         public FieldSpecFieldCondition ReadFieldSpecFieldCondition(int fieldSpecificationId, string fieldCode)
         {
-            return ctx.FieldSpecFieldConditions.Where(fsfc => fsfc.FieldSpecification.FieldSpecificationId == fieldSpecificationId).Where(fsfc => fsfc.FieldCode == fieldCode).First();
+            IEnumerable<FieldSpecFieldCondition> fieldSpecFieldConditions = ctx.FieldSpecFieldConditions.Where(fsfc => fsfc.FieldSpecification.FieldSpecificationId == fieldSpecificationId).Where(fsfc => fsfc.FieldCode == fieldCode);
+            if (fieldSpecFieldConditions.Count() == 0) return null;
+            return fieldSpecFieldConditions.First();
         }
 
         public IEnumerable<FileSpecFieldCondition> ReadFileSpecFieldConditionsOfGroup(int specificationId, string groupCode)

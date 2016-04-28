@@ -1,6 +1,7 @@
 ﻿using File_Interface_Simulator.Models;
 using FIS.BL;
 using FIS.BL.Domain.Setup;
+using FIS.BL.Util.CSV;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -37,15 +38,38 @@ namespace File_Interface_Simulator.Controllers
         public ActionResult UploadFileSpecification()
         {
             FileSpecificationViewModel model = new FileSpecificationViewModel();
-            model.FieldSpecificationVersions = specSetupManager.GetFieldSpecificationVersions();
+            IEnumerable<FieldSpecification> fieldSpecifications = specSetupManager.GetFieldSpecificatons();
+            IList<String> fieldSpecificationStrings = new List<String>();
+            foreach (FieldSpecification fieldSpec in fieldSpecifications)
+            {
+                fieldSpecificationStrings.Add(fieldSpec.Name + " - " + fieldSpec.Version);
+            }
+            model.FieldSpecifications = fieldSpecificationStrings;
             return View("UploadFileSpecification", model);
         }
 
         [HttpPost]
         public ActionResult UploadFileSpecification(FileSpecificationViewModel model)
         {
-            specSetupManager.AddFileSpecification(model.Name, model.Path, model.IsInput, model.InDirectoryPath, model.ArchiveDirectoryPath, model.ErrorDirectoryPath, model.OutDirectoryPath, model.Version, model.FieldSpecificationVersion);
-            return RedirectToAction("Index", "HomeController");
+            try
+            {
+                specSetupManager.AddFileSpecification(model.Name, model.Path, model.IsInput, model.InDirectoryPath, model.ArchiveDirectoryPath, model.ErrorDirectoryPath, model.OutDirectoryPath, model.Version, model.FieldSpecification);
+                return RedirectToAction("Index", "Home");
+            } catch (FileReadException ex)
+            {
+                ViewBag.Error = ex.Message;
+
+                //TODO: manier vinden om dit uit model te laten onthouden?
+                IEnumerable<FieldSpecification> fieldSpecifications = specSetupManager.GetFieldSpecificatons();
+                IList<String> fieldSpecificationStrings = new List<String>();
+                foreach (FieldSpecification fieldSpec in fieldSpecifications)
+                {
+                    fieldSpecificationStrings.Add(fieldSpec.Name + " - " + fieldSpec.Version);
+                }
+                model.FieldSpecifications = fieldSpecificationStrings;
+
+                return View(model);
+            }
         }
     }
 }

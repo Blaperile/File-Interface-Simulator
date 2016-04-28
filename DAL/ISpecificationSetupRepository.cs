@@ -11,9 +11,8 @@ namespace FIS.DAL
     {
         FieldSpecification CreateFieldSpecification(FieldSpecification fieldSpecification);
         FieldSpecification ReadFieldSpecification(int specificationId);
-        FieldSpecification ReadFieldSpecification(string fieldSpecificationVersion);
-        IEnumerable<FieldSpecification> ReadFieldSpecifications();
-        IEnumerable<String> ReadFieldSpecificationVersions();
+        FieldSpecification ReadFieldSpecification(string name, string version);
+        List<FieldSpecification> ReadFieldSpecifications();
         FieldSpecification DeleteFieldSpecification(int specificationId);
 
         FileSpecification CreateFileSpecification(FileSpecification fileSpecification);

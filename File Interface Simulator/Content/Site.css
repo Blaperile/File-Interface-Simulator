@@ -35,10 +35,30 @@ h3 {
     color: #6EA93E;
 }
 
+hr {
+    border-color: #0072BA;
+}
+
 .row {
     margin-top: 2%;
 }
 
 .nav {
     color: #0072BA; 
+}
+
+.btn {
+    padding-left: 5%;
+    padding-right: 5%;
+    color: white;
+    background-color: #0072BA;
+    font-weight: bold;
+}
+
+.control-label {
+    color: #F18E00;
+}
+
+.errorMessage {
+    color: red;
 }

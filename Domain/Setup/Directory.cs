@@ -12,6 +12,6 @@ namespace FIS.BL.Domain.Setup
         public int DirectoryId { get; set; }
         public string Name { get; set; }
         public string Location { get; set; }
-        public FileSpecification FileSpecification { get; set; }
+        //public FileSpecification FileSpecification { get; set; }
     }
 }
