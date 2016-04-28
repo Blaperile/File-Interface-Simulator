@@ -18,7 +18,7 @@ namespace FIS.DAL
         FileSpecification CreateFileSpecification(FileSpecification fileSpecification);
         FileSpecification ReadFileSpecification(int specificationId);
         FileSpecification ReadFileSpecificationByDirectoryId(int directoryId);
-        IEnumerable<FileSpecification> ReadFileSpecifications();
+        List<FileSpecification> ReadFileSpecifications();
         FileSpecification DeleteFileSpecification(int specificationId);
 
         GroupCondition ReadGroupCondition(int specificationId, string groupCode);

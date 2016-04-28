@@ -163,6 +163,7 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Models\FieldSpecificationViewModel.cs" />
+    <Compile Include="Models\FileSpecificationOverviewDetailModel.cs" />
     <Compile Include="Models\FileSpecificationViewModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -175,6 +176,9 @@
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
     <Content Include="Content\Site.css" />
+    <Content Include="images\ferranti_logo.png" />
+    <Content Include="images\plus_icon.png" />
+    <Content Include="images\thrash_icon.png" />
     <Content Include="Scripts\ai.0.15.0-build58334.js" />
     <Content Include="Scripts\ai.0.15.0-build58334.min.js" />
     <Content Include="fonts\glyphicons-halflings-regular.woff2" />
@@ -218,10 +222,10 @@
     <Content Include="Views\Home\Index.cshtml" />
     <Content Include="Views\SpecificationSetup\UploadFieldSpecification.cshtml" />
     <Content Include="Views\SpecificationSetup\UploadFileSpecification.cshtml" />
+    <Content Include="Views\SpecificationSetup\FileSpecificationOverview.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="images\" />
     <Folder Include="Views\Operational\" />
   </ItemGroup>
   <ItemGroup>

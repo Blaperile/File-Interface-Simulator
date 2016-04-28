@@ -1,0 +1,68 @@
+﻿@model IEnumerable<File_Interface_Simulator.Models.FileSpecificationOverviewDetailModel>
+
+@{
+    ViewBag.Title = "Overview Specification files";
+}
+
+<h1>@ViewBag.Title</h1>
+<hr />
+
+<table class="table">
+    <tr>
+        <th>
+
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Name)
+        </th>
+        <th>
+            Creation Date
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Version)
+        </th>
+        <th>
+            Type
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Path)
+        </th>
+        <th></th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                <img src="~/images/thrash_icon.png" />
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Name)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.CreationDate)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Version)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.InputOutput)
+            </td>
+            <td>
+                @if (File.Exists(item.Path))
+                {
+                    <a href="@item.Path">
+                        @item.Path.Substring(0, 20)...
+                    </a>
+                }
+                else
+                {
+                    <span>@item.Path.Substring(1, 20))...</span>
+                }
+            </td>
+        </tr>
+    }
+
+</table>
+
+<a href="@Url.Action("UploadFileSpecification", "SpecificationSetup")" class="btn btn-default"><img src="~/images/plus_icon.png" /> Add</a>
