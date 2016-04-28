@@ -11,12 +11,12 @@ namespace FIS.BL
     class OperationalManager : IOperationalManager
     {
         IOperationalRepository operationalRep;
-        ISpecificationSetupRepository specFieldRep;
+        ISpecificationSetupManager specFieldManager;
 
         OperationalManager()
         {
             operationalRep = new OperationalRepository();
-            specFieldRep = new SpecificationSetupRepository();
+            specFieldManager = new SpecificationSetupManager();
         }
 
         public Workflow AddWorkflow(Message message)
@@ -31,7 +31,8 @@ namespace FIS.BL
 
         public void DetectInput()
         {
-            
+           
+        
         }
 
         public void GenerateAnswer(Message message, Workflow workflow, WorkflowTemplate workflowTemplate)
