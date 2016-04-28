@@ -27,7 +27,7 @@ namespace File_Interface_Simulator.Controllers
             FieldSpecification fieldSpecification = specSetupManager.AddFieldSpecification(fieldspecificationViewModel.Name, fieldspecificationViewModel.Path, fieldspecificationViewModel.Version);
             if (fieldSpecification != null)
             {
-                return RedirectToAction("Index","Home");
+                return RedirectToAction("FieldSpecificationOverview");
             }
             else
             ViewBag.error = "Name combined with version must be unique";
@@ -98,6 +98,26 @@ namespace File_Interface_Simulator.Controllers
                 fileSpecificationModels.Add(fileSpecificationModel);
             }
             return View("FileSpecificationOverview", fileSpecificationModels);
+        }
+
+        [HttpGet]
+        public ActionResult FieldSpecificationOverview()
+        {
+            IList<FieldSpecification> fieldSpecifications = specSetupManager.GetFieldSpecificatons();
+            IList<FieldSpecificationOverviewDetailModel> fieldSpecificationModels = new List<FieldSpecificationOverviewDetailModel>();
+            foreach (FieldSpecification fieldSpecification in fieldSpecifications)
+            {
+                FieldSpecificationOverviewDetailModel fileSpecificationModel = new FieldSpecificationOverviewDetailModel()
+                {
+                    Name = fieldSpecification.Name,
+                    CreationDate = fieldSpecification.UploadDate,
+                    Path = fieldSpecification.Path,
+                    Version = fieldSpecification.Version
+                };
+
+                fieldSpecificationModels.Add(fileSpecificationModel);
+            }
+            return View("FieldSpecificationOverview", fieldSpecificationModels);
         }
     }
 }
