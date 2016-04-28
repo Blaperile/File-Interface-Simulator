@@ -1,10 +1,10 @@
 ﻿@model File_Interface_Simulator.Models.FieldSpecificationViewModel
 
 @{
-    ViewBag.Title = "UploadFieldSpecification";
+    ViewBag.Title = "Upload Field Specification";
 }
 
-<h2>Upload Field Specification</h2>
+<h1>@ViewBag.Title</h1>
 
 
 @using (Html.BeginForm()) 
@@ -37,10 +37,10 @@
                 @Html.ValidationMessageFor(model => model.Version, "", new { @class = "text-danger" })
             </div>
         </div>
-        <h3>@ViewBag.error</h3>
+        <span class="errorMessage">@ViewBag.error</span>
         <div class="form-group">
             <div class="col-md-offset-2 col-md-10">
-                <input type="submit" value="Create" class="btn btn-default" />
+                <input type="submit" value="Save" class="btn btn-default" />
             </div>
         </div>
     </div>
