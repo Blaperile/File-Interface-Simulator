@@ -17,6 +17,7 @@ namespace FIS.DAL
 
         FileSpecification CreateFileSpecification(FileSpecification fileSpecification);
         FileSpecification ReadFileSpecification(int specificationId);
+        FileSpecification ReadFileSpecification(string name, string version);
         FileSpecification ReadFileSpecificationByDirectoryId(int directoryId);
         List<FileSpecification> ReadFileSpecifications();
         FileSpecification DeleteFileSpecification(int specificationId);

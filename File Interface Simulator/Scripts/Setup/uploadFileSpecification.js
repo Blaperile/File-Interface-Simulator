@@ -1,9 +1,12 @@
-﻿function changeType() {
-    if (document.getElementById('rbOutput').checked) {
-        document.getElementById('outputDirectories').hidden = false;
-        document.getElementById('inputDirectories').hidden = true;
+﻿function changeType(newType) {
+    var divOutputDirectories = document.getElementById('outputDirectories');
+    var divInputDirectories = document.getElementById('inputDirectories');
+
+    if (newType == 'output') {
+        divOutputDirectories.hidden = false;
+        divInputDirectories.hidden = true;
     } else {
-        document.getElementById('outputDirectories').hidden = true;
-        document.getElementById('inputDirectories').hidden = false;
+        divOutputDirectories.hidden = true;
+        divInputDirectories.hidden = false;
     }
 }

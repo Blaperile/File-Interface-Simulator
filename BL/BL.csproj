@@ -40,6 +40,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Exceptions\SpecificationSetupException.cs" />
     <Compile Include="IOperationalManager.cs" />
     <Compile Include="ISpecificationSetupManager.cs" />
     <Compile Include="IWorkflowTemplateSetupManager.cs" />
@@ -47,7 +48,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SpecificationSetupManager.cs" />
     <Compile Include="Util\CSV\CSVReader.cs" />
-    <Compile Include="Util\CSV\FileReadException.cs" />
+    <Compile Include="Exceptions\FileReadException.cs" />
     <Compile Include="Util\DirectoryHandler.cs" />
     <Compile Include="Util\IAnswerGenerator.cs" />
     <Compile Include="Util\IDirectoryHandler.cs" />

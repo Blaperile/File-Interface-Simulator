@@ -26,10 +26,14 @@
             <label class="control-label col-md-2" for="IsInput">Type</label>
             <div class="col-md-10">
                 <div class="checkbox">
-                    @Html.RadioButtonFor(model => model.IsInput, 1, new { htmlAttributes = new { @class = "form-control", @id = "rbInput", @onclick= "changeType" } })
+                    <span onclick="changeType('input')">
+                        @Html.RadioButtonFor(model => model.IsInput, 1, new { htmlAttributes = new { @class = "form-control", id = "rbInput" } })
+                    </span>
                     @Html.Label("rbInput", "Input")
                     <br />
-                    @Html.RadioButtonFor(model => model.IsInput, 2, new { htmlAttributes = new { @class = "form-control", @id = "rbOutput", @onclick = "changeType(" } })
+                    <span onclick="changeType('output')">
+                        @Html.RadioButtonFor(model => model.IsInput, 2, new { htmlAttributes = new { @class = "form-control", id = "rbOutput" } })
+                    </span>
                     @Html.Label("rbOutput", "Output")
                 </div>
             </div>
@@ -70,41 +74,36 @@
                 @Html.DropDownListFor(model => model.FieldSpecification, fieldSpecifications, "Choose a Field Specification", new { htmlAttributes = new { @class = "form-control" } })
             </div>
         </div>
-        <span class="errorMessage">@ViewBag.Error</span>
 
         <h1>Folders</h1>
         <hr />
 
-        @if (Model.IsInput)
-        {
-            <div id="inputDirectories">
-                <div class="form-group">
-                    <label class="control-label col-md-2" for="InDirectoryPath">Input</label>
-                    <div class="col-md-4">
-                        @Html.EditorFor(model => model.InDirectoryPath, new { htmlAttributes = new { @class = "form-control" } })
-                        @Html.ValidationMessageFor(model => model.InDirectoryPath, "", new { @class = "text-danger" })
-                    </div>
-                </div>
-
-                <div class="form-group">
-                    <label class="control-label col-md-2" for="ErrorDirectoryPath">Error</label>
-                    <div class="col-md-4">
-                        @Html.EditorFor(model => model.ErrorDirectoryPath, new { htmlAttributes = new { @class = "form-control" } })
-                        @Html.ValidationMessageFor(model => model.ErrorDirectoryPath, "", new { @class = "text-danger" })
-                    </div>
-                </div>
-
-                <div class="form-group">
-                    <label class="control-label col-md-2" for="ArchiveDirectoryPath">Archive</label>
-                    <div class="col-md-4">
-                        @Html.EditorFor(model => model.ArchiveDirectoryPath, new { htmlAttributes = new { @class = "form-control" } })
-                        @Html.ValidationMessageFor(model => model.ArchiveDirectoryPath, "", new { @class = "text-danger" })
-                    </div>
+        <div id="inputDirectories">
+            <div class="form-group">
+                <label class="control-label col-md-2" for="InDirectoryPath">Input</label>
+                <div class="col-md-4">
+                    @Html.EditorFor(model => model.InDirectoryPath, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.InDirectoryPath, "", new { @class = "text-danger" })
                 </div>
             </div>
-        }
-        else
-        {
+
+            <div class="form-group">
+                <label class="control-label col-md-2" for="ErrorDirectoryPath">Error</label>
+                <div class="col-md-4">
+                    @Html.EditorFor(model => model.ErrorDirectoryPath, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.ErrorDirectoryPath, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="control-label col-md-2" for="ArchiveDirectoryPath">Archive</label>
+                <div class="col-md-4">
+                    @Html.EditorFor(model => model.ArchiveDirectoryPath, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.ArchiveDirectoryPath, "", new { @class = "text-danger" })
+                </div>
+            </div>
+        </div>
+        <div id="outputDirectories" hidden>
             <div id="outputDirectories">
                 <div class="form-group">
                     <label class="control-label col-md-2" for="OutDirectoryPath">Out</label>
@@ -114,16 +113,17 @@
                     </div>
                 </div>
             </div>
-        }
+        </div>
+
+        <span class="errorMessage">@ViewBag.Error</span>
         <div class="form-group">
             <div class="col-md-10">
                 <input type="submit" value="Save" class="btn btn-default" />
             </div>
         </div>
-    </div>
-            }
-
-@section Scripts {
-    <script src="~/Scripts/Setup/uploadFileSpecification.js"></script>
-    @Scripts.Render("~/bundles/jqueryval")
+        </div>
 }
+        @section Scripts {
+            <script src="~/Scripts/Setup/uploadFileSpecification.js"></script>
+            @Scripts.Render("~/bundles/jqueryval")
+        }

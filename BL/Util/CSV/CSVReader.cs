@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using FIS.BL.Domain.Setup;
 using System.IO;
+using FIS.BL.Exceptions;
 
 namespace FIS.BL.Util.CSV
 {
@@ -90,7 +91,7 @@ namespace FIS.BL.Util.CSV
                         fileSpecFieldConditions.Add(fileSpecFieldCondition);
                     } else
                     {
-                        throw new FileReadException("Field " + code + " is missing in this specification!");
+                        throw new FileReadException("Field " + code + " is missing in the selected field specification!");
                     }
                 } else if (code.StartsWith("A"))
                 {
