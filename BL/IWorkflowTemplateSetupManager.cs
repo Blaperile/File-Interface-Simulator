@@ -7,12 +7,13 @@ using System.Threading.Tasks;
 
 namespace FIS.BL
 {
-    interface IWorkflowTemplateSetupManager
+    public interface IWorkflowTemplateSetupManager
     {
         WorkflowTemplate AddStepToWorkflowTemplate(int workFlowTemplateId, int stepNumber, int specificationId);
         WorkflowTemplate RemoveStepFromWorkflowTemplate(int workflowTemplateId, int stepNumber);
         WorkflowTemplate AddWorkflowTemplate(String name);
-        WorkflowTemplate GetWorkFlowTemplate(int workflowTemplateId);
+        WorkflowTemplate GetWorkflowTemplate(int workflowTemplateId);
+        WorkflowTemplate GetWorkflowTemplate(string name);
         List<WorkflowTemplate> GetWorkflowTemplates();
         WorkflowTemplate GetSelectedWorkflowTemplate();
         WorkflowTemplate RemoveWorkflowTemplate(int workflowTemplateId);

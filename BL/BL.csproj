@@ -41,6 +41,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Exceptions\SpecificationSetupException.cs" />
+    <Compile Include="Exceptions\WorkflowTemplateSetupException.cs" />
     <Compile Include="IOperationalManager.cs" />
     <Compile Include="ISpecificationSetupManager.cs" />
     <Compile Include="IWorkflowTemplateSetupManager.cs" />

@@ -1,4 +1,6 @@
 ﻿using FIS.BL.Domain.Setup;
+using FIS.BL.Exceptions;
+using FIS.DAL;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,8 +9,15 @@ using System.Threading.Tasks;
 
 namespace FIS.BL
 {
-    class WorkflowTemplateSetupManager : IWorkflowTemplateSetupManager
+    public class WorkflowTemplateSetupManager : IWorkflowTemplateSetupManager
     {
+        private IWorkflowTemplateSetupRepository workflowTemplateSetupRepo;
+
+        public WorkflowTemplateSetupManager()
+        {
+            workflowTemplateSetupRepo = new WorkflowTemplateSetupRepository();
+        }
+
         public WorkflowTemplate AddStepToWorkflowTemplate(int workFlowTemplateId, int stepNumber, int specificationId)
         {
             throw new NotImplementedException();
@@ -16,7 +25,22 @@ namespace FIS.BL
 
         public WorkflowTemplate AddWorkflowTemplate(string name)
         {
-            throw new NotImplementedException();
+            WorkflowTemplate workflowTemplate = GetWorkflowTemplate(name);
+
+            if (workflowTemplate == null)
+            {
+                workflowTemplate = new WorkflowTemplate()
+                {
+                    Name = name,
+                    CreationDate = DateTime.Now,
+                    IsChosen = false
+                };
+
+                return workflowTemplateSetupRepo.CreateWorkflowTemplate(workflowTemplate);
+            } else
+            {
+                throw new WorkflowTemplateSetupException("A workflow with the name " + name + " already exists.");
+            }
         }
 
         public WorkflowTemplate GetSelectedWorkflowTemplate()
@@ -24,9 +48,14 @@ namespace FIS.BL
             throw new NotImplementedException();
         }
 
-        public WorkflowTemplate GetWorkFlowTemplate(int workflowTemplateId)
+        public WorkflowTemplate GetWorkflowTemplate(int workflowTemplateId)
         {
             throw new NotImplementedException();
+        }
+
+        public WorkflowTemplate GetWorkflowTemplate(string name)
+        {
+            return workflowTemplateSetupRepo.ReadWorkflowTemplate(name);
         }
 
         public List<WorkflowTemplate> GetWorkflowTemplates()

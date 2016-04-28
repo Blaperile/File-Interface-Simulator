@@ -159,12 +159,14 @@
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\OperationalController.cs" />
     <Compile Include="Controllers\SpecificationSetupController.cs" />
+    <Compile Include="Controllers\WorkflowTemplateSetupController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Models\FieldSpecificationViewModel.cs" />
     <Compile Include="Models\FileSpecificationOverviewDetailModel.cs" />
     <Compile Include="Models\FileSpecificationViewModel.cs" />
+    <Compile Include="Models\WorkflowTemplateViewModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -223,6 +225,7 @@
     <Content Include="Views\SpecificationSetup\UploadFieldSpecification.cshtml" />
     <Content Include="Views\SpecificationSetup\UploadFileSpecification.cshtml" />
     <Content Include="Views\SpecificationSetup\FileSpecificationOverview.cshtml" />
+    <Content Include="Views\WorkflowTemplateSetup\CreateWorkflowTemplate.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

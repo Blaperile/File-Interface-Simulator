@@ -4,19 +4,38 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using FIS.BL.Domain.Setup;
+using FIS.DAL.EF;
 
 namespace FIS.DAL
 {
     public class WorkflowTemplateSetupRepository : IWorkflowTemplateSetupRepository
     {
+        private readonly FISEFDbContext ctx;
+
+        public WorkflowTemplateSetupRepository()
+        {
+            ctx = FISEFDbContext.Instance;
+        }
+
         public WorkflowTemplate CreateWorkflowTemplate(WorkflowTemplate workflowTemplate)
         {
-            throw new NotImplementedException();
+            ctx.WorkflowTemplates.Add(workflowTemplate);
+            ctx.SaveChanges();
+            return workflowTemplate;
         }
 
         public WorkflowTemplate ReadWorkflowTemplate(int workflowTemplateId)
         {
             throw new NotImplementedException();
+        }
+
+        public WorkflowTemplate ReadWorkflowTemplate(string name)
+        {
+            IEnumerable<WorkflowTemplate> workflowTemplates = ctx.WorkflowTemplates.Where(wt => wt.Name.Equals(name));
+
+            if (workflowTemplates.Count() == 0) return null;
+
+            return workflowTemplates.First();
         }
 
         public WorkflowTemplate ReadSelectedWorkflowTemplate()
