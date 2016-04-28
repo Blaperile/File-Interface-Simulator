@@ -1,5 +1,6 @@
 ﻿using FIS.BL.Domain.Operational;
 using FIS.BL.Domain.Setup;
+using FIS.DAL;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,6 +10,15 @@ namespace FIS.BL
 {
     class OperationalManager : IOperationalManager
     {
+        IOperationalRepository operationalRep;
+        ISpecificationSetupRepository specFieldRep;
+
+        OperationalManager()
+        {
+            operationalRep = new OperationalRepository();
+            specFieldRep = new SpecificationSetupRepository();
+        }
+
         public Workflow AddWorkflow(Message message)
         {
             throw new NotImplementedException();
@@ -21,7 +31,7 @@ namespace FIS.BL
 
         public void DetectInput()
         {
-            throw new NotImplementedException();
+            
         }
 
         public void GenerateAnswer(Message message, Workflow workflow, WorkflowTemplate workflowTemplate)
