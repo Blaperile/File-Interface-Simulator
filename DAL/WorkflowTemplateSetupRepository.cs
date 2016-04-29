@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using FIS.BL.Domain.Setup;
 using FIS.DAL.EF;
+using System.Data.Entity;
 
 namespace FIS.DAL
 {
@@ -52,7 +53,10 @@ namespace FIS.DAL
 
         public WorkflowTemplate UpdateWorkflowTemplate(WorkflowTemplate workflowTemplate)
         {
-            throw new NotImplementedException();
+            ctx.WorkflowTemplates.Attach(workflowTemplate);
+            ctx.Entry(workflowTemplate).State = EntityState.Modified;
+            ctx.SaveChanges();
+            return workflowTemplate;
         }
 
         public WorkflowTemplate DeleteWorkflowTemplate(int workflowTemplateId)

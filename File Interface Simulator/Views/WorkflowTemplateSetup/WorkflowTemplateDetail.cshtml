@@ -8,100 +8,108 @@
 @using (Html.BeginForm())
 {
 
-<h1>@ViewBag.Title: @Model.Name</h1>
-<hr />
+    @Html.HiddenFor(model => model.WorkflowTemplateId)
 
-<div>
-    <dl class="dl-horizontal">
-        <dt class="control-label">
-            Creation Date
-        </dt>
+    <h1>@ViewBag.Title: @Model.Name</h1>
+    <hr />
 
-        <dd style="font-weight: bold">
-            @Html.DisplayFor(model => model.CreationDate)
-        </dd>
+    <div>
+        <dl class="dl-horizontal">
+            <dt class="control-label">
+                Creation Date
+            </dt>
 
-        <dt class="control-label">
-            Active
-        </dt>
+            <dd style="font-weight: bold">
+                @Html.DisplayFor(model => model.CreationDate)
+            </dd>
 
-        <dd style="font-weight: bold">
-            @Html.DisplayFor(model => model.IsActive)
-        </dd>
+            <dt class="control-label">
+                Active
+            </dt>
 
-    </dl>
-</div>
+            <dd style="font-weight: bold">
+                @Html.DisplayFor(model => model.IsActive)
+            </dd>
 
-<table class="table">
-    <tr>
-        <th>
-            #
-        </th>
-        <th>
-            Name
-        </th>
-        <th>
-            Type
-        </th>
-    </tr>
+        </dl>
+    </div>
 
-    @for (int i = 0; i < Model.CurrentFileSpecifications.Count(); i++)
-    {
+    <table class="table">
         <tr>
+            <th>
+
+            </th>
+            <th>
+                #
+            </th>
+            <th>
+                Name
+            </th>
+            <th>
+                Type
+            </th>
+        </tr>
+
+        @for (int i = 0; i < Model.CurrentFileSpecifications.Count(); i++)
+        {
+            <tr>
+                <td>
+                    <img src="~/images/thrash_icon.png" />
+                </td>
+                <td>
+                    @(i + 1)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => Model.CurrentFileSpecifications.ElementAt(i).Name)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => Model.CurrentFileSpecifications.ElementAt(i).Type)
+                </td>
+            </tr>
+        }
+        @{
+            Model.NewSequenceNumber = Model.CurrentFileSpecifications.Count() + 1;
+
+            List<SelectListItem> possibleFileSpecifications = new List<SelectListItem>();
+
+            foreach (WorkflowTemplatePossibleFileSpecificationDetailViewModel possibleFileSpecification in Model.PossibleFileSpecifications)
+            {
+                possibleFileSpecifications.Add(new SelectListItem
+                {
+                    Text = possibleFileSpecification.Name + " - " + possibleFileSpecification.Type,
+                    Value = possibleFileSpecification.Name + " - " + possibleFileSpecification.Type
+                });
+            }
+        }
+        <tr id="newRow" hidden>
             <td>
-                <img src="~/images/thrash_icon.png" />
+
             </td>
             <td>
-                @(i + 1)
+                @Html.EditorFor(model => model.NewSequenceNumber, new { htmlAttributes = new { @class = "form-control", id = "sequenceNumber", onkeyup = "addStep()" } })
             </td>
-            <td>
-                @Html.DisplayFor(modelItem => Model.CurrentFileSpecifications.ElementAt(i).Name)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => Model.CurrentFileSpecifications.ElementAt(i).Type)
+            <td colspan="2">
+                @Html.DropDownListFor(model => model.NewNameAndType, possibleFileSpecifications, "Choose a File Specification", new { htmlAttributes = new { @class = "form-control" } })
             </td>
         </tr>
-    }
-    @{
-        Model.NewSequenceNumber = Model.CurrentFileSpecifications.Count() + 1;
+    </table>
 
-        List<SelectListItem> possibleFileSpecifications = new List<SelectListItem>();
+    <span id="maxSequenceNumber" hidden>@(Model.CurrentFileSpecifications.Count() + 1)</span>
 
-        foreach (WorkflowTemplatePossibleFileSpecificationDetailViewModel possibleFileSpecification in Model.PossibleFileSpecifications)
-        {
-            possibleFileSpecifications.Add(new SelectListItem
-            {
-                Text = possibleFileSpecification.Name + " - " + possibleFileSpecification.Type,
-                Value = possibleFileSpecification.Name + " - " + possibleFileSpecification.Type
-            });
-        }
-    }
-    <tr id="newRow" hidden>
-        <td>
-            @Html.EditorFor(model => model.NewSequenceNumber, new { htmlAttributes = new { @class = "form-control", id = "sequenceNumber", onkeyup = "addStep()" } })
-        </td>
-        <td colspan="2">
-            @Html.DropDownListFor(model => model.NewNameAndType, possibleFileSpecifications, "Choose a File Specification", new { htmlAttributes = new { @class = "form-control" } })
-        </td>
-    </tr>
-</table>
+    <span id="errorMessage" class="errorMessage"></span>
 
-<span id="maxSequenceNumber" hidden>@(Model.CurrentFileSpecifications.Count() + 1)</span>
-
-<span id="errorMessage" class="errorMessage"></span>
-
-<div class="form-group">
-    <div class="col-md-10">
-        <span class="btn btn-default" onclick="addNewRow(this)"><img src="~/images/plus_icon.png" /> Add</span>
+    <div class="form-group">
+        <div class="col-md-10">
+            <span class="btn btn-default" onclick="addNewRow(this)"><img src="~/images/plus_icon.png" /> Add</span>
+        </div>
     </div>
-</div>
 
-<div class="form-group">
-    <div class="col-md-10">
-        <input id="save" type="hidden" value="Save" class="btn btn-default" />
+    <div class="form-group">
+        <div class="col-md-10">
+            <input id="save" type="hidden" value="Save" class="btn btn-default" />
+        </div>
     </div>
-</div>
-}
+            }
 
 @section Scripts {
     <script src="~/Scripts/Setup/workflowTemplateDetail.js"></script>

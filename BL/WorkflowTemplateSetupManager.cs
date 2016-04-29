@@ -11,16 +11,22 @@ namespace FIS.BL
 {
     public class WorkflowTemplateSetupManager : IWorkflowTemplateSetupManager
     {
+        private ISpecificationSetupManager specSetupManager;
         private IWorkflowTemplateSetupRepository workflowTemplateSetupRepo;
 
         public WorkflowTemplateSetupManager()
         {
+            specSetupManager = new SpecificationSetupManager();
             workflowTemplateSetupRepo = new WorkflowTemplateSetupRepository();
         }
 
-        public WorkflowTemplate AddStepToWorkflowTemplate(int workFlowTemplateId, int stepNumber, int specificationId)
+        public WorkflowTemplate AddStepToWorkflowTemplate(int workflowTemplateId, int stepNumber, string specificationName)
         {
-            throw new NotImplementedException();
+            WorkflowTemplate workflowTemplate = GetWorkflowTemplate(workflowTemplateId);
+            FileSpecification fileSpecification = specSetupManager.GetFileSpecification(specificationName);
+            workflowTemplate.FileSpecifications.Add(fileSpecification);
+            fileSpecification.WorkflowTemplate = workflowTemplate;
+            return workflowTemplateSetupRepo.UpdateWorkflowTemplate(workflowTemplate);
         }
 
         public WorkflowTemplate AddWorkflowTemplate(string name)

@@ -27,12 +27,12 @@
             <div class="col-md-10">
                 <div class="checkbox">
                     <span onclick="changeType('input')">
-                        @Html.RadioButtonFor(model => model.IsInput, 1, new { htmlAttributes = new { @class = "form-control", id = "rbInput" } })
+                        @Html.RadioButtonFor(model => model.IsInput, true, new { htmlAttributes = new { @class = "form-control", id = "rbInput" } })
                     </span>
                     @Html.Label("rbInput", "Input")
                     <br />
                     <span onclick="changeType('output')">
-                        @Html.RadioButtonFor(model => model.IsInput, 2, new { htmlAttributes = new { @class = "form-control", id = "rbOutput" } })
+                        @Html.RadioButtonFor(model => model.IsInput, false, new { htmlAttributes = new { @class = "form-control", id = "rbOutput" } })
                     </span>
                     @Html.Label("rbOutput", "Output")
                 </div>

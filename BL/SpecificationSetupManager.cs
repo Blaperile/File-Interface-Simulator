@@ -134,6 +134,11 @@ namespace FIS.BL
             throw new NotImplementedException();
         }
 
+        public FileSpecification GetFileSpecification(string name)
+        {
+            return specSetupRepo.ReadFileSpecification(name);
+        }
+
         public FileSpecification GetFileSpecification(string name, string version)
         {
             return specSetupRepo.ReadFileSpecification(name, version);

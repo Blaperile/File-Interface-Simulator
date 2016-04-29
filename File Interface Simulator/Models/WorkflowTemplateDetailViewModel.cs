@@ -7,6 +7,7 @@ namespace File_Interface_Simulator.Models
 {
     public class WorkflowTemplateDetailViewModel
     {
+        public int WorkflowTemplateId { get; set; }
         public string Name { get; set; }
         public DateTime CreationDate { get; set; }
         public string IsActive { get; set; }

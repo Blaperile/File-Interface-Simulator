@@ -41,6 +41,7 @@ namespace File_Interface_Simulator.Controllers
             WorkflowTemplate workflowTemplate = workflowTemplateSetupManager.GetWorkflowTemplate(workflowTemplateId);
             WorkflowTemplateDetailViewModel model = new WorkflowTemplateDetailViewModel()
             {
+                WorkflowTemplateId = workflowTemplateId,
                 Name = workflowTemplate.Name,
                 CreationDate = workflowTemplate.CreationDate,
             };
@@ -107,8 +108,10 @@ namespace File_Interface_Simulator.Controllers
         [HttpPost]
         public ActionResult WorkflowTemplateDetail(WorkflowTemplateDetailViewModel model)
         {
-            //nu name en type ontleden en sequence nummer ophalen en gebruiken om stap toe te voegen aan workflow template
-            return RedirectToAction("Index", "Home");
+            string specificationName = model.NewNameAndType.Split('-').ElementAt(0).Trim();
+            workflowTemplateSetupManager.AddStepToWorkflowTemplate(model.WorkflowTemplateId, model.NewSequenceNumber, specificationName);
+
+            return RedirectToAction("WorkflowTemplateDetail", new { workflowTemplateId = model.WorkflowTemplateId });
         }
     }
 }
