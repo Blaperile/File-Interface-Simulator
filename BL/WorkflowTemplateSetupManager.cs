@@ -50,7 +50,7 @@ namespace FIS.BL
 
         public WorkflowTemplate GetWorkflowTemplate(int workflowTemplateId)
         {
-            throw new NotImplementedException();
+            return workflowTemplateSetupRepo.ReadWorkflowTemplate(workflowTemplateId);
         }
 
         public WorkflowTemplate GetWorkflowTemplate(string name)

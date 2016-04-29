@@ -26,7 +26,9 @@ namespace FIS.DAL
 
         public WorkflowTemplate ReadWorkflowTemplate(int workflowTemplateId)
         {
-            throw new NotImplementedException();
+           WorkflowTemplate workflowTemplate = ctx.WorkflowTemplates.Find(workflowTemplateId);
+           ctx.Entry<WorkflowTemplate>(workflowTemplate).Collection<FileSpecification>(wt => wt.FileSpecifications).Load();
+           return workflowTemplate;
         }
 
         public WorkflowTemplate ReadWorkflowTemplate(string name)
