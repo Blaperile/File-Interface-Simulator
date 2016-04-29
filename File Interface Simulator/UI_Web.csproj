@@ -167,6 +167,11 @@
     <Compile Include="Models\FieldSpecificationOverviewDetailModel.cs" />
     <Compile Include="Models\FileSpecificationOverviewDetailModel.cs" />
     <Compile Include="Models\FileSpecificationViewModel.cs" />
+    <Compile Include="Models\MessageDetailViewModel.cs" />
+    <Compile Include="Models\MessageFieldDetailViewModel.cs" />
+    <Compile Include="Models\MessageGroupDetailViewModel.cs" />
+    <Compile Include="Models\MessageHeaderFieldDetailViewModel.cs" />
+    <Compile Include="Models\MessageTransactionDetailViewModel.cs" />
     <Compile Include="Models\WorkflowTemplateDetailViewModel.cs" />
     <Compile Include="Models\WorkflowTemplateFileSpecificationDetailViewModel.cs" />
     <Compile Include="Models\WorkflowTemplatePossibleFileSpecificationDetailViewModel.cs" />
@@ -233,10 +238,10 @@
     <Content Include="Views\SpecificationSetup\FieldSpecificationOverview.cshtml" />
     <Content Include="Views\WorkflowTemplateSetup\CreateWorkflowTemplate.cshtml" />
     <Content Include="Views\WorkflowTemplateSetup\WorkflowTemplateDetail.cshtml" />
+    <Content Include="Views\Operational\MessageDetail.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="Views\Operational\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config" />
