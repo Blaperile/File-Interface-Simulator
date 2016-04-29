@@ -42,8 +42,7 @@
         <div class="form-group">
             <label class="control-label col-md-2" for="Path">Path (.csv)</label>
             <div class="col-md-10">
-                @Html.EditorFor(model => model.Path, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.Path, "", new { @class = "text-danger" })
+                <input type="file" name="Path" />
             </div>
         </div>
 
