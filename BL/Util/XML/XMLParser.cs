@@ -16,6 +16,20 @@ namespace FIS.BL.Util.XML
             List<XMLElement> elements = new List<XMLElement>();
             XDocument doc = XDocument.Parse(xmlString);
             int sequence = 0;
+
+            XMLElement typeElement = new XMLElement();
+            typeElement.Code = "formfillXML";
+            List<Domain.Operational.Attribute> typeAttributes = new List<Domain.Operational.Attribute>();
+            Domain.Operational.Attribute typeAttribute = new Domain.Operational.Attribute();
+            typeAttribute.Name = doc.Element("formfillXML").FirstAttribute.Name.ToString();
+            typeAttribute.Value = doc.Element("formfillXML").FirstAttribute.Value.ToString();
+            typeAttributes.Add(typeAttribute);
+            typeElement.Attributes = typeAttributes;
+            typeElement.Level = "0";
+            typeElement.SequenceNumber = sequence;
+            elements.Add(typeElement);
+            sequence++;
+
             List <XElement> hearderElements = doc.Descendants("header").ToList();
             foreach(XElement xElement in hearderElements.Elements())
             {

@@ -20,7 +20,9 @@ namespace FIS.DAL
 
         public Message CreateMessage(Message message)
         {
-            throw new NotImplementedException();
+            ctx.Messages.Add(message);
+            ctx.SaveChanges();
+            return message;
         }
 
         public Message ReadMessage(int messageId)

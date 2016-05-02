@@ -44,6 +44,11 @@ namespace FIS.BL
                     String content = directoryHandler.GetContentOfFile(filename, currentDirectory);
                     IEnumerable <IElement> elements = xmlParser.GetElements(content);
                     operationalRep.CreateElements(elements);
+                    Message message = new Message();
+                    message.Date = DateTime.Now;
+                    message.Name = filename;
+                    message.MessageState = MessageState.Created;
+                    operationalRep.CreateMessage(message);
                 }
             }
         

@@ -12,5 +12,6 @@ namespace FIS.BL.Util
         void CreateFile(string fileName, string content);
         IEnumerable<String> GetFileNamesOfType(string type, Directory directory);
         string GetContentOfFile(string fileName, Directory directory);
+        void MoveFile(String fileName, String inPath, String archivePath);
     }
 }

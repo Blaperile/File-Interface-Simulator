@@ -13,7 +13,7 @@ namespace FIS.BL.Domain.Operational
 
         public int MessageId { get; set; }
         public string Name { get; set; }
-        public string Date { get; set; }
+        public DateTime Date { get; set; }
         public MessageState MessageState { get; set; }
         public string ErrorDescription { get; set; }
         public ICollection<HeaderField> HeaderFields { get; set; }
