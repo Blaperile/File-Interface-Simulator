@@ -113,7 +113,7 @@ namespace FIS.DAL
 
         public IEnumerable<Directory> ReadInputDirectories()
         {
-           return ctx.FileSpecifications.Where(f => f.IsInput == true).Select(f => f.InDirectory).ToList();
+            return ctx.Directories.Where(d => d.Name.Equals("in"));
         }
     }
 }
