@@ -8,10 +8,11 @@ namespace FIS.BL.Domain.Operational
 {
     public class XMLElement: IElement
     {
+        public int XMLElementId { get; set; }
         public string Code { get; set; }
         public string Value { get; set; }
-        public IDictionary<String,String> Attributes { get; set; }
-        public int Level { get; set; }
+        public ICollection<Attribute> Attributes { get; set; }
+        public String Level { get; set; }
         public int SequenceNumber { get; set; }
     }
 }

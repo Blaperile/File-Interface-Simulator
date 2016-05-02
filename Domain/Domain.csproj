@@ -49,6 +49,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Operational\Attribute.cs" />
     <Compile Include="Operational\Field.cs" />
     <Compile Include="Operational\Group.cs" />
     <Compile Include="Operational\HeaderField.cs" />

@@ -47,9 +47,14 @@ namespace FIS.DAL
             throw new NotImplementedException();
         }
 
-       public IElement CreateElement(IElement element)
+       public IEnumerable<IElement> CreateElements(IEnumerable<IElement> elements)
         {
-            throw new NotImplementedException();
+            foreach(XMLElement element in elements)
+            {
+                ctx.XmlElements.Add(element);   
+            }
+            ctx.SaveChanges();
+            return elements;
         }
 
         public IEnumerable<IElement> GetElements(int messageId)
