@@ -1,5 +1,7 @@
 ﻿using FIS.BL.Domain.Operational;
 using FIS.BL.Domain.Setup;
+using FIS.BL.Util;
+using FIS.BL.Util.XML;
 using FIS.DAL;
 using System;
 using System.Collections.Generic;
@@ -32,6 +34,18 @@ namespace FIS.BL
         public void DetectInput()
         {
             List<Directory> directories = specFieldManager.GetInputDirectories();
+            DirectoryHandler directoryHandler = new DirectoryHandler();
+            XMLParser xmlParser = new XMLParser();
+            foreach(Directory currentDirectory in directories)
+            {
+                IEnumerable<String> filenames = directoryHandler.GetFileNamesOfType("xml", currentDirectory);
+                foreach(String filename in filenames)
+                {
+                    String content = directoryHandler.GetContentOfFile(filename, currentDirectory);
+                    IEnumerable <IElement> elements = xmlParser.GetElements(content);
+                    operationalRep.CreateElements(elements);
+                }
+            }
         
         }
 

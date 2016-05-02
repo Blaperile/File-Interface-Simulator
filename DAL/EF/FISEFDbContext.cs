@@ -24,6 +24,8 @@ namespace FIS.DAL.EF
         public DbSet<HeaderCondition> HeaderConditions { get; set; }
         public DbSet<WorkflowTemplate> WorkflowTemplates { get; set; }
         public DbSet<AllowedValue> AllowedValues { get; set; }
+        public DbSet<XMLElement> XmlElements { get; set;  }
+        public DbSet<BL.Domain.Operational.Attribute> Attributes { get; set; }
 
 
         // Operational
