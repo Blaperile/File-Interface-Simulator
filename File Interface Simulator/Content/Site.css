@@ -55,6 +55,13 @@ hr {
     font-weight: bold;
 }
 
+.min-btn {
+    padding-left: 1%; 
+    padding-right: 1%; 
+    padding-top: 2%; 
+    padding-bottom: 2%
+}
+
 .control-label {
     color: #F18E00;
 }

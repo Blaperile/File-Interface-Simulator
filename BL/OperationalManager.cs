@@ -56,7 +56,7 @@ namespace FIS.BL
 
         public Message GetMessage(int messageId)
         {
-            throw new NotImplementedException();
+            return operationalRep.ReadMessage(messageId);
         }
 
         public List<Message> GetMessages()

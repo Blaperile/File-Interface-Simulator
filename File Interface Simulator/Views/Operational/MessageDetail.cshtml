@@ -9,7 +9,7 @@
 <div>
     <dl class="dl-horizontal">
         <dt class="control-label">
-            @Html.DisplayNameFor(model => model.CreationDate)
+            Creation Date
         </dt>
 
         <dd style="font-weight: bold">
@@ -17,7 +17,7 @@
         </dd>
 
         <dt class="control-label">
-            @Html.DisplayNameFor(model => model.MessageState)
+            Message State
         </dt>
 
         <dd style="font-weight: bold">
@@ -33,7 +33,7 @@
         </dd>
 
         <dt class="control-label">
-            @Html.DisplayNameFor(model => model.SpecificationFile)
+            Specification file
         </dt>
 
         <dd style="font-weight: bold">
@@ -43,107 +43,17 @@
     </dl>
 </div>
 
-<h1>Header (@Model.HeaderFields.Count())</h1>
+<h1><img src="/images/minus_icon.png" class="btn btn-default min-btn" onclick="collapse(this,'header')"/> Header (@Model.HeaderFields.Count())</h1>
 <hr />
 
-<table class="table">
-    <tr>
-        <th>
-            Code
-        </th>
-        <th>
-            Content
-        </th>
-        <th>
-            Datatype
-        </th>
-        <th>
-            Size
-        </th>
-    </tr>
-    <tr>
-        @foreach (var headerField in Model.HeaderFields)
-        {
-            <td>
-                @Html.DisplayFor(item => headerField.Code)
-            </td>
-            <td>
-                @Html.DisplayFor(item => headerField.Content)
-            </td>
-            <td>
-                @Html.DisplayFor(item => headerField.Datatype)
-            </td>
-            <td>
-                @Html.DisplayFor(item => headerField.Size)
-            </td>
-        }
-    </tr>
-</table>
-
-@for (int i = 0; i < Model.Transactions.Count(); i++)
-{
-    <h1>Transaction (@(i+1))</h1>
-    <hr />
-
-    <h2>Groups (@Model.Transactions.ElementAt(i).Groups.Count())</h2>
-    <hr />
-
+<div id="header">
     <table class="table">
         <tr>
             <th>
                 Code
             </th>
             <th>
-                Description
-            </th>
-            <th>
-                Count
-            </th>
-            <th>
-                Am. Fields
-            </th>
-            <th>
-                Level
-            </th>
-        </tr>
-        <tr>
-            @foreach (var group in Model.Transactions.ElementAt(i).Groups)
-            {
-                <td>
-                    @Html.DisplayFor(item => group.Code)
-                </td>
-                <td>
-                    @Html.DisplayFor(item => group.Description)
-                </td>
-                <td>
-                    @Html.DisplayFor(item => group.Count)
-                </td>
-                <td>
-                    @Html.DisplayFor(item => group.AmountOfFields)
-                </td>
-                <td>
-                    @Html.DisplayFor(item => group.Level)
-                </td>
-            }
-        </tr>
-    </table>
-
-    <h2>Fields (@Model.Transactions.ElementAt(i).Fields.Count())</h2>
-    <hr />
-
-    <table class="table">
-        <tr>
-            <th>
-                Code
-            </th>
-            <th>
-                Name
-            </th>
-            <th>
-                Optional
-            </th>
-            <th>
-                Values
+                Content
             </th>
             <th>
                 Datatype
@@ -151,47 +61,149 @@
             <th>
                 Size
             </th>
-            <th>
-                Format
-            </th>
-            <th>
-                Group
-            </th>
-            <th>
-                Level
-            </th>
         </tr>
         <tr>
-            @foreach (var field in Model.Transactions.ElementAt(i).Fields)
+            @foreach (var headerField in Model.HeaderFields)
             {
                 <td>
-                    @Html.DisplayFor(item => field.Code)
+                    @Html.DisplayFor(item => headerField.Code)
                 </td>
                 <td>
-                    @Html.DisplayFor(item => field.Name)
+                    @Html.DisplayFor(item => headerField.Content)
                 </td>
                 <td>
-                    @Html.DisplayFor(item => field.Optional)
+                    @Html.DisplayFor(item => headerField.Datatype)
                 </td>
                 <td>
-                    @Html.DisplayFor(item => field.Value)
-                </td>
-                <td>
-                    @Html.DisplayFor(item => field.Datatype)
-                </td>
-                <td>
-                    @Html.DisplayFor(item => field.Size)
-                </td>
-                <td>
-                    @Html.DisplayFor(item => field.Format)
-                </td>
-                <td>
-                    @Html.DisplayFor(item => field.Group)
-                </td>
-                <td>
-                    @Html.DisplayFor(item => field.Level)
+                    @Html.DisplayFor(item => headerField.Size)
                 </td>
             }
         </tr>
     </table>
+</div>
+
+@for (int i = 0; i < Model.Transactions.Count(); i++)
+{
+    <h1><img src="~/images/minus_icon.png" class="btn btn-default min-btn" onclick="collapse(this,'transaction@(i+1)')"/> Transaction @(i+1)</h1>
+    <hr />
+
+    <div id="transaction@(i+1)">
+        <h2><img src="~/images/minus_icon.png" class="btn btn-default min-btn" onclick="collapse(this,'groups@(i+1)')"/> Groups (@Model.Transactions.ElementAt(i).Groups.Count())</h2>
+        <hr />
+
+        <div id="groups@(i+1)">
+            <table class="table">
+                <tr>
+                    <th>
+                        Code
+                    </th>
+                    <th>
+                        Description
+                    </th>
+                    <th>
+                        Count
+                    </th>
+                    <th>
+                        Am. Fields
+                    </th>
+                    <th>
+                        Level
+                    </th>
+                </tr>
+                <tr>
+                    @foreach (var group in Model.Transactions.ElementAt(i).Groups)
+                {
+                        <td>
+                            @Html.DisplayFor(item => group.Code)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(item => group.Description)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(item => group.Count)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(item => group.AmountOfFields)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(item => group.Level)
+                        </td>
+                    }
+                </tr>
+            </table>
+        </div>
+
+        <h2><img src="~/images/minus_icon.png" class="btn btn-default min-btn" onclick="collapse(this,'fields@(i+1)')"/> Fields (@Model.Transactions.ElementAt(i).Fields.Count())</h2>
+        <hr />
+
+        <div id="fields@(i+1)">
+            <table class="table">
+                <tr>
+                    <th>
+                        Code
+                    </th>
+                    <th>
+                        Name
+                    </th>
+                    <th>
+                        Optional
+                    </th>
+                    <th>
+                        Values
+                    </th>
+                    <th>
+                        Datatype
+                    </th>
+                    <th>
+                        Size
+                    </th>
+                    <th>
+                        Format
+                    </th>
+                    <th>
+                        Group
+                    </th>
+                    <th>
+                        Level
+                    </th>
+                </tr>
+                <tr>
+                    @foreach (var field in Model.Transactions.ElementAt(i).Fields)
+                {
+                        <td>
+                            @Html.DisplayFor(item => field.Code)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(item => field.Name)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(item => field.Optional)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(item => field.Value)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(item => field.Datatype)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(item => field.Size)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(item => field.Format)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(item => field.Group)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(item => field.Level)
+                        </td>
+                    }
+                </tr>
+            </table>
+        </div>
+    </div>
+}
+
+@section Scripts {
+    <script src="~/Scripts/Operational/messageDetail.js"></script>
 }
