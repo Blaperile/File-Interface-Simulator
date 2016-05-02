@@ -160,6 +160,7 @@
     <Compile Include="Controllers\OperationalController.cs" />
     <Compile Include="Controllers\SpecificationSetupController.cs" />
     <Compile Include="Controllers\WorkflowTemplateSetupController.cs" />
+    <Compile Include="DetectInput.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>

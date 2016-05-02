@@ -31,7 +31,7 @@ namespace FIS.BL
 
         public void DetectInput()
         {
-           
+            List<Directory> directories = specFieldManager.GetInputDirectories();
         
         }
 
