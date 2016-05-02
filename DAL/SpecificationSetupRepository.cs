@@ -106,7 +106,7 @@ namespace FIS.DAL
 
         public IEnumerable<Directory> ReadInputDirectories()
         {
-            throw new NotImplementedException();
+           return ctx.FileSpecifications.Where(f => f.IsInput == true).Select(f => f.InDirectory).ToList();
         }
     }
 }

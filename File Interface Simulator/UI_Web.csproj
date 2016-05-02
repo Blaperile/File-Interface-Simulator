@@ -159,6 +159,7 @@
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\OperationalController.cs" />
     <Compile Include="Controllers\SpecificationSetupController.cs" />
+    <Compile Include="DetectInput.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>

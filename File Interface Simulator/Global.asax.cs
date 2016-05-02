@@ -16,6 +16,7 @@ namespace File_Interface_Simulator
             FilterConfig.RegisterGlobalFilters(GlobalFilters.Filters);
             RouteConfig.RegisterRoutes(RouteTable.Routes);
             BundleConfig.RegisterBundles(BundleTable.Bundles);
+            DetectInput.Init();
         }
     }
 }

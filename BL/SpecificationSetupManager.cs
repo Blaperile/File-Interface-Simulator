@@ -158,5 +158,10 @@ namespace FIS.BL
         {
             throw new NotImplementedException();
         }
+
+        public List<Directory> GetInputDirectories()
+        {
+            return specSetupRepo.ReadInputDirectories().ToList();
+        }
     }
 }

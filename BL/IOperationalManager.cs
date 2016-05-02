@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace FIS.BL
 {
-    interface IOperationalManager
+    public interface IOperationalManager
     {
         Message GetMessage(int messageId);
         List<Message> GetMessages();
