@@ -24,7 +24,7 @@ namespace FIS.DAL
 
         public Message ReadMessage(int messageId)
         {
-            throw new NotImplementedException();
+            return ctx.Messages.Find(messageId);
         }
 
         public IEnumerable<Message> ReadMessages()

@@ -7,7 +7,7 @@ namespace File_Interface_Simulator.Models
 {
     public class MessageTransactionDetailViewModel
     {
-        public IEnumerable<MessageGroupDetailViewModel> Groups { get; set; }
-        public IEnumerable<MessageFieldDetailViewModel> Fields { get; set; }
+        public ICollection<MessageGroupDetailViewModel> Groups { get; set; }
+        public ICollection<MessageFieldDetailViewModel> Fields { get; set; }
     }
 }

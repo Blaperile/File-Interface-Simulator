@@ -8,12 +8,12 @@ using System.Text;
 using System.Threading.Tasks;
 namespace FIS.BL
 {
-    class OperationalManager : IOperationalManager
+    public class OperationalManager : IOperationalManager
     {
         IOperationalRepository operationalRep;
         ISpecificationSetupManager specFieldManager;
 
-        OperationalManager()
+        public OperationalManager()
         {
             operationalRep = new OperationalRepository();
             specFieldManager = new SpecificationSetupManager();
@@ -42,7 +42,7 @@ namespace FIS.BL
 
         public Message GetMessage(int messageId)
         {
-            throw new NotImplementedException();
+            return operationalRep.ReadMessage(messageId);
         }
 
         public List<Message> GetMessages()
