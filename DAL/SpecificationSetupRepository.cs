@@ -60,6 +60,13 @@ namespace FIS.DAL
             throw new NotImplementedException();
         }
 
+        public FileSpecification ReadFileSpecification(string name)
+        {
+            IEnumerable<FileSpecification> fileSpecifications = ctx.FileSpecifications.Where(fs => fs.Name.Equals(name));
+            fileSpecifications = fileSpecifications.OrderByDescending(fs => fs.UploadDate).ToList();
+            return fileSpecifications.First();
+        }
+
         public FileSpecification ReadFileSpecification(string name, string version)
         {
             IEnumerable<FileSpecification> fileSpecifications = ctx.FileSpecifications.Where(fs => fs.Name.Equals(name)).Where(fs => fs.Version.Equals(version));

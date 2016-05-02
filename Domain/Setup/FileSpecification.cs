@@ -15,10 +15,7 @@ namespace FIS.BL.Domain.Setup
         public string Version { get; set; }
         public string Path { get; set; }
         public bool IsInput { get; set; }
-        public Directory InDirectory { get; set; }
-        public Directory ArchiveDirectory { get; set; }
-        public Directory ErrorDirectory { get; set; }
-        public Directory OutDirectory { get; set; }
+        public ICollection<Directory> Directories { get; set; }
         public WorkflowTemplate WorkflowTemplate { get; set; }
         public FieldSpecification FieldSpecification { get; set; }
         public ICollection<HeaderCondition> HeaderConditions { get; set; }

@@ -12,7 +12,7 @@ namespace File_Interface_Simulator.Models
         public string Name { get; set; }
 
         [Required]
-        public bool IsInput { get; set; }
+        public bool IsInput { get; set; } = true;
 
         [Required]
         public string Path { get; set; }

@@ -49,6 +49,8 @@ namespace FIS.BL
                 fileSpec.Version = version;
                 fileSpec.FieldSpecification = fieldSpec;
 
+                IList<Directory> directories = new List<Directory>();
+
                 if (isInput)
                 {
 
@@ -56,25 +58,28 @@ namespace FIS.BL
                     {
                         Name = "in",
                         Location = inDirectoryPath,
+                        FileSpecification = fileSpec
                     };
 
-                    fileSpec.InDirectory = inDirectory;
+                    directories.Add(inDirectory);
 
                     Directory errorDirectory = new Directory()
                     {
                         Name = "error",
                         Location = errorDirectoryPath,
+                        FileSpecification = fileSpec
                     };
 
-                    fileSpec.ErrorDirectory = errorDirectory;
+                    directories.Add(errorDirectory);
 
                     Directory archiveDirectory = new Directory()
                     {
                         Name = "archive",
                         Location = archiveDirectoryPath,
+                        FileSpecification = fileSpec
                     };
 
-                    fileSpec.ArchiveDirectory = archiveDirectory;
+                    directories.Add(archiveDirectory);
                 }
                 else
                 {
@@ -82,10 +87,13 @@ namespace FIS.BL
                     {
                         Name = "out",
                         Location = outDirectoryPath,
+                        FileSpecification = fileSpec
                     };
 
-                    fileSpec.OutDirectory = outDirectory;
+                    directories.Add(outDirectory);
                 }
+
+                fileSpec.Directories = directories;
 
                 if (fieldSpec.FileSpecifications == null)
                 {
@@ -132,6 +140,11 @@ namespace FIS.BL
         public FileSpecification GetFileSpecification(int specificationId)
         {
             throw new NotImplementedException();
+        }
+
+        public FileSpecification GetFileSpecification(string name)
+        {
+            return specSetupRepo.ReadFileSpecification(name);
         }
 
         public FileSpecification GetFileSpecification(string name, string version)

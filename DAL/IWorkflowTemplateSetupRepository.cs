@@ -11,6 +11,7 @@ namespace FIS.DAL
     {
         WorkflowTemplate CreateWorkflowTemplate(WorkflowTemplate workflowTemplate);
         WorkflowTemplate ReadWorkflowTemplate(int workflowTemplateId);
+        WorkflowTemplate ReadWorkflowTemplate(string name);
         WorkflowTemplate ReadSelectedWorkflowTemplate();
         IEnumerable<WorkflowTemplate> ReadWorkflowTemplates();
         WorkflowTemplate UpdateWorkflowTemplate(WorkflowTemplate workflowTemplate);

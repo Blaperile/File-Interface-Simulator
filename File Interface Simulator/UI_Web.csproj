@@ -159,6 +159,7 @@
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\OperationalController.cs" />
     <Compile Include="Controllers\SpecificationSetupController.cs" />
+    <Compile Include="Controllers\WorkflowTemplateSetupController.cs" />
     <Compile Include="DetectInput.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -167,6 +168,15 @@
     <Compile Include="Models\FieldSpecificationOverviewDetailModel.cs" />
     <Compile Include="Models\FileSpecificationOverviewDetailModel.cs" />
     <Compile Include="Models\FileSpecificationViewModel.cs" />
+    <Compile Include="Models\MessageDetailViewModel.cs" />
+    <Compile Include="Models\MessageFieldDetailViewModel.cs" />
+    <Compile Include="Models\MessageGroupDetailViewModel.cs" />
+    <Compile Include="Models\MessageHeaderFieldDetailViewModel.cs" />
+    <Compile Include="Models\MessageTransactionDetailViewModel.cs" />
+    <Compile Include="Models\WorkflowTemplateDetailViewModel.cs" />
+    <Compile Include="Models\WorkflowTemplateFileSpecificationDetailViewModel.cs" />
+    <Compile Include="Models\WorkflowTemplatePossibleFileSpecificationDetailViewModel.cs" />
+    <Compile Include="Models\WorkflowTemplateViewModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -205,6 +215,7 @@
     <Content Include="Scripts\respond.js" />
     <Content Include="Scripts\respond.min.js" />
     <Content Include="Scripts\Setup\uploadFileSpecification.js" />
+    <Content Include="Scripts\Setup\workflowTemplateDetail.js" />
     <Content Include="Scripts\_references.js" />
     <Content Include="Web.config">
       <SubType>Designer</SubType>
@@ -226,10 +237,12 @@
     <Content Include="Views\SpecificationSetup\UploadFileSpecification.cshtml" />
     <Content Include="Views\SpecificationSetup\FileSpecificationOverview.cshtml" />
     <Content Include="Views\SpecificationSetup\FieldSpecificationOverview.cshtml" />
+    <Content Include="Views\WorkflowTemplateSetup\CreateWorkflowTemplate.cshtml" />
+    <Content Include="Views\WorkflowTemplateSetup\WorkflowTemplateDetail.cshtml" />
+    <Content Include="Views\Operational\MessageDetail.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="Views\Operational\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config" />
