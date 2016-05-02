@@ -6,5 +6,6 @@
         public string Content { get; set; }
         public string Datatype { get; set; }
         public string Size { get; set; }
+        public string ErrorMessage { get; set; }
     }
 }
