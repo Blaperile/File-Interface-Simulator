@@ -14,7 +14,7 @@ namespace File_Interface_Simulator.Controllers
         private readonly IOperationalManager operationalManager = new OperationalManager();
 
         [HttpGet]
-        public ActionResult MessageDetail(int id = 1)
+        public ActionResult MessageDetail(int id = 2)
         {
             Message message = operationalManager.GetMessage(id);
 
@@ -24,18 +24,10 @@ namespace File_Interface_Simulator.Controllers
                 MessageId = id.ToString(),
                 MessageState = message.MessageState.ToString(),
                 SpecificationFile = message.FileSpecification.Name,
+                Type = message.FileSpecification.IsInput? "Input" : "Output",
                 HeaderFields = new List<MessageHeaderFieldDetailViewModel>(),
                 Transactions = new List<MessageTransactionDetailViewModel>()
             };
-
-            if (message.FileSpecification.IsInput)
-            {
-                model.Type = "Input";
-            }
-            else
-            {
-                model.Type = "Output";
-            }
 
             foreach (HeaderField headerField in message.HeaderFields)
             {
@@ -69,30 +61,22 @@ namespace File_Interface_Simulator.Controllers
 
                     foreach (Field field in group.Fields)
                     {
-                        MessageFieldDetailViewModel fieldModel = new MessageFieldDetailViewModel()
+                        transactionModel.Fields.Add(new MessageFieldDetailViewModel()
                         {
                             Code = field.FieldCode,
                             Datatype = field.FileSpecFieldCondition.FieldSpecFieldCondition.Datatype,
-                            Format = field.FileSpecFieldCondition.FieldSpecFieldCondition.Format,
+                            Format = field.FileSpecFieldCondition.FieldSpecFieldCondition.Format.Count() > 0 ? field.FileSpecFieldCondition.FieldSpecFieldCondition.Format : "-",
                             Group = group.GroupCode,
                             Level = field.Level,
                             Name = field.FileSpecFieldCondition.Description,
                             Size = field.FileSpecFieldCondition.FieldSpecFieldCondition.Size,
+                            Optional = field.FileSpecFieldCondition.IsOptional ? "O" : "M",
                             Value = field.Value
-                        };
-
-                        if (field.FileSpecFieldCondition.IsOptional)
-                        {
-                            fieldModel.Optional = "O";
-                        }
-                        else
-                        {
-                            fieldModel.Optional = "M";
-                        }
-
-                        transactionModel.Fields.Add(fieldModel);
+                        });
                     }
                 }
+
+                model.Transactions.Add(transactionModel);
             }
 
             return View("MessageDetail", model);

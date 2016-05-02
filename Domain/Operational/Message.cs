@@ -17,7 +17,7 @@ namespace FIS.BL.Domain.Operational
         public MessageState MessageState { get; set; }
         public string ErrorDescription { get; set; }
         public ICollection<HeaderField> HeaderFields { get; set; }
-        public IEnumerable<Transaction> Transactions { get; set; }
+        public ICollection<Transaction> Transactions { get; set; }
         public FileSpecification FileSpecification { get; set; }
         public Workflow Workflow { get; set; }
     }
