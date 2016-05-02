@@ -2,6 +2,8 @@
 
 @{
     ViewBag.Title = "Message";
+    int headerErrors = Model.HeaderFields.Where(hf => !String.IsNullOrEmpty(hf.ErrorMessage)).Count();
+    int errorCount = headerErrors;
 }
 
 <h1>@ViewBag.Title: @Model.MessageId</h1>
@@ -40,10 +42,26 @@
             @Html.DisplayFor(model => model.SpecificationFile)
         </dd>
 
+        <dt class="control-label">
+            Error count
+        </dt>
+
+        <dd style="font-weight: bold">
+            @errorCount
+        </dd>
+
     </dl>
 </div>
 
-<h1><img src="/images/minus_icon.png" class="btn btn-default min-btn" onclick="collapse(this,'header')"/> Header (@Model.HeaderFields.Count())</h1>
+@if (headerErrors > 0)
+{
+    <h1><img src="/images/minus_icon.png" class="btn btn-default min-btn" onclick="collapse(this,'header')" /> Header (@Model.HeaderFields.Count()) <img src="~/images/exclamation_mark_icon.png" title="@headerErrors error(s)"/></h1>
+}
+else
+{
+    <h1><img src="/images/minus_icon.png" class="btn btn-default min-btn" onclick="collapse(this,'header')" /> Header (@Model.HeaderFields.Count()) </h1>
+}
+
 <hr />
 
 <div id="header">
@@ -62,33 +80,56 @@
                 Size
             </th>
         </tr>
-        <tr>
-            @foreach (var headerField in Model.HeaderFields)
+        @foreach (var headerField in Model.HeaderFields)
             {
-                <td>
-                    @Html.DisplayFor(item => headerField.Code)
-                </td>
-                <td>
-                    @Html.DisplayFor(item => headerField.Content)
-                </td>
-                <td>
-                    @Html.DisplayFor(item => headerField.Datatype)
-                </td>
-                <td>
-                    @Html.DisplayFor(item => headerField.Size)
-                </td>
+            if (!String.IsNullOrEmpty(headerField.ErrorMessage))
+                {
+                <tr style="background-color: RGBA(255,0,0,0.5)">
+                    <td>
+                        @Html.DisplayFor(item => headerField.Code)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(item => headerField.Content)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(item => headerField.Datatype)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(item => headerField.Size)
+                    </td>
+                    <td style="background-color: white">
+                        <span class="errorMessage"><img src="~/images/exclamation_mark_icon.png" /> @Html.DisplayFor(item => headerField.ErrorMessage)</span>
+                    </td>
+                </tr>
             }
-        </tr>
+            else
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(item => headerField.Code)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(item => headerField.Content)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(item => headerField.Datatype)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(item => headerField.Size)
+                    </td>
+                </tr>
+            }
+        }
     </table>
 </div>
 
 @for (int i = 0; i < Model.Transactions.Count(); i++)
 {
-    <h1><img src="~/images/minus_icon.png" class="btn btn-default min-btn" onclick="collapse(this,'transaction@(i+1)')"/> Transaction @(i+1)</h1>
+    <h1><img src="~/images/minus_icon.png" class="btn btn-default min-btn" onclick="collapse(this,'transaction@(i+1)')" /> Transaction @(i + 1)</h1>
     <hr />
 
     <div id="transaction@(i+1)">
-        <h2><img src="~/images/minus_icon.png" class="btn btn-default min-btn" onclick="collapse(this,'groups@(i+1)')"/> Groups (@Model.Transactions.ElementAt(i).Groups.Count())</h2>
+        <h2><img src="~/images/minus_icon.png" class="btn btn-default min-btn" onclick="collapse(this,'groups@(i+1)')" /> Groups (@Model.Transactions.ElementAt(i).Groups.Count())</h2>
         <hr />
 
         <div id="groups@(i+1)">
@@ -133,7 +174,7 @@
             </table>
         </div>
 
-        <h2><img src="~/images/minus_icon.png" class="btn btn-default min-btn" onclick="collapse(this,'fields@(i+1)')"/> Fields (@Model.Transactions.ElementAt(i).Fields.Count())</h2>
+        <h2><img src="~/images/minus_icon.png" class="btn btn-default min-btn" onclick="collapse(this,'fields@(i+1)')" /> Fields (@Model.Transactions.ElementAt(i).Fields.Count())</h2>
         <hr />
 
         <div id="fields@(i+1)">
