@@ -23,7 +23,18 @@ namespace FIS.BL
 
         public Workflow AddWorkflow(Message message)
         {
-            throw new NotImplementedException();
+            Workflow workflow = new Workflow()
+            {
+                Date = DateTime.Now,
+                IsSuccessful = false,
+                Messages = new List<Message>()
+            };
+
+            workflow.Messages.Add(message);
+
+            message.Workflow = workflow;
+
+            return operationalRep.CreateWorkflow(workflow);
         }
 
         public void ArchiveErrorLines()
@@ -48,7 +59,8 @@ namespace FIS.BL
                     message.Date = DateTime.Now;
                     message.Name = filename;
                     message.MessageState = MessageState.Created;
-                    operationalRep.CreateMessage(message);
+                    message = operationalRep.CreateMessage(message);
+                    Workflow workflow = AddWorkflow(message);
                 }
             }
         

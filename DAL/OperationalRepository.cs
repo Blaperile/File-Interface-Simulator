@@ -113,7 +113,9 @@ namespace FIS.DAL
 
         public Workflow CreateWorkflow(Workflow workflow)
         {
-            throw new NotImplementedException();
+            ctx.Workflows.Add(workflow);
+            ctx.SaveChanges();
+            return workflow;
         }
 
         public Workflow UpdateWorkflow(Workflow workflow)
