@@ -12,14 +12,57 @@ namespace FIS.BL.Util.XML
     {
         public ICollection<String> Codes { get; set; }
 
-        public XMLValidator(IEnumerable<IElement> elements, FileSpecification fileSpecification, Message message)
+        public XMLValidator(IEnumerable<XMLElement> elements, FileSpecification fileSpecification, Message message)
         {
             Codes = new List<String>();
+
+            message.HeaderFields = new List<HeaderField>();
 
             foreach (IElement element in elements)
             {
                 Codes.Add(((XMLElement)element).Code);
             }
+
+            foreach (HeaderCondition headerCondition in fileSpecification.HeaderConditions)
+            {
+                IEnumerable<XMLElement> temp = elements.Where(e => e.Code.Equals(headerCondition.HeaderFieldCode)).Where(e => e.Level.Equals("Header")).ToList();
+
+                HeaderField headerField = null;
+
+                if (temp.Count() >= 1)
+                {
+                    headerField = new HeaderField()
+                    {
+                        HeaderFieldCode = headerCondition.HeaderFieldCode,
+                        Description = headerCondition.Description,
+                        HeaderCondition = headerCondition,
+                        Message = message
+                    };
+
+                    Codes.Remove(headerCondition.HeaderFieldCode);
+                    message.HeaderFields.Add(headerField);
+                }
+
+                if (temp.Count() > 1)
+                {
+                    headerField.ErrorDescription = "There can be only one occurence of every headerfield code.";
+                }
+                else if (temp.Count() == 0)
+                {
+                    message.HeaderErrorDescription += String.Format("Headerfield {0} is missing from this message.", headerCondition.HeaderFieldCode);
+                }
+
+                if (temp.Count() > 0 && !String.IsNullOrEmpty(headerCondition.Description))
+                {
+                    temp = temp.Where(e => e.Value.Equals(headerCondition.Description)).ToList();
+
+                    if (temp.Count() == 0)
+                    {
+                        headerField.ErrorDescription = String.Format("Value of this field must be {0}", headerCondition.Description);
+                    }
+                }
+            }
+
         }
 
         public IElement GetElement(string elementName)

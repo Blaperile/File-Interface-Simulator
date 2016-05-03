@@ -13,6 +13,7 @@ namespace File_Interface_Simulator.Models
         public string Type { get; set; }
         public string SpecificationFile { get; set; }
         public int AmountOfHeaderErrors { get; set; }
+        public string HeaderError { get; set; }
         public int AmountOfErrors { get; set; }
         public ICollection<MessageHeaderFieldDetailViewModel> HeaderFields { get; set; }
         public ICollection<MessageTransactionDetailViewModel> Transactions { get; set; }

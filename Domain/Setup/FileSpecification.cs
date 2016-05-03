@@ -1,4 +1,5 @@
-﻿using System;
+﻿using FIS.BL.Domain.Operational;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -22,5 +23,6 @@ namespace FIS.BL.Domain.Setup
         public ICollection<HeaderCondition> HeaderConditions { get; set; }
         public ICollection<GroupCondition> GroupConditions { get; set; }
         public ICollection<FileSpecFieldCondition> FileSpecFieldConditions { get; set; }
+        public ICollection<Message> Messages { get; set; }
     }
 }

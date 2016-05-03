@@ -130,6 +130,8 @@ namespace FIS.BL
             FileSpecification fileSpecification = specSetupManager.GetFileSpecificationAtStartWorkflowTemplateWithName(flowIdElement.Value);
             Message message = GetMessage(messageId);
             XMLValidator validator = new XMLValidator(elements, fileSpecification, message);
+            message.FileSpecification = fileSpecification;
+            fileSpecification.Messages.Add(message);
             ArchiveErrorLines(message, fileSpecification, validator.Codes);
             operationalRep.UpdateMessage(message);
         }

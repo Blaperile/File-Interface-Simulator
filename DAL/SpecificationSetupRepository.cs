@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using FIS.BL.Domain.Setup;
 using FIS.DAL.EF;
+using FIS.BL.Domain.Operational;
 
 namespace FIS.DAL
 {
@@ -88,6 +89,7 @@ namespace FIS.DAL
             ctx.Entry<FileSpecification>(fileSpecification).Collection<GroupCondition>(fs => fs.GroupConditions).Load();
             LoadFileSpecFieldConditions(fileSpecification);
             ctx.Entry<FileSpecification>(fileSpecification).Collection<Directory>(fs => fs.Directories).Load();
+            ctx.Entry<FileSpecification>(fileSpecification).Collection<Message>(fs => fs.Messages).Load();
             return fileSpecification;
         }
 
