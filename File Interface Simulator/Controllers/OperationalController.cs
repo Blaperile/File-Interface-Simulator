@@ -16,7 +16,7 @@ namespace File_Interface_Simulator.Controllers
         [HttpGet]
         public ActionResult MessageDetail(int id = 2)
         {
-            Message message = operationalManager.GetMessage(id);
+            Message message = operationalManager.GetMessageWithRelatedData(id);
 
             MessageDetailViewModel model = new MessageDetailViewModel()
             {

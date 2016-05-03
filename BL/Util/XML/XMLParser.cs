@@ -11,9 +11,9 @@ namespace FIS.BL.Util.XML
     public class XMLParser : IParser
     {
 
-        public IEnumerable<IElement> GetElements(String xmlString)
+        public IEnumerable<IElement> GetElements(Message message, String xmlString)
         {
-            List<XMLElement> elements = new List<XMLElement>();
+            List<IElement> elements = new List<IElement>();
             XDocument doc = XDocument.Parse(xmlString);
             int sequence = 0;
 
@@ -27,6 +27,7 @@ namespace FIS.BL.Util.XML
             typeElement.Attributes = typeAttributes;
             typeElement.Level = "0";
             typeElement.SequenceNumber = sequence;
+            typeElement.Message = message; ;
             elements.Add(typeElement);
             sequence++;
 
@@ -52,6 +53,7 @@ namespace FIS.BL.Util.XML
                 element.SequenceNumber = sequence;
                 sequence++;
                 element.Value = xElement.Value;
+                element.Message = message;
                 elements.Add(element);
             }
 
@@ -92,10 +94,13 @@ namespace FIS.BL.Util.XML
                         element.Level = groepen.ToString();
                     }
                     else { element.Level = velden.ToString(); }
+                    element.Message = message;
                     elements.Add(element);
                     sequence++;
                 }
             }
+
+            message.Elements = elements;
 
             return elements;
         }

@@ -9,7 +9,7 @@ namespace FIS.BL.Util
 {
     public interface IDirectoryHandler
     {
-        void CreateFile(string fileName, string content);
+        void CreateFile(string fileName, string content, Directory directory);
         IEnumerable<String> GetFileNamesOfType(string type, Directory directory);
         string GetContentOfFile(string fileName, Directory directory);
         void MoveFile(String fileName, String inPath, String archivePath);

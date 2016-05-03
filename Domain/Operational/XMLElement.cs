@@ -14,5 +14,6 @@ namespace FIS.BL.Domain.Operational
         public ICollection<Attribute> Attributes { get; set; }
         public String Level { get; set; }
         public int SequenceNumber { get; set; }
+        public Message Message { get; set; }
     }
 }

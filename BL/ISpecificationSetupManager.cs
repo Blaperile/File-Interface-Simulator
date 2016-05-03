@@ -18,6 +18,7 @@ namespace FIS.BL
         FileSpecification GetFileSpecification(int specificationId);
         FileSpecification GetFileSpecification(string name);
         FileSpecification GetFileSpecification(string name, string version);
+        FileSpecification GetFileSpecificationAtStartWorkflowTemplateWithName(string specificationName);
         List<FileSpecification> GetFileSpecifications();
         FileSpecification RemoveFileSpecification(int specificationId);
         GroupCondition GetGroupCondition(int specificationId, String groupCode);

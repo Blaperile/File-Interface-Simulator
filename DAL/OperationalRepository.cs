@@ -6,6 +6,8 @@ using System.Threading.Tasks;
 using FIS.BL.Domain.Operational;
 using FIS.DAL.EF;
 using FIS.BL.Domain.Setup;
+using System.Xml;
+using System.Data.Entity;
 
 namespace FIS.DAL
 {
@@ -27,7 +29,12 @@ namespace FIS.DAL
 
         public Message ReadMessage(int messageId)
         {
-            Message message = ctx.Messages.Find(messageId);
+            return ctx.Messages.Find(messageId);
+        }
+
+        public Message ReadMessageWithRelatedData(int messageId)
+        {
+            Message message = ReadMessage(messageId);
             ctx.Entry<Message>(message).Reference<FileSpecification>(m => m.FileSpecification).Load();
             LoadHeaderFields(message);
             LoadTransactions(message);
@@ -88,7 +95,10 @@ namespace FIS.DAL
 
         public Message UpdateMessage(Message message)
         {
-            throw new NotImplementedException();
+            ctx.Messages.Attach(message);
+            ctx.Entry(message).State = EntityState.Modified;
+            ctx.SaveChanges();
+            return message;
         }
 
         public Message DeleteMessage(int messageId)
@@ -106,9 +116,9 @@ namespace FIS.DAL
             return elements;
         }
 
-        public IEnumerable<IElement> GetElements(int messageId)
+        public IEnumerable<XMLElement> GetElements(int messageId)
         {
-            throw new NotImplementedException();
+            return ctx.XmlElements.Where(e => e.Message.MessageId == messageId).ToList();
         }
 
         public Workflow CreateWorkflow(Workflow workflow)

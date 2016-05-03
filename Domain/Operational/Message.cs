@@ -20,5 +20,6 @@ namespace FIS.BL.Domain.Operational
         public ICollection<Transaction> Transactions { get; set; }
         public FileSpecification FileSpecification { get; set; }
         public Workflow Workflow { get; set; }
+        public ICollection<IElement> Elements { get; set; }
     }
 }

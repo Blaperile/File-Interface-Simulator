@@ -152,6 +152,11 @@ namespace FIS.BL
             return specSetupRepo.ReadFileSpecification(name, version);
         }
 
+        public FileSpecification GetFileSpecificationAtStartWorkflowTemplateWithName(string specificationName)
+        {
+            return specSetupRepo.ReadFileSpecificationAtStartWorkflowTemplateWithName(specificationName);
+        }
+
         public List<FileSpecification> GetFileSpecifications()
         {
             return specSetupRepo.ReadFileSpecifications();

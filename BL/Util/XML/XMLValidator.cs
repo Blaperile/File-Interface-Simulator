@@ -10,11 +10,16 @@ namespace FIS.BL.Util.XML
 {
     public class XMLValidator : IValidator
     {
-        public IEnumerable<String> Codes { get; set; }
+        public ICollection<String> Codes { get; set; }
 
         public XMLValidator(IEnumerable<IElement> elements, FileSpecification fileSpecification, Message message)
         {
-            throw new NotImplementedException();
+            Codes = new List<String>();
+
+            foreach (IElement element in elements)
+            {
+                Codes.Add(((XMLElement)element).Code);
+            }
         }
 
         public IElement GetElement(string elementName)
