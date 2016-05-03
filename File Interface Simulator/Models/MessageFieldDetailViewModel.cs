@@ -11,5 +11,6 @@
         public string Format { get; set; } = "-";
         public string Group { get; set; }
         public string Level { get; set; }
+        public string ErrorMessage { get; set; }
     }
 }

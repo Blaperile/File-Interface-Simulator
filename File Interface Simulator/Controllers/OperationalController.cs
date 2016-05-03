@@ -26,43 +26,67 @@ namespace File_Interface_Simulator.Controllers
                 SpecificationFile = message.FileSpecification.Name,
                 Type = message.FileSpecification.IsInput? "Input" : "Output",
                 HeaderFields = new List<MessageHeaderFieldDetailViewModel>(),
-                Transactions = new List<MessageTransactionDetailViewModel>()
+                Transactions = new List<MessageTransactionDetailViewModel>(),
+                AmountOfHeaderErrors = 0,
+                AmountOfErrors = 0
             };
 
             foreach (HeaderField headerField in message.HeaderFields)
             {
-                model.HeaderFields.Add(new MessageHeaderFieldDetailViewModel()
+                MessageHeaderFieldDetailViewModel headerFieldModel = new MessageHeaderFieldDetailViewModel()
                 {
                     Code = headerField.HeaderFieldCode,
                     Content = headerField.Description,
                     Datatype = headerField.HeaderCondition.Datatype,
                     Size = headerField.HeaderCondition.Size,
                     ErrorMessage = headerField.ErrorDescription
-                });
+                };
+
+                if (!String.IsNullOrEmpty(headerFieldModel.ErrorMessage))
+                {
+                    model.AmountOfHeaderErrors++;
+                    model.AmountOfErrors++;
+                }
+
+                model.HeaderFields.Add(headerFieldModel);
+             
             }
 
             foreach (Transaction transaction in message.Transactions)
             {
                 MessageTransactionDetailViewModel transactionModel = new MessageTransactionDetailViewModel()
                 {
+                     AmountOfFieldErrors = 0,
                     Fields = new List<MessageFieldDetailViewModel>(),
-                    Groups = new List<MessageGroupDetailViewModel>()
+                    AmountOfGroupErrors = 0,
+                    Groups = new List<MessageGroupDetailViewModel>(),
                 };
 
                 foreach (Group group in transaction.Groups)
                 {
-                    transactionModel.Groups.Add(new MessageGroupDetailViewModel()
+                    MessageGroupDetailViewModel groupModel = new MessageGroupDetailViewModel()
                     {
                         Code = group.GroupCode,
                         AmountOfFields = group.Fields.Count(),
                         Count = transaction.Groups.Where(g => g.GroupCode.Equals(group.GroupCode)).Count(),
                         Description = group.GroupCondition.Description,
-                        Level = group.Level
-                    });
+                        Level = group.Level,
+                        ErrorMessage = group.ErrorDescription
+                    };
+
+                    if(!String.IsNullOrEmpty(groupModel.ErrorMessage))
+                    {
+                        transactionModel.AmountOfGroupErrors++;
+                        model.AmountOfErrors++;
+                    }
+
+                    transactionModel.Groups.Add(groupModel);
+
+                    
 
                     foreach (Field field in group.Fields)
                     {
-                        transactionModel.Fields.Add(new MessageFieldDetailViewModel()
+                        MessageFieldDetailViewModel fieldModel = new MessageFieldDetailViewModel()
                         {
                             Code = field.FieldCode,
                             Datatype = field.FileSpecFieldCondition.FieldSpecFieldCondition.Datatype,
@@ -72,8 +96,17 @@ namespace File_Interface_Simulator.Controllers
                             Name = field.FileSpecFieldCondition.Description,
                             Size = field.FileSpecFieldCondition.FieldSpecFieldCondition.Size,
                             Optional = field.FileSpecFieldCondition.IsOptional ? "O" : "M",
-                            Value = field.Value
-                        });
+                            Value = field.Value,
+                            ErrorMessage = field.ErrorDescription
+                        };
+
+                        if (!String.IsNullOrEmpty(fieldModel.ErrorMessage))
+                        {
+                            transactionModel.AmountOfFieldErrors++;
+                            model.AmountOfErrors++;
+                        }
+
+                        transactionModel.Fields.Add(fieldModel);
                     }
                 }
 

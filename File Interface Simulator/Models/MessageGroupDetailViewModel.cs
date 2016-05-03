@@ -7,5 +7,6 @@
         public int Count { get; set; }
         public int AmountOfFields { get; set; }
         public string Level { get; set; }
+        public string ErrorMessage { get; set; }
     }
 }

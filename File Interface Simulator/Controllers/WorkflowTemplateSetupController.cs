@@ -26,8 +26,9 @@ namespace File_Interface_Simulator.Controllers
         {
             try
             {
-                workflowTemplateSetupManager.AddWorkflowTemplate(model.Name);
-                return View("Index", "Home");
+                WorkflowTemplate workflowTemplate = workflowTemplateSetupManager.AddWorkflowTemplate(model.Name);
+               
+                return RedirectToAction("WorkflowTemplateDetail", "WorkflowTemplateSetup", new { workflowTemplateId = workflowTemplate.WorkflowTemplateId });
             } catch (Exception e)
             {
                 ViewBag.Error = e.Message;

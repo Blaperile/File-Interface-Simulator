@@ -2,8 +2,6 @@
 
 @{
     ViewBag.Title = "Message";
-    int headerErrors = Model.HeaderFields.Where(hf => !String.IsNullOrEmpty(hf.ErrorMessage)).Count();
-    int errorCount = headerErrors;
 }
 
 <h1>@ViewBag.Title: @Model.MessageId</h1>
@@ -47,15 +45,15 @@
         </dt>
 
         <dd style="font-weight: bold">
-            @errorCount
+            @Model.AmountOfErrors
         </dd>
 
     </dl>
 </div>
 
-@if (headerErrors > 0)
+@if (Model.AmountOfHeaderErrors > 0)
 {
-    <h1><img src="/images/minus_icon.png" class="btn btn-default min-btn" onclick="collapse(this,'header')" /> Header (@Model.HeaderFields.Count()) <img src="~/images/exclamation_mark_icon.png" title="@headerErrors error(s)"/></h1>
+    <h1><img src="/images/minus_icon.png" class="btn btn-default min-btn" onclick="collapse(this,'header')" /> Header (@Model.HeaderFields.Count()) <img src="~/images/exclamation_mark_icon.png" title="@Model.AmountOfHeaderErrors error(s)" /></h1>
 }
 else
 {
@@ -81,9 +79,9 @@ else
             </th>
         </tr>
         @foreach (var headerField in Model.HeaderFields)
-            {
+        {
             if (!String.IsNullOrEmpty(headerField.ErrorMessage))
-                {
+            {
                 <tr style="background-color: RGBA(255,0,0,0.5)">
                     <td>
                         @Html.DisplayFor(item => headerField.Code)
@@ -125,11 +123,27 @@ else
 
 @for (int i = 0; i < Model.Transactions.Count(); i++)
 {
-    <h1><img src="~/images/minus_icon.png" class="btn btn-default min-btn" onclick="collapse(this,'transaction@(i+1)')" /> Transaction @(i + 1)</h1>
+
+    if (Model.Transactions.ElementAt(i).AmountOfErrors > 0)
+    {
+        <h1><img src="~/images/minus_icon.png" class="btn btn-default min-btn" onclick="collapse(this,'transaction@(i + 1)')" /> Transaction @(i + 1) <img src="~/images/exclamation_mark_icon.png" title="@Model.Transactions.ElementAt(i).AmountOfErrors error(s)" /></h1>
+    }
+    else
+    {
+        <h1><img src="~/images/minus_icon.png" class="btn btn-default min-btn" onclick="collapse(this,'transaction@(i + 1)')" /> Transaction @(i + 1)</h1>
+    }
     <hr />
 
     <div id="transaction@(i+1)">
-        <h2><img src="~/images/minus_icon.png" class="btn btn-default min-btn" onclick="collapse(this,'groups@(i+1)')" /> Groups (@Model.Transactions.ElementAt(i).Groups.Count())</h2>
+
+        @if (Model.Transactions.ElementAt(i).AmountOfGroupErrors > 0)
+        {
+            <h2><img src="~/images/minus_icon.png" class="btn btn-default min-btn" onclick="collapse(this,'groups@(i+1)')" /> Groups (@Model.Transactions.ElementAt(i).Groups.Count()) <img src="~/images/exclamation_mark_icon.png" title="@Model.Transactions.ElementAt(i).AmountOfGroupErrors error(s)" /></h2>
+        }
+        else
+        {
+            <h2><img src="~/images/minus_icon.png" class="btn btn-default min-btn" onclick="collapse(this,'groups@(i+1)')" /> Groups (@Model.Transactions.ElementAt(i).Groups.Count()) </h2>
+        }
         <hr />
 
         <div id="groups@(i+1)">
@@ -151,32 +165,64 @@ else
                         Level
                     </th>
                 </tr>
-                <tr>
-                    @foreach (var group in Model.Transactions.ElementAt(i).Groups)
+                @foreach (var group in Model.Transactions.ElementAt(i).Groups)
                 {
-                        <td>
-                            @Html.DisplayFor(item => group.Code)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(item => group.Description)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(item => group.Count)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(item => group.AmountOfFields)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(item => group.Level)
-                        </td>
+                    if (String.IsNullOrEmpty(group.ErrorMessage))
+                    {
+                        <tr>
+                            <td>
+                                @Html.DisplayFor(item => group.Code)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(item => group.Description)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(item => group.Count)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(item => group.AmountOfFields)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(item => group.Level)
+                            </td>
+                        </tr>
                     }
-                </tr>
+                    else
+                    {
+                        <tr style="background-color: RGBA(255,0,0,0.5)">
+                            <td>
+                                @Html.DisplayFor(item => group.Code)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(item => group.Description)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(item => group.Count)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(item => group.AmountOfFields)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(item => group.Level)
+                            </td>
+                            <td style="background-color: white">
+                                <span class="errorMessage"><img src="~/images/exclamation_mark_icon.png" /> @Html.DisplayFor(item => group.ErrorMessage)</span>
+                            </td>
+                        </tr>
+                    }
+                }
             </table>
         </div>
 
-        <h2><img src="~/images/minus_icon.png" class="btn btn-default min-btn" onclick="collapse(this,'fields@(i+1)')" /> Fields (@Model.Transactions.ElementAt(i).Fields.Count())</h2>
+        @if (Model.Transactions.ElementAt(i).AmountOfFieldErrors > 0)
+        {
+            <h2><img src="~/images/minus_icon.png" class="btn btn-default min-btn" onclick="collapse(this,'fields@(i + 1)')" /> Fields (@Model.Transactions.ElementAt(i).Fields.Count()) <img src="~/images/exclamation_mark_icon.png" title="@Model.Transactions.ElementAt(i).AmountOfFieldErrors errors"/></h2>
+        }
+        else
+        {
+            <h2><img src="~/images/minus_icon.png" class="btn btn-default min-btn" onclick="collapse(this,'fields@(i + 1)')" /> Fields (@Model.Transactions.ElementAt(i).Fields.Count())</h2>
+        }
         <hr />
-
         <div id="fields@(i+1)">
             <table class="table">
                 <tr>
@@ -208,38 +254,76 @@ else
                         Level
                     </th>
                 </tr>
-                <tr>
                     @foreach (var field in Model.Transactions.ElementAt(i).Fields)
-                {
-                        <td>
-                            @Html.DisplayFor(item => field.Code)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(item => field.Name)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(item => field.Optional)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(item => field.Value)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(item => field.Datatype)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(item => field.Size)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(item => field.Format)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(item => field.Group)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(item => field.Level)
-                        </td>
+                    {
+                        if (String.IsNullOrEmpty(field.ErrorMessage))
+                        {
+                            <tr>
+                                <td>
+                                    @Html.DisplayFor(item => field.Code)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(item => field.Name)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(item => field.Optional)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(item => field.Value)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(item => field.Datatype)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(item => field.Size)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(item => field.Format)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(item => field.Group)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(item => field.Level)
+                                </td>
+                            </tr>
+                        }
+                        else
+                        {
+                            <tr style="background-color: RGBA(255,0,0,0.5)">
+                                <td>
+                                    @Html.DisplayFor(item => field.Code)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(item => field.Name)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(item => field.Optional)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(item => field.Value)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(item => field.Datatype)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(item => field.Size)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(item => field.Format)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(item => field.Group)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(item => field.Level)
+                                </td>
+                                <td style="background-color: white">
+                                    <span class="errorMessage"><img src="~/images/exclamation_mark_icon.png" /> @Html.DisplayFor(item => field.ErrorMessage)</span>
+                                </td>
+                            </tr>
+                        }
                     }
-                </tr>
             </table>
         </div>
     </div>
