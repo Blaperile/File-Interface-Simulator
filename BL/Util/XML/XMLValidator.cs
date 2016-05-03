@@ -10,11 +10,78 @@ namespace FIS.BL.Util.XML
 {
     public class XMLValidator : IValidator
     {
-        public IEnumerable<String> Codes { get; set; }
+        public ICollection<String> Codes { get; set; }
 
-        public XMLValidator(IEnumerable<IElement> elements, FileSpecification fileSpecification, Message message)
+        public XMLValidator(IEnumerable<XMLElement> elements, FileSpecification fileSpecification, Message message)
         {
-            throw new NotImplementedException();
+            Codes = new List<String>();
+
+            message.HeaderFields = new List<HeaderField>();
+
+            foreach (IElement element in elements)
+            {
+                Codes.Add(((XMLElement)element).Code);
+            }
+
+            CheckHeaderFields(elements, fileSpecification, message);
+
+        }
+
+        private void CheckHeaderFields(IEnumerable<XMLElement> elements, FileSpecification fileSpecification, Message message)
+        {
+            foreach (HeaderCondition headerCondition in fileSpecification.HeaderConditions)
+            {
+                IEnumerable<XMLElement> temp = elements.Where(e => e.Code.Equals(headerCondition.HeaderFieldCode)).Where(e => e.Level.Equals("Header")).ToList();
+
+                HeaderField headerField = null;
+
+                headerField = CheckAmountOfOccurencesOfHeaderField(message, headerCondition, temp, headerField);
+
+                temp = CheckContentOfHeaderField(headerCondition, temp, headerField);
+            }
+        }
+
+        private IEnumerable<XMLElement> CheckContentOfHeaderField(HeaderCondition headerCondition, IEnumerable<XMLElement> temp, HeaderField headerField)
+        {
+            if (temp.Count() > 0 && !String.IsNullOrEmpty(headerCondition.Description))
+            {
+                temp = temp.Where(e => e.Value.Equals(headerCondition.Description)).ToList();
+
+                if (temp.Count() == 0)
+                {
+                    headerField.ErrorDescription = String.Format("Value of this field must be {0}", headerCondition.Description);
+                }
+            }
+
+            return temp;
+        }
+
+        private HeaderField CheckAmountOfOccurencesOfHeaderField(Message message, HeaderCondition headerCondition, IEnumerable<XMLElement> temp, HeaderField headerField)
+        {
+            if (temp.Count() >= 1)
+            {
+                headerField = new HeaderField()
+                {
+                    HeaderFieldCode = headerCondition.HeaderFieldCode,
+                    Description = temp.First().Value,
+                    HeaderCondition = headerCondition,
+                    Message = message
+                };
+
+                Codes.Remove(headerCondition.HeaderFieldCode);
+                message.HeaderFields.Add(headerField);
+            }
+
+            if (temp.Count() > 1)
+            {
+                headerField.ErrorDescription = "There can be only one occurence of every headerfield code.";
+            }
+            else if (temp.Count() == 0)
+            {
+                message.HeaderErrorDescription += String.Format("Headerfield {0} is missing from this message.", headerCondition.HeaderFieldCode);
+            }
+
+            return headerField;
         }
 
         public IElement GetElement(string elementName)

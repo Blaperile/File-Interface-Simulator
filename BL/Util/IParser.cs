@@ -9,6 +9,6 @@ namespace FIS.BL.Util
 {
     public interface IParser
     {
-        IEnumerable<IElement> GetElements(String xmlString);
+        IEnumerable<IElement> GetElements(Message message, String xmlString);
     }
 }

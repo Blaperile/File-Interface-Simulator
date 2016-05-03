@@ -12,10 +12,14 @@ namespace FIS.BL.Util
     public class DirectoryHandler: IDirectoryHandler
     {
 
-
-        public void CreateFile(string fileName, string content)
+        public void CreateFile(string fileName, string content, Domain.Setup.Directory directory)
         {
-            throw new NotImplementedException();
+            string path = directory.Location + @"\" + fileName;
+            using (FileStream fs = File.Create(path))
+            {
+                Byte[] info = new UTF8Encoding(true).GetBytes(content);
+                fs.Write(info, 0, info.Length);
+            }
         }
 
         public string GetContentOfFile(string fileName, Domain.Setup.Directory currentDirectory)

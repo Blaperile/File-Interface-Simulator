@@ -10,7 +10,7 @@ namespace FIS.BL
 {
     public interface IOperationalManager
     {
-        Message GetMessage(int messageId);
+        Message GetMessageWithRelatedData(int messageId);
         List<Message> GetMessages();
         List<Message> GetMessagesOfFileSpecification(int specificationId);
         Message RemoveMessage(int messageId);
@@ -21,7 +21,7 @@ namespace FIS.BL
         Workflow RemoveWorkflow(int workflowId);
         void DetectInput();
         void ValidateInput(int messageId);
-        void ArchiveErrorLines();
+        void ArchiveErrorLines(Message message, FileSpecification fileSpecification, IEnumerable<String> codes);
         void GenerateAnswer(Message message, Workflow workflow, WorkflowTemplate workflowTemplate);
 
     }

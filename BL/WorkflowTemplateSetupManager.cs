@@ -24,6 +24,7 @@ namespace FIS.BL
         {
             WorkflowTemplate workflowTemplate = GetWorkflowTemplate(workflowTemplateId);
             FileSpecification fileSpecification = specSetupManager.GetFileSpecification(specificationName);
+            fileSpecification.StepNumberInWorkflowTemplate = stepNumber;
             workflowTemplate.FileSpecifications.Add(fileSpecification);
             fileSpecification.WorkflowTemplate = workflowTemplate;
             return workflowTemplateSetupRepo.UpdateWorkflowTemplate(workflowTemplate);

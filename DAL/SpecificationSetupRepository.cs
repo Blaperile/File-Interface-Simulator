@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using FIS.BL.Domain.Setup;
 using FIS.DAL.EF;
+using FIS.BL.Domain.Operational;
 
 namespace FIS.DAL
 {
@@ -105,6 +106,28 @@ namespace FIS.DAL
         public FileSpecification ReadFileSpecificationByDirectoryId(int directoryId)
         {
             throw new NotImplementedException();
+        }
+
+        public FileSpecification ReadFileSpecificationAtStartWorkflowTemplateWithName(string specificationName)
+        {
+            IEnumerable<FileSpecification> fileSpecifications = ctx.FileSpecifications.Where(fs => fs.Name.Equals(specificationName)).Where(fs => fs.StepNumberInWorkflowTemplate == 1);
+            if (fileSpecifications.Count() == 0) return null;
+            FileSpecification fileSpecification = fileSpecifications.First();
+            ctx.Entry<FileSpecification>(fileSpecification).Collection<HeaderCondition>(fs => fs.HeaderConditions).Load();
+            ctx.Entry<FileSpecification>(fileSpecification).Collection<GroupCondition>(fs => fs.GroupConditions).Load();
+            LoadFileSpecFieldConditions(fileSpecification);
+            ctx.Entry<FileSpecification>(fileSpecification).Collection<Directory>(fs => fs.Directories).Load();
+            ctx.Entry<FileSpecification>(fileSpecification).Collection<Message>(fs => fs.Messages).Load();
+            return fileSpecification;
+        }
+
+        private void LoadFileSpecFieldConditions(FileSpecification fileSpecification)
+        {
+            ctx.Entry<FileSpecification>(fileSpecification).Collection<FileSpecFieldCondition>(fs => fs.FileSpecFieldConditions).Load();
+            foreach (FileSpecFieldCondition fileSpecFieldCondition in fileSpecification.FileSpecFieldConditions)
+            {
+                ctx.Entry<FileSpecFieldCondition>(fileSpecFieldCondition).Reference<FieldSpecFieldCondition>(fc => fc.FieldSpecFieldCondition).Load();
+            }
         }
 
         public List<FileSpecification> ReadFileSpecifications()

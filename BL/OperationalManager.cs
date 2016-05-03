@@ -8,17 +8,18 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+
 namespace FIS.BL
 {
     public class OperationalManager : IOperationalManager
     {
         IOperationalRepository operationalRep;
-        ISpecificationSetupManager specFieldManager;
+        ISpecificationSetupManager specSetupManager;
 
         public OperationalManager()
         {
             operationalRep = new OperationalRepository();
-            specFieldManager = new SpecificationSetupManager();
+            specSetupManager = new SpecificationSetupManager();
         }
 
         public Workflow AddWorkflow(Message message)
@@ -37,14 +38,20 @@ namespace FIS.BL
             return operationalRep.CreateWorkflow(workflow);
         }
 
-        public void ArchiveErrorLines()
+        public void ArchiveErrorLines(Message message, FileSpecification fileSpecification, IEnumerable<String> codes)
         {
-            throw new NotImplementedException();
+            DirectoryHandler directoryHandler = new DirectoryHandler();
+            string contentOfErrorFile = "";
+            foreach (string code in codes)
+            {
+                contentOfErrorFile += code + Environment.NewLine;
+            }
+            directoryHandler.CreateFile(message.Name + ".txt", contentOfErrorFile, fileSpecification.Directories.Where(d => d.Name.Equals("error")).First());
         }
 
         public void DetectInput()
         {
-            List<Directory> directories = specFieldManager.GetInputDirectories();
+            List<Directory> directories = specSetupManager.GetInputDirectories();
             DirectoryHandler directoryHandler = new DirectoryHandler();
             XMLParser xmlParser = new XMLParser();
             foreach(Directory currentDirectory in directories)
@@ -53,14 +60,14 @@ namespace FIS.BL
                 foreach(String filename in filenames)
                 {
                     String content = directoryHandler.GetContentOfFile(filename, currentDirectory);
-                    IEnumerable <IElement> elements = xmlParser.GetElements(content);
-                    operationalRep.CreateElements(elements);
                     Message message = new Message();
                     message.Date = DateTime.Now;
                     message.Name = filename;
                     message.MessageState = MessageState.Created;
-                    message = operationalRep.CreateMessage(message);
+                    IEnumerable <IElement> elements = xmlParser.GetElements(message, content);
+                    operationalRep.CreateElements(elements);
                     Workflow workflow = AddWorkflow(message);
+                    ValidateInput(message.MessageId);
                 }
             }
         
@@ -74,6 +81,11 @@ namespace FIS.BL
         public Message GetMessage(int messageId)
         {
             return operationalRep.ReadMessage(messageId);
+        }
+
+        public Message GetMessageWithRelatedData(int messageId)
+        {
+            return operationalRep.ReadMessageWithRelatedData(messageId);
         }
 
         public List<Message> GetMessages()
@@ -113,7 +125,15 @@ namespace FIS.BL
 
         public void ValidateInput(int messageId)
         {
-            throw new NotImplementedException();
+            IEnumerable<XMLElement> elements = operationalRep.GetElements(messageId);
+            XMLElement flowIdElement = elements.Where(e => e.Code.Equals("FLOWID")).Single();
+            FileSpecification fileSpecification = specSetupManager.GetFileSpecificationAtStartWorkflowTemplateWithName(flowIdElement.Value);
+            Message message = GetMessage(messageId);
+            XMLValidator validator = new XMLValidator(elements, fileSpecification, message);
+            message.FileSpecification = fileSpecification;
+            fileSpecification.Messages.Add(message);
+            ArchiveErrorLines(message, fileSpecification, validator.Codes);
+            operationalRep.UpdateMessage(message);
         }
     }
 }

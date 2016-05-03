@@ -16,7 +16,7 @@ namespace File_Interface_Simulator.Controllers
         [HttpGet]
         public ActionResult MessageDetail(int id = 2)
         {
-            Message message = operationalManager.GetMessage(id);
+            Message message = operationalManager.GetMessageWithRelatedData(id);
 
             MessageDetailViewModel model = new MessageDetailViewModel()
             {
@@ -24,12 +24,19 @@ namespace File_Interface_Simulator.Controllers
                 MessageId = id.ToString(),
                 MessageState = message.MessageState.ToString(),
                 SpecificationFile = message.FileSpecification.Name,
-                Type = message.FileSpecification.IsInput? "Input" : "Output",
+                Type = message.FileSpecification.IsInput ? "Input" : "Output",
                 HeaderFields = new List<MessageHeaderFieldDetailViewModel>(),
                 Transactions = new List<MessageTransactionDetailViewModel>(),
+                HeaderError = message.HeaderErrorDescription,
                 AmountOfHeaderErrors = 0,
                 AmountOfErrors = 0
             };
+
+            if(!String.IsNullOrEmpty(model.HeaderError))
+            {
+                model.AmountOfHeaderErrors++;
+                model.AmountOfErrors++;
+            }
 
             foreach (HeaderField headerField in message.HeaderFields)
             {
