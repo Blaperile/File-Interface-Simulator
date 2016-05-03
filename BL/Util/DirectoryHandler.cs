@@ -32,5 +32,12 @@ namespace FIS.BL.Util
             }
             return fileNames;
         }
+        
+        public void MoveFile(String fileName,  String inPath, String archivePath)
+        {
+            inPath += fileName;
+            archivePath += fileName;
+            File.Move(inPath, archivePath);
+        }
     }
 }
