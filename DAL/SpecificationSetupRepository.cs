@@ -57,7 +57,35 @@ namespace FIS.DAL
 
         public FileSpecification ReadFileSpecification(int specificationId)
         {
-            throw new NotImplementedException();
+             FileSpecification fileSpec = ctx.FileSpecifications.FirstOrDefault(f => f.FileSpecificationId == specificationId);
+            ctx.Entry<FileSpecification>(fileSpec).Collection<Directory>(f => f.Directories).Load();
+            LoadHeaderConditions(fileSpec);
+            LoadGroupConditions(fileSpec);
+             return fileSpec;
+        }
+
+        private void LoadHeaderConditions(FileSpecification fileSpecification)
+        {
+            ctx.Entry<FileSpecification>(fileSpecification).Collection<HeaderCondition>(f => f.HeaderConditions).Load();
+        }
+
+        private void LoadGroupConditions(FileSpecification fileSpecification)
+        {
+            ctx.Entry<FileSpecification>(fileSpecification).Collection<GroupCondition>(f => f.GroupConditions).Load();
+            foreach(GroupCondition groupCondition in fileSpecification.GroupConditions)
+            {
+                LoadFieldConditions(groupCondition);
+            }
+        }
+
+        private void LoadFieldConditions(GroupCondition groupCondition)
+        {
+            ctx.Entry<GroupCondition>(groupCondition).Collection<FileSpecFieldCondition>(g => g.FileSpecFieldConditions).Load();
+            foreach(FileSpecFieldCondition fileSpecFieldCondition in groupCondition.FileSpecFieldConditions)
+            {
+                ctx.Entry<FileSpecFieldCondition>(fileSpecFieldCondition).Reference<FieldSpecFieldCondition>(f => f.FieldSpecFieldCondition).Load();
+                ctx.Entry<FieldSpecFieldCondition>(fileSpecFieldCondition.FieldSpecFieldCondition).Collection<AllowedValue>(f => f.AllowedValues).Load();
+            }
         }
 
         public FileSpecification ReadFileSpecification(string name)

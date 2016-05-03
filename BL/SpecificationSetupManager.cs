@@ -139,7 +139,7 @@ namespace FIS.BL
 
         public FileSpecification GetFileSpecification(int specificationId)
         {
-            throw new NotImplementedException();
+            return specSetupRepo.ReadFileSpecification(specificationId);
         }
 
         public FileSpecification GetFileSpecification(string name)

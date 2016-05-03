@@ -15,7 +15,7 @@ namespace FIS.BL.Domain.Setup
         public string Description { get; set; }
         public bool IsOptional { get; set; }
         public int Level { get; set; }
-        public string Group { get; set; }
+        public GroupCondition Group { get; set; }
         public FieldSpecFieldCondition FieldSpecFieldCondition { get; set; }
         public FileSpecification FileSpecification { get; set; }
     }

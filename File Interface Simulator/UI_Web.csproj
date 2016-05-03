@@ -164,10 +164,14 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Models\FieldConditionViewModel.cs" />
     <Compile Include="Models\FieldSpecificationViewModel.cs" />
     <Compile Include="Models\FieldSpecificationOverviewDetailModel.cs" />
+    <Compile Include="Models\FileSpecificationDetailViewModel.cs" />
     <Compile Include="Models\FileSpecificationOverviewDetailModel.cs" />
     <Compile Include="Models\FileSpecificationViewModel.cs" />
+    <Compile Include="Models\GroupConditionViewModel.cs" />
+    <Compile Include="Models\HeaderConditionDetailViewModel.cs" />
     <Compile Include="Models\MessageDetailViewModel.cs" />
     <Compile Include="Models\MessageFieldDetailViewModel.cs" />
     <Compile Include="Models\MessageGroupDetailViewModel.cs" />
@@ -244,6 +248,7 @@
     <Content Include="Views\WorkflowTemplateSetup\CreateWorkflowTemplate.cshtml" />
     <Content Include="Views\WorkflowTemplateSetup\WorkflowTemplateDetail.cshtml" />
     <Content Include="Views\Operational\MessageDetail.cshtml" />
+    <Content Include="Views\SpecificationSetup\FileSpecificationDetail.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

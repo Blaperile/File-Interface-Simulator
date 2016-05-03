@@ -1,0 +1,238 @@
+﻿@model File_Interface_Simulator.Models.FileSpecificationDetailViewModel
+
+@{
+    ViewBag.Title = "File Specification";
+}
+
+<h1>@ViewBag.Title: @Model.Name</h1>
+
+<hr />
+<div>
+    <dl class="dl-horizontal">
+        <dt class="control-label">
+            Version
+        </dt>
+
+        <dd style="font-weight: bold">
+            @Html.DisplayFor(model => model.Version)
+        </dd>
+
+        <dt class="control-label">
+            Creation Date
+        </dt>
+
+        <dd style="font-weight: bold">
+            @Html.DisplayFor(model => model.CreationDate)
+        </dd>
+
+        <dt class="control-label">
+            Input/Output
+        </dt>
+
+        <dd style="font-weight: bold">
+            @Html.DisplayFor(model => model.InputOutput)
+        </dd>
+    </dl>
+</div>
+<h1>Folders</h1>
+@if (Model.InputOutput.Equals("Input"))
+{
+    <div class="row">
+        <div class="col-lg-6">
+            <dl class="dl-horizontal">
+                <dt class="control-label">
+                    In
+                </dt>
+
+                <dd style="font-weight: bold">
+                    @Html.DisplayFor(model => model.InFolder)
+                </dd>
+
+                <dt class="control-label">
+                    Archive
+                </dt>
+
+                <dd style="font-weight: bold">
+                    @Html.DisplayFor(model => model.ArchiveFolder)
+                </dd>
+
+            </dl>
+        </div>
+        <div class="col-lg-6">
+            <dl class="dl-horizontal">
+                <dt class="control-label">
+                    Error
+                </dt>
+
+                <dd style="font-weight: bold">
+                    @Html.DisplayFor(model => model.ErrorFolder)
+                </dd>
+
+            </dl>
+        </div>
+    </div>
+}
+else
+{
+    <div>
+        <dl class="dl-horizontal">
+            <dt class="control-label">
+                Out
+            </dt>
+
+            <dd style="font-weight: bold">
+                @Html.DisplayFor(model => model.OutputFolder)
+            </dd>
+        </dl>
+    </div>
+}
+<h1><img src="/images/minus_icon.png" class="btn btn-default min-btn" onclick="collapse(this,'header')" /> Header Conditions (@Model.HeaderConditions.Count()) </h1>
+<hr />
+<div id="header">
+    <table class="table">
+        <tr>
+            <th>
+                Code
+            </th>
+            <th>
+                Content
+            </th>
+            <th>
+                Datatype
+            </th>
+            <th>
+                Size
+            </th>
+        </tr>
+        @foreach (var headerCondition in Model.HeaderConditions)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(item => headerCondition.Code)
+                </td>
+                <td>
+                    @Html.DisplayFor(item => headerCondition.Content)
+                </td>
+                <td>
+                    @Html.DisplayFor(item => headerCondition.Datatype)
+                </td>
+                <td>
+                    @Html.DisplayFor(item => headerCondition.Size)
+                </td>
+            </tr>
+        }
+    </table>
+</div>
+<h2><img src="~/images/minus_icon.png" class="btn btn-default min-btn" onclick="collapse(this,'groups')" /> Group Conditions(@Model.GroupConditions.Count()) </h2>
+<hr />
+<div id="groups">
+    <table class="table">
+        <tr>
+            <th>
+                Code
+            </th>
+            <th>
+                Description
+            </th>
+            <th>
+                Range
+            </th>
+            <th>
+                Am. Fields
+            </th>
+            <th>
+                Level
+            </th>
+        </tr>
+        @foreach (var group in Model.GroupConditions)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(item => group.Code)
+                </td>
+                <td>
+                    @Html.DisplayFor(item => group.Description)
+                </td>
+                <td>
+                    @Html.DisplayFor(item => group.Range)
+                </td>
+                <td>
+                    @Html.DisplayFor(item => group.AmountFields)
+                </td>
+                <td>
+                    @Html.DisplayFor(item => group.Level)
+                </td>
+            </tr>
+        }
+    </table>
+</div>
+<h2><img src="~/images/minus_icon.png" class="btn btn-default min-btn" onclick="collapse(this,'fields')" /> Field Conditions (@Model.FieldConditions.Count())</h2>
+<hr />
+<div id="fields">
+    <table class="table">
+        <tr>
+            <th>
+                Code
+            </th>
+            <th>
+                Name
+            </th>
+            <th>
+                Optional
+            </th>
+            <th>
+                Values
+            </th>
+            <th>
+                Datatype
+            </th>
+            <th>
+                Size
+            </th>
+            <th>
+                Format
+            </th>
+            <th>
+                Group
+            </th>
+            <th>
+                Level
+            </th>
+            @foreach (var field in Model.FieldConditions)
+            {
+            <tr>
+                <td>
+                    @Html.DisplayFor(item => field.Code)
+                </td>
+                <td>
+                    @Html.DisplayFor(item => field.Name)
+                </td>
+                <td>
+                    @Html.DisplayFor(item => field.Optional)
+                </td>
+                <td>
+                    @Html.DisplayFor(item => field.Values)
+                </td>
+                <td>
+                    @Html.DisplayFor(item => field.Datatype)
+                </td>
+                <td>
+                    @Html.DisplayFor(item => field.Size)
+                </td>
+                <td>
+                    @Html.DisplayFor(item => field.Format)
+                </td>
+                <td>
+                    @Html.DisplayFor(item => field.Group)
+                </td>
+                <td>
+                    @Html.DisplayFor(item => field.Level)
+                </td>
+            </tr>
+            }
+        </table>
+</div>
+       
+        @section Scripts {
+            <script src="~/Scripts/Operational/messageDetail.js"></script>
+        }

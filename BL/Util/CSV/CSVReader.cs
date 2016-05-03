@@ -67,13 +67,15 @@ namespace FIS.BL.Util.CSV
 
                     if (fieldSpecFieldCondition != null)
                     {
+                        GroupCondition groupCondition = groupConditions.Where(g => g.Code.Equals(fileSpecLine.ElementAt(6))).First();
                         FileSpecFieldCondition fileSpecFieldCondition = new FileSpecFieldCondition()
                         {
                             Code = code,
                             Description = fileSpecLine.ElementAt(1),
                             Level = Convert.ToInt32(fileSpecLine.ElementAt(5)),
-                            Group = fileSpecLine.ElementAt(6),
+                            Group = groupCondition
                         };
+                        groupCondition.FileSpecFieldConditions.Add(fileSpecFieldCondition);
                         fileSpecFieldCondition.FileSpecification = fileSpec;
 
                         string optionalOrMandatory = fileSpecLine.ElementAt(4);
@@ -102,7 +104,8 @@ namespace FIS.BL.Util.CSV
                         Level = fileSpecLine.ElementAt(5),
                         ParentGroup = fileSpecLine.ElementAt(6),
                         MinimumAmountOfOccurences = fileSpecLine.ElementAt(7),
-                        MaximumAmountOfOccurences = fileSpecLine.ElementAt(8)
+                        MaximumAmountOfOccurences = fileSpecLine.ElementAt(8),
+                        FileSpecFieldConditions = new List<FileSpecFieldCondition>()
                     };
 
                     groupCondition.FileSpecification = fileSpec;

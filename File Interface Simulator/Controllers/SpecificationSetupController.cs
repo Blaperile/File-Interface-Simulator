@@ -51,11 +51,11 @@ namespace File_Interface_Simulator.Controllers
         [HttpPost]
         public ActionResult UploadFileSpecification(FileSpecificationViewModel model)
         {
-            try
+           try
             {
                 specSetupManager.AddFileSpecification(model.Name, model.Path, model.IsInput, model.InDirectoryPath, model.ArchiveDirectoryPath, model.ErrorDirectoryPath, model.OutDirectoryPath, model.Version, model.FieldSpecification);
                 return RedirectToAction("FileSpecificationOverview");
-            } catch (Exception ex)
+           } catch (Exception ex)
             {
                 ViewBag.Error = ex.Message;
 
@@ -118,6 +118,77 @@ namespace File_Interface_Simulator.Controllers
                 fieldSpecificationModels.Add(fileSpecificationModel);
             }
             return View("FieldSpecificationOverview", fieldSpecificationModels);
+        }
+
+        [HttpGet]
+        public ActionResult FileSpecificationDetail(int id = 1)
+        {
+
+            FileSpecification fileSpecification = specSetupManager.GetFileSpecification(id);
+
+            FileSpecificationDetailViewModel model = new FileSpecificationDetailViewModel()
+            {
+                Name = fileSpecification.Name,
+                Version = fileSpecification.Version,
+                CreationDate = fileSpecification.UploadDate,
+                InputOutput = fileSpecification.IsInput ? "Input" : "Output",
+                HeaderConditions = new List<HeaderConditionDetailViewModel>(),
+                GroupConditions = new List<GroupConditionViewModel>(),
+                FieldConditions = new List<FieldConditionViewModel>()
+            };
+            if (fileSpecification.IsInput)
+            {
+                model.InFolder = fileSpecification.Directories.Where(d => d.Name.Equals("in")).First().Location;
+                model.ArchiveFolder = fileSpecification.Directories.Where(d => d.Name.Equals("archive")).First().Location;
+                model.ErrorFolder = fileSpecification.Directories.Where(d => d.Name.Equals("error")).First().Location;
+            }
+            else
+            {
+                model.OutputFolder = fileSpecification.Directories.Where(d => d.Name.Equals("out")).First().Location;
+            }
+            foreach(HeaderCondition headerCondition in fileSpecification.HeaderConditions)
+            {
+                HeaderConditionDetailViewModel headerConditionModel = new HeaderConditionDetailViewModel()
+                {
+                    Code = headerCondition.HeaderFieldCode,
+                    Content = headerCondition.Description,
+                    Datatype = headerCondition.Datatype,
+                    Size = headerCondition.Size
+                };
+                model.HeaderConditions.Add(headerConditionModel);
+            }
+
+            foreach(GroupCondition groupCondition in fileSpecification.GroupConditions)
+            {
+                GroupConditionViewModel groupConditionModel = new GroupConditionViewModel()
+                {
+                    Code = groupCondition.Code,
+                    Description = groupCondition.Code,
+                    Range = groupCondition.MinimumAmountOfOccurences + "-" + groupCondition.MaximumAmountOfOccurences,
+                    AmountFields = groupCondition.FileSpecFieldConditions.Count,
+                    Level = groupCondition.Level
+                };
+                model.GroupConditions.Add(groupConditionModel);
+                
+                foreach(FileSpecFieldCondition fileSpecFieldCondition in groupCondition.FileSpecFieldConditions)
+                {
+                    FieldConditionViewModel fieldConditionModel = new FieldConditionViewModel()
+                    {
+                        Code = fileSpecFieldCondition.Code,
+                        Name = fileSpecFieldCondition.Description,
+                        Optional = fileSpecFieldCondition.IsOptional ? "O" : "M",
+                        Values = fileSpecFieldCondition.FieldSpecFieldCondition.AllowedValues.Count,
+                        Datatype = fileSpecFieldCondition.FieldSpecFieldCondition.Datatype,
+                        Size = fileSpecFieldCondition.FieldSpecFieldCondition.Size,
+                        Format = fileSpecFieldCondition.FieldSpecFieldCondition.Format,
+                        Group = fileSpecFieldCondition.Group.Description,
+                        Level = "L"+fileSpecFieldCondition.Level.ToString()
+                    };
+                    model.FieldConditions.Add(fieldConditionModel);
+                }
+            }
+
+            return View("FileSpecificationDetail", model);
         }
     }
 }
