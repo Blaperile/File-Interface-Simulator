@@ -23,46 +23,65 @@ namespace FIS.BL.Util.XML
                 Codes.Add(((XMLElement)element).Code);
             }
 
+            CheckHeaderFields(elements, fileSpecification, message);
+
+        }
+
+        private void CheckHeaderFields(IEnumerable<XMLElement> elements, FileSpecification fileSpecification, Message message)
+        {
             foreach (HeaderCondition headerCondition in fileSpecification.HeaderConditions)
             {
                 IEnumerable<XMLElement> temp = elements.Where(e => e.Code.Equals(headerCondition.HeaderFieldCode)).Where(e => e.Level.Equals("Header")).ToList();
 
                 HeaderField headerField = null;
 
-                if (temp.Count() >= 1)
-                {
-                    headerField = new HeaderField()
-                    {
-                        HeaderFieldCode = headerCondition.HeaderFieldCode,
-                        Description = headerCondition.Description,
-                        HeaderCondition = headerCondition,
-                        Message = message
-                    };
+                headerField = CheckAmountOfOccurencesOfHeaderField(message, headerCondition, temp, headerField);
 
-                    Codes.Remove(headerCondition.HeaderFieldCode);
-                    message.HeaderFields.Add(headerField);
-                }
+                temp = CheckContentOfHeaderField(headerCondition, temp, headerField);
+            }
+        }
 
-                if (temp.Count() > 1)
-                {
-                    headerField.ErrorDescription = "There can be only one occurence of every headerfield code.";
-                }
-                else if (temp.Count() == 0)
-                {
-                    message.HeaderErrorDescription += String.Format("Headerfield {0} is missing from this message.", headerCondition.HeaderFieldCode);
-                }
+        private IEnumerable<XMLElement> CheckContentOfHeaderField(HeaderCondition headerCondition, IEnumerable<XMLElement> temp, HeaderField headerField)
+        {
+            if (temp.Count() > 0 && !String.IsNullOrEmpty(headerCondition.Description))
+            {
+                temp = temp.Where(e => e.Value.Equals(headerCondition.Description)).ToList();
 
-                if (temp.Count() > 0 && !String.IsNullOrEmpty(headerCondition.Description))
+                if (temp.Count() == 0)
                 {
-                    temp = temp.Where(e => e.Value.Equals(headerCondition.Description)).ToList();
-
-                    if (temp.Count() == 0)
-                    {
-                        headerField.ErrorDescription = String.Format("Value of this field must be {0}", headerCondition.Description);
-                    }
+                    headerField.ErrorDescription = String.Format("Value of this field must be {0}", headerCondition.Description);
                 }
             }
 
+            return temp;
+        }
+
+        private HeaderField CheckAmountOfOccurencesOfHeaderField(Message message, HeaderCondition headerCondition, IEnumerable<XMLElement> temp, HeaderField headerField)
+        {
+            if (temp.Count() >= 1)
+            {
+                headerField = new HeaderField()
+                {
+                    HeaderFieldCode = headerCondition.HeaderFieldCode,
+                    Description = temp.First().Value,
+                    HeaderCondition = headerCondition,
+                    Message = message
+                };
+
+                Codes.Remove(headerCondition.HeaderFieldCode);
+                message.HeaderFields.Add(headerField);
+            }
+
+            if (temp.Count() > 1)
+            {
+                headerField.ErrorDescription = "There can be only one occurence of every headerfield code.";
+            }
+            else if (temp.Count() == 0)
+            {
+                message.HeaderErrorDescription += String.Format("Headerfield {0} is missing from this message.", headerCondition.HeaderFieldCode);
+            }
+
+            return headerField;
         }
 
         public IElement GetElement(string elementName)
