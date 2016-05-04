@@ -23,6 +23,7 @@ namespace FIS.BL
         FileSpecification RemoveFileSpecification(int specificationId);
         GroupCondition GetGroupCondition(int groupConditionId);
         FieldSpecFieldCondition GetFieldSpecFieldCondition(int fieldSpecificationId, string fieldCode);
+        FileSpecFieldCondition GetFileSpecFieldCondition(int id);
         List<FileSpecFieldCondition> GetFileSpecFieldConditionsOfGroup(int specificationId, String groupCode);
         List<FileSpecFieldCondition> GetFileSpecFieldConditionsLinkedToFieldSpecFieldCondition(int fieldSpecFieldConditionId);
         List<Directory> GetInputDirectories();

@@ -26,6 +26,7 @@ namespace FIS.DAL
 
         GroupCondition ReadGroupCondition(int groupConditionId);
         FieldSpecFieldCondition ReadFieldSpecFieldCondition(int fieldSpecificationId, string fieldCode);
+        FileSpecFieldCondition ReadFileSpecFieldCondition(int id);
         IEnumerable<FileSpecFieldCondition> ReadFileSpecFieldConditionsOfGroup(int specificationId, string groupCode);
         IEnumerable<FileSpecFieldCondition> ReadFileSpecFieldConditionsLinkedToFieldSpecFieldCondition(int fieldConditionId);
 

@@ -84,9 +84,14 @@ namespace FIS.DAL
             ctx.Entry<GroupCondition>(groupCondition).Collection<FileSpecFieldCondition>(g => g.FileSpecFieldConditions).Load();
             foreach(FileSpecFieldCondition fileSpecFieldCondition in groupCondition.FileSpecFieldConditions)
             {
-                ctx.Entry<FileSpecFieldCondition>(fileSpecFieldCondition).Reference<FieldSpecFieldCondition>(f => f.FieldSpecFieldCondition).Load();
-                ctx.Entry<FieldSpecFieldCondition>(fileSpecFieldCondition.FieldSpecFieldCondition).Collection<AllowedValue>(f => f.AllowedValues).Load();
+                LoadFieldSpecFieldCondition(fileSpecFieldCondition);
             }
+        }
+
+        private void LoadFieldSpecFieldCondition(FileSpecFieldCondition fileSpecFieldCondition)
+        {
+            ctx.Entry<FileSpecFieldCondition>(fileSpecFieldCondition).Reference<FieldSpecFieldCondition>(f => f.FieldSpecFieldCondition).Load();
+            ctx.Entry<FieldSpecFieldCondition>(fileSpecFieldCondition.FieldSpecFieldCondition).Collection<AllowedValue>(f => f.AllowedValues).Load();
         }
 
         public FileSpecification ReadFileSpecification(string name)
@@ -110,7 +115,7 @@ namespace FIS.DAL
 
         public FileSpecification ReadFileSpecificationAtStartWorkflowTemplateWithName(string specificationName)
         {
-            IEnumerable<FileSpecification> fileSpecifications = ctx.FileSpecifications.Where(fs => fs.Name.Equals(specificationName)).Where(fs => fs.StepNumberInWorkflowTemplate == 1);
+            IEnumerable<FileSpecification> fileSpecifications = ctx.FileSpecifications.Where(fs => fs.Name.Equals(specificationName, StringComparison.CurrentCultureIgnoreCase)).Where(fs => fs.StepNumberInWorkflowTemplate == 1);
             if (fileSpecifications.Count() == 0) return null;
             FileSpecification fileSpecification = fileSpecifications.First();
             ctx.Entry<FileSpecification>(fileSpecification).Collection<HeaderCondition>(fs => fs.HeaderConditions).Load();
@@ -153,6 +158,13 @@ namespace FIS.DAL
             IEnumerable<FieldSpecFieldCondition> fieldSpecFieldConditions = ctx.FieldSpecFieldConditions.Where(fsfc => fsfc.FieldSpecification.FieldSpecificationId == fieldSpecificationId).Where(fsfc => fsfc.FieldCode == fieldCode);
             if (fieldSpecFieldConditions.Count() == 0) return null;
             return fieldSpecFieldConditions.First();
+        }
+
+        public FileSpecFieldCondition ReadFileSpecFieldCondition(int id)
+        {
+            FileSpecFieldCondition fileSpecFieldCondition = ctx.FileSpecFieldConditions.Find(id);
+            LoadFieldSpecFieldCondition(fileSpecFieldCondition);
+            return fileSpecFieldCondition;
         }
 
         public IEnumerable<FileSpecFieldCondition> ReadFileSpecFieldConditionsOfGroup(int specificationId, string groupCode)

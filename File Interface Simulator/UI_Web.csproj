@@ -251,6 +251,7 @@
     <Content Include="Views\Operational\MessageDetail.cshtml" />
     <Content Include="Views\SpecificationSetup\FileSpecificationDetail.cshtml" />
     <Content Include="Views\SpecificationSetup\FileSpecificationGroupDetail.cshtml" />
+    <Content Include="Views\SpecificationSetup\FileSpecificationFieldDetail.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

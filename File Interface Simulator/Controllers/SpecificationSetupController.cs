@@ -229,5 +229,25 @@ namespace File_Interface_Simulator.Controllers
 
             return View("FileSpecificationGroupDetail", model);
         }
+
+        [HttpGet]
+        public ActionResult FileSpecificationFieldDetail(int id = 1)
+        {
+            FileSpecFieldCondition fileSpecFieldCondition = specSetupManager.GetFileSpecFieldCondition(id);
+
+            FieldConditionViewModel model = new FieldConditionViewModel()
+            {
+                Code = fileSpecFieldCondition.Code,
+                Name = fileSpecFieldCondition.Description,
+                Optional = fileSpecFieldCondition.IsOptional ? "Optional" : "Mandatory",
+                Values = fileSpecFieldCondition.FieldSpecFieldCondition.AllowedValues.Count,
+                Datatype = fileSpecFieldCondition.FieldSpecFieldCondition.Datatype,
+                Size = fileSpecFieldCondition.FieldSpecFieldCondition.Size,
+                Format = fileSpecFieldCondition.FieldSpecFieldCondition.Format,
+                Level = "L" + fileSpecFieldCondition.Level.ToString()
+            };
+
+            return View("FileSpecificationFieldDetail", model);
+        }
     }
 }

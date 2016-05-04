@@ -127,6 +127,11 @@ namespace FIS.BL
             return specSetupRepo.ReadFieldSpecFieldCondition(fieldSpecificationId, fieldCode);
         }
 
+        public FileSpecFieldCondition GetFileSpecFieldCondition(int id)
+        {
+            return specSetupRepo.ReadFileSpecFieldCondition(id);
+        }
+
         public List<FileSpecFieldCondition> GetFileSpecFieldConditionsLinkedToFieldSpecFieldCondition(int fieldSpecFieldConditionId)
         {
             throw new NotImplementedException();
