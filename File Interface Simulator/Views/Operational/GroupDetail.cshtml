@@ -1,0 +1,172 @@
+﻿@model File_Interface_Simulator.Models.GroupDetailViewModel
+
+@{
+    ViewBag.Title = "Group";
+}
+
+<h1>@ViewBag.Title: @Model.Code</h1>
+<hr />
+<div>
+    <dl class="dl-horizontal">
+        <dt class="control-label">
+            Description
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Description)
+        </dd>
+
+        <dt class="control-label">
+            Range
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Range)
+        </dd>
+
+        <dt class="control-label">
+            Level
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Level)
+        </dd>
+
+        <dt class="control-label">
+            Transaction
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Transactie)
+        </dd>
+
+        @if (!String.IsNullOrEmpty(Model.ErrorMessage))
+        {
+            <dt class="control-label">
+                Error messages
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => model.ErrorMessage)
+            </dd>
+        }
+
+    </dl>
+</div>
+@if (Model.AmountOfErrorMessages > 0)
+{
+    <h1><img src="/images/minus_icon.png" class="btn btn-default min-btn" onclick="collapse(this,'fields')" /> Fields (@Model.AmountOfFields) <img src="~/images/exclamation_mark_icon.png" title="@Model.AmountOfErrorMessages error(s)" /></h1>
+}
+else
+{
+    <h1><img src="/images/minus_icon.png" class="btn btn-default min-btn" onclick="collapse(this,'fields')" /> Fields (@Model.AmountOfFields) </h1>
+}
+<hr />
+<div id="fields">
+    <table class="table">
+        <tr>
+            <th>
+                Code
+            </th>
+            <th>
+                Name
+            </th>
+            <th>
+                Optional
+            </th>
+            <th>
+                Values
+            </th>
+            <th>
+                Datatype
+            </th>
+            <th>
+                Size
+            </th>
+            <th>
+                Format
+            </th>
+            <th>
+                Group
+            </th>
+            <th>
+                Level
+            </th>
+        </tr>
+
+        @foreach (var field in Model.Fields)
+        {
+            if (String.IsNullOrEmpty(field.ErrorMessage))
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(item => field.Code)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(item => field.Name)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(item => field.Optional)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(item => field.Value)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(item => field.Datatype)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(item => field.Size)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(item => field.Format)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(item => field.Group)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(item => field.Level)
+                    </td>
+                </tr>
+            }
+            else
+            {
+                <tr style="background-color: RGBA(255,0,0,0.5)">
+                    <td>
+                        @Html.DisplayFor(item => field.Code)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(item => field.Name)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(item => field.Optional)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(item => field.Value)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(item => field.Datatype)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(item => field.Size)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(item => field.Format)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(item => field.Group)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(item => field.Level)
+                    </td>
+                    <td style="background-color: white">
+                        <span class="errorMessage"><img src="~/images/exclamation_mark_icon.png" /> @Html.DisplayFor(item => field.ErrorMessage)</span>
+                    </td>
+                </tr>
+            }
+        }
+    </table>
+</div>
+
+@section Scripts {
+    <script src="~/Scripts/Operational/messageDetail.js"></script>
+}

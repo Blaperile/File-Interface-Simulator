@@ -11,6 +11,7 @@ namespace FIS.BL.Domain.Operational
         /*One distinct part of the message that contains all data for one transaction, for example for one new contract request*/
 
         public int TransactionId { get; set; }
+        public string Name { get; set; }
         public string ErrorDescription { get; set; }
         public ICollection<Group> Groups { get; set; }
         public Message Message { get; set; }

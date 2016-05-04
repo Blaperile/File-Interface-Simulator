@@ -122,5 +122,41 @@ namespace File_Interface_Simulator.Controllers
 
             return View("MessageDetail", model);
         }
+
+        public ActionResult GroupDetail(int id = 1)
+        {
+            Group group = operationalManager.GetGroupWithRelatedDate(id);
+            GroupDetailViewModel groupDetailModel = new GroupDetailViewModel {
+                Code = group.GroupCode,
+                Description = group.GroupCondition.Description,
+                Range = group.GroupCondition.MinimumAmountOfOccurences + "-" + group.GroupCondition.MaximumAmountOfOccurences,
+                Level = group.Level,
+                ErrorMessage = group.ErrorDescription,
+                AmountOfErrorMessages = group.Fields.Where(f => f.ErrorDescription!=null).Count(),
+                AmountOfFields = group.Fields.Count(),
+                Transactie = "T1",/*group.Transaction.Name,*/
+                Fields = new List<MessageFieldDetailViewModel>()
+            };
+            foreach(Field field in group.Fields)
+            {
+                MessageFieldDetailViewModel fieldDetailModel = new MessageFieldDetailViewModel
+                {
+                            Code = field.FieldCode,
+                            Datatype = field.FileSpecFieldCondition.FieldSpecFieldCondition.Datatype,
+                            Format = field.FileSpecFieldCondition.FieldSpecFieldCondition.Format.Count() > 0 ? field.FileSpecFieldCondition.FieldSpecFieldCondition.Format : "-",
+                            Group = group.GroupCode,
+                            Level = field.Level,
+                            Name = field.FileSpecFieldCondition.Description,
+                            Size = field.FileSpecFieldCondition.FieldSpecFieldCondition.Size,
+                            Optional = field.FileSpecFieldCondition.IsOptional ? "O" : "M",
+                            Value = field.Value,
+                            ErrorMessage = field.ErrorDescription
+                };
+                groupDetailModel.Fields.Add(fieldDetailModel);
+            }
+
+            return View("GroupDetail", groupDetailModel);
+        }
+
     }
 }
