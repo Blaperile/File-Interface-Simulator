@@ -104,5 +104,32 @@ namespace File_Interface_Simulator.Controllers
 
             return RedirectToAction("WorkflowTemplateDetail", new { workflowTemplateId = model.WorkflowTemplateId });
         }
+
+        [HttpGet]
+        public ActionResult WorkflowTemplateOverview()
+        {
+            IEnumerable<WorkflowTemplate> workflowTemplates = workflowTemplateSetupManager.GetWorkflowTemplates();
+
+            ICollection<WorkflowTemplateOverviewDetailViewModel> model = new List<WorkflowTemplateOverviewDetailViewModel>();
+
+            foreach (WorkflowTemplate workflowTemplate in workflowTemplates)
+            {
+                model.Add(new WorkflowTemplateOverviewDetailViewModel()
+                {
+                    Id = workflowTemplate.WorkflowTemplateId,
+                    Name = workflowTemplate.Name,
+                    CreationDate = workflowTemplate.CreationDate,
+                    IsActive = workflowTemplate.IsChosen
+                });
+            }
+
+            return View("WorkflowTemplateOverview", model);
+        }
+
+        public ActionResult SelectWorkflowTemplateRPC(int id)
+        {
+            WorkflowTemplate workflowTemplate = workflowTemplateSetupManager.SelectWorkflowTemplate(id);
+            return RedirectToAction("WorkflowTemplateOverview");
+        }
     }
 }

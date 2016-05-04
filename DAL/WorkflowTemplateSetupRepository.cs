@@ -44,14 +44,18 @@ namespace FIS.DAL
 
         public WorkflowTemplate ReadSelectedWorkflowTemplate()
         {
-            throw new NotImplementedException();
+            IEnumerable<WorkflowTemplate> selectedWorkflowTemplates = ctx.WorkflowTemplates.Where(wt => wt.IsChosen);
+
+            if (selectedWorkflowTemplates.Count() == 0) return null;
+
+            return selectedWorkflowTemplates.First();
         }
 
-        public IEnumerable<WorkflowTemplate> ReadWorkflowTemplates()
+        public ICollection<WorkflowTemplate> ReadWorkflowTemplates()
         {
-            throw new NotImplementedException();
+            return ctx.WorkflowTemplates.ToList();
         }
-
+        
         public WorkflowTemplate UpdateWorkflowTemplate(WorkflowTemplate workflowTemplate)
         {
             ctx.WorkflowTemplates.Attach(workflowTemplate);

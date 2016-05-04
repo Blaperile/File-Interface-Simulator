@@ -1,0 +1,57 @@
+﻿@model IEnumerable<File_Interface_Simulator.Models.WorkflowTemplateOverviewDetailViewModel>
+
+@{
+    ViewBag.Title = "Overview workflow templates";
+}
+
+<h1>@ViewBag.Title</h1>
+
+@using (Html.BeginForm())
+{
+    <table class="table">
+        <tr>
+            <th>
+
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Name)
+            </th>
+            <th>
+                Creation Date
+            </th>
+            <th>
+                Active
+            </th>
+        </tr>
+
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    <img src="~/images/thrash_icon.png" />
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Name)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.CreationDate)
+                </td>
+                <td>
+                    @if(item.IsActive) { 
+                        <input type="checkbox" checked onclick="selectWorkflowTemplate('@item.Id')"/>
+                    }
+                    else
+                    {
+                        <input type="checkbox" onclick="selectWorkflowTemplate('@item.Id')"/>
+                    }
+                </td>
+            </tr>
+        }
+    </table>
+}
+
+<a href="@Url.Action("CreateWorkflowTemplate", "WorkflowTemplateSetup")" class="btn btn-default"><img src="~/images/plus_icon.png" /> Add</a>
+
+@section Scripts {
+    <script src="~/Scripts/Setup/workflowTemplateOverview.js"></script>
+}

@@ -13,7 +13,7 @@ namespace FIS.DAL
         WorkflowTemplate ReadWorkflowTemplate(int workflowTemplateId);
         WorkflowTemplate ReadWorkflowTemplate(string name);
         WorkflowTemplate ReadSelectedWorkflowTemplate();
-        IEnumerable<WorkflowTemplate> ReadWorkflowTemplates();
+        ICollection<WorkflowTemplate> ReadWorkflowTemplates();
         WorkflowTemplate UpdateWorkflowTemplate(WorkflowTemplate workflowTemplate);
         WorkflowTemplate DeleteWorkflowTemplate(int workflowTemplateId);
     }

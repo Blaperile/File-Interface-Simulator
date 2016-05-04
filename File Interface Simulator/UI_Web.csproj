@@ -180,6 +180,7 @@
     <Compile Include="Models\MessageTransactionDetailViewModel.cs" />
     <Compile Include="Models\WorkflowTemplateDetailViewModel.cs" />
     <Compile Include="Models\WorkflowTemplateFileSpecificationDetailViewModel.cs" />
+    <Compile Include="Models\WorkflowTemplateOverviewDetailViewModel.cs" />
     <Compile Include="Models\WorkflowTemplatePossibleFileSpecificationDetailViewModel.cs" />
     <Compile Include="Models\WorkflowTemplateViewModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -225,6 +226,7 @@
     <Content Include="Scripts\respond.min.js" />
     <Content Include="Scripts\Setup\uploadFileSpecification.js" />
     <Content Include="Scripts\Setup\workflowTemplateDetail.js" />
+    <Content Include="Scripts\Setup\workflowTemplateOverview.js" />
     <Content Include="Scripts\_references.js" />
     <Content Include="Web.config">
       <SubType>Designer</SubType>
@@ -252,6 +254,7 @@
     <Content Include="Views\SpecificationSetup\FileSpecificationDetail.cshtml" />
     <Content Include="Views\SpecificationSetup\FileSpecificationGroupDetail.cshtml" />
     <Content Include="Views\SpecificationSetup\FileSpecificationFieldDetail.cshtml" />
+    <Content Include="Views\WorkflowTemplateSetup\WorkflowTemplateOverview.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
