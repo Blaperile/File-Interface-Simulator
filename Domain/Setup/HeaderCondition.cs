@@ -14,7 +14,8 @@ namespace FIS.BL.Domain.Setup
         public string HeaderFieldCode { get; set; }
         public string Description { get; set; }
         public string Datatype { get; set; }
-        public string Size { get; set; }
+        public int Size { get; set; }
+        public string Format { get; set; }
         public FileSpecification FileSpecification { get; set; }
     }
 }

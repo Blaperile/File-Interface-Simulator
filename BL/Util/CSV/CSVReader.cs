@@ -117,8 +117,13 @@ namespace FIS.BL.Util.CSV
                         HeaderFieldCode = code,
                         Description = fileSpecLine.ElementAt(1),
                         Datatype = fileSpecLine.ElementAt(2),
-                        Size = fileSpecLine.ElementAt(3)
+                        Format = fileSpecLine.ElementAt(9)
                     };
+
+                    int size = 0;
+                    Int32.TryParse(fileSpecLine.ElementAt(3), out size);
+
+                    headerCondition.Size = size;
 
                     headerCondition.FileSpecification = fileSpec;
                     headerConditions.Add(headerCondition);
