@@ -37,7 +37,7 @@ namespace File_Interface_Simulator.Controllers
         }
 
         [HttpGet]
-        public ActionResult WorkflowTemplateDetail(int workflowTemplateId)
+        public ActionResult WorkflowTemplateDetail(int workflowTemplateId = 1)
         {
             WorkflowTemplate workflowTemplate = workflowTemplateSetupManager.GetWorkflowTemplate(workflowTemplateId);
             WorkflowTemplateDetailViewModel model = new WorkflowTemplateDetailViewModel()
@@ -61,16 +61,10 @@ namespace File_Interface_Simulator.Controllers
             {
                 WorkflowTemplateFileSpecificationDetailViewModel fileSpecificationModel = new WorkflowTemplateFileSpecificationDetailViewModel()
                 {
-                    Name = fileSpecification.Name
+                    Name = fileSpecification.Name,
+                    Type = fileSpecification.IsInput? "Input" : "Output",
+                    Version = fileSpecification.Version
                 };
-
-                if (fileSpecification.IsInput)
-                {
-                    fileSpecificationModel.Type = "Input";
-                } else
-                {
-                    fileSpecificationModel.Type = "Output";
-                }
 
                 fileSpecifications.Add(fileSpecificationModel);
             }
@@ -86,16 +80,10 @@ namespace File_Interface_Simulator.Controllers
                 {
                     WorkflowTemplatePossibleFileSpecificationDetailViewModel possibleFileSpecificationModel = new WorkflowTemplatePossibleFileSpecificationDetailViewModel()
                     {
-                        Name = possibleFileSpecification.Name
+                        Name = possibleFileSpecification.Name,
+                        Type = possibleFileSpecification.IsInput ? "Input" : "Output",
+                        Version = possibleFileSpecification.Version
                     };
-
-                    if (possibleFileSpecification.IsInput)
-                    {
-                        possibleFileSpecificationModel.Type = "Input";
-                    } else
-                    {
-                        possibleFileSpecificationModel.Type = "Output";
-                    }
 
                     possibleFileSpecificationModels.Add(possibleFileSpecificationModel);
                 }
@@ -109,8 +97,10 @@ namespace File_Interface_Simulator.Controllers
         [HttpPost]
         public ActionResult WorkflowTemplateDetail(WorkflowTemplateDetailViewModel model)
         {
-            string specificationName = model.NewNameAndType.Split('-').ElementAt(0).Trim();
-            workflowTemplateSetupManager.AddStepToWorkflowTemplate(model.WorkflowTemplateId, model.NewSequenceNumber, specificationName);
+            string[] newStep = model.NewStep.Split('-');
+            string specificationName = newStep.ElementAt(0).Trim();
+            string specificationVersion = newStep.ElementAt(2).Trim();
+            workflowTemplateSetupManager.AddStepToWorkflowTemplate(model.WorkflowTemplateId, model.NewSequenceNumber, specificationName, specificationVersion);
 
             return RedirectToAction("WorkflowTemplateDetail", new { workflowTemplateId = model.WorkflowTemplateId });
         }

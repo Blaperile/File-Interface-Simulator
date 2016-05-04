@@ -48,6 +48,9 @@
             <th>
                 Type
             </th>
+            <th>
+                Version
+            </th>
         </tr>
 
         @for (int i = 0; i < Model.CurrentFileSpecifications.Count(); i++)
@@ -65,6 +68,9 @@
                 <td>
                     @Html.DisplayFor(modelItem => Model.CurrentFileSpecifications.ElementAt(i).Type)
                 </td>
+                <td>
+                    @Html.DisplayFor(modelItem => Model.CurrentFileSpecifications.ElementAt(i).Version)
+                </td>
             </tr>
         }
         @{
@@ -76,8 +82,8 @@
             {
                 possibleFileSpecifications.Add(new SelectListItem
                 {
-                    Text = possibleFileSpecification.Name + " - " + possibleFileSpecification.Type,
-                    Value = possibleFileSpecification.Name + " - " + possibleFileSpecification.Type
+                    Text = possibleFileSpecification.Name + " - " + possibleFileSpecification.Type + " - " + possibleFileSpecification.Version,
+                    Value = possibleFileSpecification.Name + " - " + possibleFileSpecification.Type + " - " + possibleFileSpecification.Version
                 });
             }
         }
@@ -88,8 +94,8 @@
             <td>
                 @Html.EditorFor(model => model.NewSequenceNumber, new { htmlAttributes = new { @class = "form-control", id = "sequenceNumber", onkeyup = "addStep()" } })
             </td>
-            <td colspan="2">
-                @Html.DropDownListFor(model => model.NewNameAndType, possibleFileSpecifications, "Choose a File Specification", new { htmlAttributes = new { @class = "form-control" } })
+            <td colspan="3">
+                @Html.DropDownListFor(model => model.NewStep, possibleFileSpecifications, "Choose a File Specification", new { htmlAttributes = new { @class = "form-control" } })
             </td>
         </tr>
     </table>

@@ -29,6 +29,7 @@ namespace FIS.DAL
         {
            WorkflowTemplate workflowTemplate = ctx.WorkflowTemplates.Find(workflowTemplateId);
            ctx.Entry<WorkflowTemplate>(workflowTemplate).Collection<FileSpecification>(wt => wt.FileSpecifications).Load();
+           workflowTemplate.FileSpecifications = workflowTemplate.FileSpecifications.OrderBy(f => f.StepNumberInWorkflowTemplate).ToList();
            return workflowTemplate;
         }
 

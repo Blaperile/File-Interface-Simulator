@@ -20,11 +20,17 @@ namespace FIS.BL
             workflowTemplateSetupRepo = new WorkflowTemplateSetupRepository();
         }
 
-        public WorkflowTemplate AddStepToWorkflowTemplate(int workflowTemplateId, int stepNumber, string specificationName)
+        public WorkflowTemplate AddStepToWorkflowTemplate(int workflowTemplateId, int stepNumber, string specificationName, string specificationVersion)
         {
             WorkflowTemplate workflowTemplate = GetWorkflowTemplate(workflowTemplateId);
-            FileSpecification fileSpecification = specSetupManager.GetFileSpecification(specificationName);
+            FileSpecification fileSpecification = specSetupManager.GetFileSpecification(specificationName, specificationVersion);
             fileSpecification.StepNumberInWorkflowTemplate = stepNumber;
+
+            foreach(FileSpecification workflowTemplateFileSpecification in workflowTemplate.FileSpecifications.Where(fs => fs.StepNumberInWorkflowTemplate >= stepNumber))
+            {
+                workflowTemplateFileSpecification.StepNumberInWorkflowTemplate++;
+            }
+
             workflowTemplate.FileSpecifications.Add(fileSpecification);
             fileSpecification.WorkflowTemplate = workflowTemplate;
             return workflowTemplateSetupRepo.UpdateWorkflowTemplate(workflowTemplate);
