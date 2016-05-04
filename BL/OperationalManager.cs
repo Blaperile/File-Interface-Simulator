@@ -140,5 +140,10 @@ namespace FIS.BL
         {
             return operationalRep.ReadGroupWithRelatedDate(groupId);
         }
+
+        public Field GetFieldWithRelatedData(int fieldId)
+        {
+            return operationalRep.ReadFieldWithRelatedData(fieldId);
+        }
     }
 }

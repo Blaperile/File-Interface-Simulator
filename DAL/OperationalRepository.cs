@@ -161,5 +161,13 @@ namespace FIS.DAL
             LoadFields(group);
             return group;
         }
+
+        public Field ReadFieldWithRelatedData(int fieldId)
+        {
+            Field field = ctx.Fields.Find(fieldId);
+            ctx.Entry<Field>(field).Reference<FileSpecFieldCondition>(f => f.FileSpecFieldCondition).Load();
+            ctx.Entry<FileSpecFieldCondition>(field.FileSpecFieldCondition).Reference<FieldSpecFieldCondition>(fsfc => fsfc.FieldSpecFieldCondition).Load();
+            return field;
+        }
     }
 }

@@ -18,6 +18,7 @@ namespace FIS.DAL
         Message UpdateMessage(Message message);
         Message DeleteMessage(int messageId);
         Group ReadGroupWithRelatedDate(int groupId);
+        Field ReadFieldWithRelatedData(int fieldId);
         IEnumerable<IElement> CreateElements(IEnumerable<IElement> element);
         IEnumerable<XMLElement> GetElements(int messageId);
         Workflow CreateWorkflow(Workflow workflow);

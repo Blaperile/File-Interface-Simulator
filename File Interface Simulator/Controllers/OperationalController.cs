@@ -158,5 +158,25 @@ namespace File_Interface_Simulator.Controllers
             return View("GroupDetail", groupDetailModel);
         }
 
+        public ActionResult FieldDetail(int id = 1)
+        {
+            Field field = operationalManager.GetFieldWithRelatedData(id);
+            MessageFieldDetailViewModel model = new MessageFieldDetailViewModel
+            {
+                Code = field.FieldCode,
+                Datatype = field.FileSpecFieldCondition.FieldSpecFieldCondition.Datatype,
+                Format = field.FileSpecFieldCondition.FieldSpecFieldCondition.Format.Count() > 0 ? field.FileSpecFieldCondition.FieldSpecFieldCondition.Format : "-",
+                Group = "G1", //field.Group.GroupCode,
+                Level = field.Level,
+                Name = field.FileSpecFieldCondition.Description,
+                Size = field.FileSpecFieldCondition.FieldSpecFieldCondition.Size,
+                Optional = field.FileSpecFieldCondition.IsOptional ? "O" : "M",
+                Value = field.Value,
+                ErrorMessage = field.ErrorDescription
+            };
+
+            return View("FieldDetail",model);
+        }
+
     }
 }

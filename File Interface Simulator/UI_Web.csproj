@@ -259,6 +259,7 @@
     <Content Include="Views\WorkflowTemplateSetup\WorkflowTemplateOverview.cshtml" />
     <Content Include="Views\Operational\GroupDetail.cshtml" />
     <Content Include="Views\Operational\MessageOverview.cshtml" />
+    <Content Include="Views\Operational\FieldDetail.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
