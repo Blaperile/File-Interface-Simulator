@@ -190,5 +190,44 @@ namespace File_Interface_Simulator.Controllers
 
             return View("FileSpecificationDetail", model);
         }
+
+        [HttpGet]
+        public ActionResult FileSpecificationGroupDetail(int groupConditionId = 1)
+        {
+            GroupConditionDetailViewModel model = new GroupConditionDetailViewModel()
+            {
+                FieldConditions = new List<FieldConditionViewModel>()
+            };
+
+            GroupCondition groupCondition = specSetupManager.GetGroupCondition(groupConditionId);
+
+            model.GroupCondition = new GroupConditionViewModel()
+            {
+                Code = groupCondition.Code,
+                Description = groupCondition.Description,
+                Range = groupCondition.MinimumAmountOfOccurences + "-" + groupCondition.MaximumAmountOfOccurences,
+                AmountFields = groupCondition.FileSpecFieldConditions.Count,
+                Level = groupCondition.Level
+            };
+
+            foreach (FileSpecFieldCondition fileSpecFieldCondition in groupCondition.FileSpecFieldConditions)
+            {
+                FieldConditionViewModel fieldConditionModel = new FieldConditionViewModel()
+                {
+                    Code = fileSpecFieldCondition.Code,
+                    Name = fileSpecFieldCondition.Description,
+                    Optional = fileSpecFieldCondition.IsOptional ? "O" : "M",
+                    Values = fileSpecFieldCondition.FieldSpecFieldCondition.AllowedValues.Count,
+                    Datatype = fileSpecFieldCondition.FieldSpecFieldCondition.Datatype,
+                    Size = fileSpecFieldCondition.FieldSpecFieldCondition.Size,
+                    Format = !String.IsNullOrEmpty(fileSpecFieldCondition.FieldSpecFieldCondition.Format) ? fileSpecFieldCondition.FieldSpecFieldCondition.Format : "-",
+                    Group = fileSpecFieldCondition.Group.Description,
+                    Level = "L" + fileSpecFieldCondition.Level.ToString()
+                };
+                model.FieldConditions.Add(fieldConditionModel);
+            }
+
+            return View("FileSpecificationGroupDetail", model);
+        }
     }
 }

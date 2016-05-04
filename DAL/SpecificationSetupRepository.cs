@@ -140,9 +140,12 @@ namespace FIS.DAL
             throw new NotImplementedException();
         }
 
-        public GroupCondition ReadGroupCondition(int specificationId, string groupCode)
+        public GroupCondition ReadGroupCondition(int groupConditionId)
         {
-            throw new NotImplementedException();
+            GroupCondition groupCondition = ctx.GroupConditions.Find(groupConditionId);
+            ctx.Entry<GroupCondition>(groupCondition).Collection<FileSpecFieldCondition>(gc => gc.FileSpecFieldConditions).Load();
+            LoadFieldConditions(groupCondition);
+            return groupCondition;
         }
 
         public FieldSpecFieldCondition ReadFieldSpecFieldCondition(int fieldSpecificationId, string fieldCode)

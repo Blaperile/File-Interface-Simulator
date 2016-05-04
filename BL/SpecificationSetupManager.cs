@@ -162,9 +162,9 @@ namespace FIS.BL
             return specSetupRepo.ReadFileSpecifications();
         }
 
-        public GroupCondition GetGroupCondition(int specificationId, string groupCode)
+        public GroupCondition GetGroupCondition(int groupConditionId)
         {
-            throw new NotImplementedException();
+            return specSetupRepo.ReadGroupCondition(groupConditionId);
         }
 
         public FieldSpecification RemoveFieldSpecification(int specificationId)

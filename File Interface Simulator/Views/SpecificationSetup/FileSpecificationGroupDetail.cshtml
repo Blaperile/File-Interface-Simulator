@@ -1,0 +1,99 @@
+﻿@model File_Interface_Simulator.Models.GroupConditionDetailViewModel
+
+@{
+    ViewBag.Title = "Group Condition";
+}
+
+<h1>@ViewBag.Title: @Model.GroupCondition.Code</h1>
+<hr />
+<div>
+    <dl class="dl-horizontal">
+        <dt class="control-label">
+            @Html.DisplayNameFor(model => model.GroupCondition.Description)
+        </dt>
+
+        <dd style="font-weight: bold">
+            @Html.DisplayFor(model => model.GroupCondition.Description)
+        </dd>
+
+        <dt class="control-label">
+            @Html.DisplayNameFor(model => model.GroupCondition.Range)
+        </dt>
+
+        <dd style="font-weight: bold">
+            @Html.DisplayFor(model => model.GroupCondition.Range)
+        </dd>
+
+        <dt class="control-label">
+            @Html.DisplayNameFor(model => model.GroupCondition.Level)
+        </dt>
+
+        <dd style="font-weight: bold">
+            @Html.DisplayFor(model => model.GroupCondition.Level)
+        </dd>
+    </dl>
+</div>
+<h2><img src="~/images/minus_icon.png" class="btn btn-default min-btn" onclick="collapse(this,'fields')" /> Field Conditions (@Model.GroupCondition.AmountFields)</h2>
+<hr />
+<div id="fields">
+    <table class="table">
+        <tr>
+            <th>
+                Code
+            </th>
+            <th>
+                Name
+            </th>
+            <th>
+                Optional
+            </th>
+            <th>
+                Values
+            </th>
+            <th>
+                Datatype
+            </th>
+            <th>
+                Size
+            </th>
+            <th>
+                Format
+            </th>
+            <th>
+                Level
+            </th>
+            @foreach (var field in Model.FieldConditions)
+            {
+            <tr>
+                <td>
+                    @Html.DisplayFor(item => field.Code)
+                </td>
+                <td>
+                    @Html.DisplayFor(item => field.Name)
+                </td>
+                <td>
+                    @Html.DisplayFor(item => field.Optional)
+                </td>
+                <td>
+                    @Html.DisplayFor(item => field.Values)
+                </td>
+                <td>
+                    @Html.DisplayFor(item => field.Datatype)
+                </td>
+                <td>
+                    @Html.DisplayFor(item => field.Size)
+                </td>
+                <td>
+                    @Html.DisplayFor(item => field.Format)
+                </td>
+                <td>
+                    @Html.DisplayFor(item => field.Level)
+                </td>
+            </tr>
+            }
+        </table>
+    </div>
+
+    @section Scripts {
+        <script src="~/Scripts/Operational/messageDetail.js"></script>
+    }
