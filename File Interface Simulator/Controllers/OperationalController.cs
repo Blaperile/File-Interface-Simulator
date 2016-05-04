@@ -66,6 +66,7 @@ namespace File_Interface_Simulator.Controllers
                      AmountOfFieldErrors = 0,
                     Fields = new List<MessageFieldDetailViewModel>(),
                     AmountOfGroupErrors = 0,
+                    GroupsErrorMessage = transaction.GroupsErrorDescription,
                     Groups = new List<MessageGroupDetailViewModel>(),
                 };
 

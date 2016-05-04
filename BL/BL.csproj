@@ -57,9 +57,10 @@
     <Compile Include="Util\ISpecificationReader.cs" />
     <Compile Include="Util\IValidator.cs" />
     <Compile Include="Util\XML\IXMLGenerator.cs" />
+    <Compile Include="Util\XML\Validation\HeaderValidator.cs" />
     <Compile Include="Util\XML\XMLGenerator.cs" />
     <Compile Include="Util\XML\XMLParser.cs" />
-    <Compile Include="Util\XML\XMLValidator.cs" />
+    <Compile Include="Util\XML\Validation\XMLValidator.cs" />
     <Compile Include="WorkflowTemplateSetupManager.cs" />
   </ItemGroup>
   <ItemGroup>

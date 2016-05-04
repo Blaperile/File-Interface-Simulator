@@ -2,6 +2,7 @@
 using FIS.BL.Domain.Setup;
 using FIS.BL.Util;
 using FIS.BL.Util.XML;
+using FIS.BL.Util.XML.Validation;
 using FIS.DAL;
 using System;
 using System.Collections.Generic;
