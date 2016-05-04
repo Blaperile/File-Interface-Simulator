@@ -45,7 +45,7 @@ namespace File_Interface_Simulator.Controllers
                     Code = headerField.HeaderFieldCode,
                     Content = headerField.Description,
                     Datatype = headerField.HeaderCondition.Datatype,
-                    Size = headerField.HeaderCondition.Size,
+                    Size = headerField.HeaderCondition.Size.ToString(),
                     ErrorMessage = headerField.ErrorDescription
                 };
 

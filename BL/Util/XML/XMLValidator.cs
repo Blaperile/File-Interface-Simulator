@@ -36,8 +36,10 @@ namespace FIS.BL.Util.XML
                 HeaderField headerField = null;
 
                 headerField = CheckAmountOfOccurencesOfHeaderField(message, headerCondition, temp, headerField);
-
                 temp = CheckContentOfHeaderField(headerCondition, temp, headerField);
+                headerField = CheckDataTypeHeaderField(headerField, headerCondition);
+                headerField = CheckSizeHeaderField(headerField, headerCondition);
+
             }
         }
 
@@ -82,6 +84,66 @@ namespace FIS.BL.Util.XML
             }
 
             return headerField;
+        }
+
+        private HeaderField CheckDataTypeHeaderField(HeaderField headerfield, HeaderCondition headercondition)
+        {
+                if (headercondition.Datatype != null && headerfield.Description != null)
+                {
+                    if(headercondition.Datatype.Equals("INT"))
+                    {
+                        bool isNumber = isNumeric(headerfield.Description, System.Globalization.NumberStyles.Integer);
+                        if (isNumber == false)
+                        {
+                        headerfield.ErrorDescription += Environment.NewLine + "The datatype of the headerfield must be an Integer.";    
+                        }
+                    }
+                if (headercondition.Datatype.Equals("DATE"))
+                {
+                    DateTime dateTime;
+                    bool isDateTime = DateTime.TryParse(headerfield.Description, out dateTime);
+                    if (isDateTime == false)
+                    {
+                        string dateConverted = headerfield.Description.Insert(4, "/");
+                        dateConverted = dateConverted.Insert(7, "/");
+                        isDateTime = DateTime.TryParse(dateConverted, out dateTime);
+                        if(isDateTime == false)
+                        {
+                            dateConverted = headerfield.Description.Insert(3, "/");
+                            dateConverted = dateConverted.Insert(5, "/");
+                            isDateTime = DateTime.TryParse(dateConverted, out dateTime);
+                            if (isDateTime == false) {
+                                headerfield.ErrorDescription += Environment.NewLine + "The value must be a date.";
+                            }
+                        }
+                    }
+                    string dateTimeFormatted = dateTime.ToString(headercondition.Format);
+                    if (!dateTimeFormatted.Equals(headerfield.Description)) {
+                        headerfield.ErrorDescription += Environment.NewLine + "The value doesn't match the format";
+                    }
+                }
+            }
+            return headerfield;
+        }
+
+        private HeaderField CheckSizeHeaderField(HeaderField headerField, HeaderCondition headerCondition)
+        {
+            if(headerCondition.Size != 0)
+            {
+                if (headerCondition.Size != headerField.Description.Length)
+                {
+                    headerField.ErrorDescription += Environment.NewLine + "The length of the value doesn't match the format.";
+                }
+            }
+
+            return headerField;
+        }
+
+        public bool isNumeric(string val, System.Globalization.NumberStyles NumberStyle)
+        {
+            Double result;
+            return Double.TryParse(val, NumberStyle,
+                System.Globalization.CultureInfo.CurrentCulture, out result);
         }
 
         public IElement GetElement(string elementName)
