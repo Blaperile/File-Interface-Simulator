@@ -1,0 +1,73 @@
+﻿@model File_Interface_Simulator.Models.FieldConditionViewModel
+
+@{
+    ViewBag.Title = "Field Condition";
+}
+
+<h1>@ViewBag.Title: @Model.Code</h1>
+<hr />
+
+<div>
+    <dl class="dl-horizontal">
+
+        <dt class="control-label">
+            @Html.DisplayNameFor(model => model.Name)
+        </dt>
+
+        <dd style="font-weight: bold">
+            @Html.DisplayFor(model => model.Name)
+        </dd>
+
+        <dt class="control-label">
+            @Html.DisplayNameFor(model => model.Optional)
+        </dt>
+
+        <dd style="font-weight: bold">
+            @Html.DisplayFor(model => model.Optional)
+        </dd>
+
+        <dt class="control-label">
+            @Html.DisplayNameFor(model => model.Values)
+        </dt>
+
+        <dd style="font-weight: bold">
+            @Html.DisplayFor(model => model.Values)
+        </dd>
+
+        <dt class="control-label">
+            @Html.DisplayNameFor(model => model.Datatype)
+        </dt>
+
+        <dd style="font-weight: bold">
+            @Html.DisplayFor(model => model.Datatype)
+        </dd>
+
+        <dt class="control-label">
+            @Html.DisplayNameFor(model => model.Size)
+        </dt>
+
+        <dd style="font-weight: bold">
+            @Html.DisplayFor(model => model.Size)
+        </dd>
+
+        @if (!String.IsNullOrEmpty(Model.Format))
+        {
+            <dt class="control-label">
+                @Html.DisplayNameFor(model => model.Format)
+            </dt>
+
+            <dd style="font-weight: bold">
+                @Html.DisplayFor(model => model.Format)
+            </dd>
+        }
+
+        <dt class="control-label">
+            @Html.DisplayNameFor(model => model.Level)
+        </dt>
+
+        <dd style="font-weight: bold">
+            @Html.DisplayFor(model => model.Level)
+        </dd>
+
+    </dl>
+</div>

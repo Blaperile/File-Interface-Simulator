@@ -58,7 +58,7 @@ namespace FIS.BL
 
         public WorkflowTemplate GetSelectedWorkflowTemplate()
         {
-            throw new NotImplementedException();
+            return workflowTemplateSetupRepo.ReadSelectedWorkflowTemplate();
         }
 
         public WorkflowTemplate GetWorkflowTemplate(int workflowTemplateId)
@@ -71,9 +71,9 @@ namespace FIS.BL
             return workflowTemplateSetupRepo.ReadWorkflowTemplate(name);
         }
 
-        public List<WorkflowTemplate> GetWorkflowTemplates()
+        public ICollection<WorkflowTemplate> GetWorkflowTemplates()
         {
-            throw new NotImplementedException();
+            return workflowTemplateSetupRepo.ReadWorkflowTemplates();
         }
 
         public WorkflowTemplate RemoveStepFromWorkflowTemplate(int workflowTemplateId, int stepNumber)
@@ -88,7 +88,17 @@ namespace FIS.BL
 
         public WorkflowTemplate SelectWorkflowTemplate(int workflowTemplateId)
         {
-            throw new NotImplementedException();
+            WorkflowTemplate currentlySelectedWorkflowTemplate = GetSelectedWorkflowTemplate();
+
+            if (currentlySelectedWorkflowTemplate != null)
+            {
+                currentlySelectedWorkflowTemplate.IsChosen = false;
+                currentlySelectedWorkflowTemplate = workflowTemplateSetupRepo.UpdateWorkflowTemplate(currentlySelectedWorkflowTemplate);
+            }
+
+            WorkflowTemplate newSelectedWorkflowTemplate = GetWorkflowTemplate(workflowTemplateId);
+            newSelectedWorkflowTemplate.IsChosen = true;
+            return workflowTemplateSetupRepo.UpdateWorkflowTemplate(newSelectedWorkflowTemplate);
         }
     }
 }

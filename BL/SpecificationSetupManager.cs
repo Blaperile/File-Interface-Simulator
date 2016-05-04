@@ -127,6 +127,11 @@ namespace FIS.BL
             return specSetupRepo.ReadFieldSpecFieldCondition(fieldSpecificationId, fieldCode);
         }
 
+        public FileSpecFieldCondition GetFileSpecFieldCondition(int id)
+        {
+            return specSetupRepo.ReadFileSpecFieldCondition(id);
+        }
+
         public List<FileSpecFieldCondition> GetFileSpecFieldConditionsLinkedToFieldSpecFieldCondition(int fieldSpecFieldConditionId)
         {
             throw new NotImplementedException();
@@ -162,9 +167,9 @@ namespace FIS.BL
             return specSetupRepo.ReadFileSpecifications();
         }
 
-        public GroupCondition GetGroupCondition(int specificationId, string groupCode)
+        public GroupCondition GetGroupCondition(int groupConditionId)
         {
-            throw new NotImplementedException();
+            return specSetupRepo.ReadGroupCondition(groupConditionId);
         }
 
         public FieldSpecification RemoveFieldSpecification(int specificationId)

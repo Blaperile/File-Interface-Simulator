@@ -14,7 +14,7 @@ namespace FIS.BL
         WorkflowTemplate AddWorkflowTemplate(String name);
         WorkflowTemplate GetWorkflowTemplate(int workflowTemplateId);
         WorkflowTemplate GetWorkflowTemplate(string name);
-        List<WorkflowTemplate> GetWorkflowTemplates();
+        ICollection<WorkflowTemplate> GetWorkflowTemplates();
         WorkflowTemplate GetSelectedWorkflowTemplate();
         WorkflowTemplate RemoveWorkflowTemplate(int workflowTemplateId);
         WorkflowTemplate SelectWorkflowTemplate(int workflowTemplateId);
