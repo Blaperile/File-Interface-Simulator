@@ -123,25 +123,40 @@ namespace File_Interface_Simulator.Controllers
             return View("MessageDetail", model);
         }
 
-        [HttpGet]
-        public ActionResult MessageOverview()
+        public ActionResult GroupDetail(int id = 1)
         {
-            IEnumerable<Message> messages = operationalManager.GetMessages();
-            ICollection<MessageOverviewDetailViewModel> model = new List<MessageOverviewDetailViewModel>();
-
-            foreach (Message message in messages)
+            Group group = operationalManager.GetGroupWithRelatedDate(id);
+            GroupDetailViewModel groupDetailModel = new GroupDetailViewModel {
+                Code = group.GroupCode,
+                Description = group.GroupCondition.Description,
+                Range = group.GroupCondition.MinimumAmountOfOccurences + "-" + group.GroupCondition.MaximumAmountOfOccurences,
+                Level = group.Level,
+                ErrorMessage = group.ErrorDescription,
+                AmountOfErrorMessages = group.Fields.Where(f => f.ErrorDescription!=null).Count(),
+                AmountOfFields = group.Fields.Count(),
+                Transactie = "T1",/*group.Transaction.Name,*/
+                Fields = new List<MessageFieldDetailViewModel>()
+            };
+            foreach(Field field in group.Fields)
             {
-                model.Add(new MessageOverviewDetailViewModel()
+                MessageFieldDetailViewModel fieldDetailModel = new MessageFieldDetailViewModel
                 {
-                    Name = message.Name,
-                    CreationDate = message.Date,
-                    Type = message.FileSpecification.IsInput ? "Input" : "Output",
-                    MessageState = message.MessageState.ToString(),
-                    HasErrors = false
-                });
+                            Code = field.FieldCode,
+                            Datatype = field.FileSpecFieldCondition.FieldSpecFieldCondition.Datatype,
+                            Format = field.FileSpecFieldCondition.FieldSpecFieldCondition.Format.Count() > 0 ? field.FileSpecFieldCondition.FieldSpecFieldCondition.Format : "-",
+                            Group = group.GroupCode,
+                            Level = field.Level,
+                            Name = field.FileSpecFieldCondition.Description,
+                            Size = field.FileSpecFieldCondition.FieldSpecFieldCondition.Size,
+                            Optional = field.FileSpecFieldCondition.IsOptional ? "O" : "M",
+                            Value = field.Value,
+                            ErrorMessage = field.ErrorDescription
+                };
+                groupDetailModel.Fields.Add(fieldDetailModel);
             }
 
-            return View("MessageOverview", model);
+            return View("GroupDetail", groupDetailModel);
         }
+
     }
 }

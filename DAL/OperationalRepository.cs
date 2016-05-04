@@ -152,5 +152,14 @@ namespace FIS.DAL
         {
             throw new NotImplementedException();
         }
+
+        public Group ReadGroupWithRelatedDate(int groupId)
+        {
+            Group group = ctx.Groups.Find(groupId);
+            ctx.Entry<Group>(group).Reference<GroupCondition>(g => g.GroupCondition).Load();
+            ctx.Entry<Group>(group).Reference<Transaction>(g => g.Transaction).Load();
+            LoadFields(group);
+            return group;
+        }
     }
 }

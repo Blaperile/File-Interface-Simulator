@@ -14,6 +14,7 @@ namespace FIS.BL
         List<Message> GetMessages();
         List<Message> GetMessagesOfFileSpecification(int specificationId);
         Message RemoveMessage(int messageId);
+        Group GetGroupWithRelatedDate(int groupId);
         Workflow AddWorkflow(Message message);
         Workflow GetWorkflow(int workflowId);
         List<Workflow> GetWorkflows();

@@ -136,5 +136,10 @@ namespace FIS.BL
             ArchiveErrorLines(message, fileSpecification, validator.Codes);
             operationalRep.UpdateMessage(message);
         }
+
+        public Group GetGroupWithRelatedDate(int groupId)
+        {
+            return operationalRep.ReadGroupWithRelatedDate(groupId);
+        }
     }
 }
