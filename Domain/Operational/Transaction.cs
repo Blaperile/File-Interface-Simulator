@@ -13,6 +13,7 @@ namespace FIS.BL.Domain.Operational
         public int TransactionId { get; set; }
         public string Name { get; set; }
         public string ErrorDescription { get; set; }
+        public string GroupsErrorDescription { get; set; }
         public ICollection<Group> Groups { get; set; }
         public Message Message { get; set; }
     }

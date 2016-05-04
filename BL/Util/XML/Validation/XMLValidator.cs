@@ -31,9 +31,9 @@ namespace FIS.BL.Util.XML.Validation
             {
                 IEnumerable<XMLElement> temp = groupElements.Where(e => e.Value.Equals(groupCondition.Code)).ToList();
 
-                if (temp.Count() == 0)
+                if (temp.Count() == 0 && Int32.Parse(groupCondition.MinimumAmountOfOccurences) > 0)
                 {
-                   // message.Transactions.ElementAt(0).ErrorDescription;
+                    message.Transactions.ElementAt(0).GroupsErrorDescription += String.Format("Group {0} is missing." + Environment.NewLine, groupCondition.Code);
                 }
 
                 foreach (XMLElement groupElement in temp)
@@ -43,9 +43,16 @@ namespace FIS.BL.Util.XML.Validation
                         GroupCondition = groupCondition,
                         GroupCode = groupCondition.Code,
                         Transaction = message.Transactions.ElementAt(0),
-                        Level = groupElement.Level,
-                        ParentGroup = message.Transactions.ElementAt(0).Groups.Where(g => g.GroupCode.Equals(groupCondition.ParentGroup)).Last()
+                        Level = groupElement.Level
                     };
+
+                    if (!String.IsNullOrEmpty(groupCondition.ParentGroup) && message.Transactions.ElementAt(0).Groups.Count() > 0)
+                    {
+                        if (message.Transactions.ElementAt(0).Groups.Where(g => g.GroupCode.Equals(groupCondition.ParentGroup)).Count() > 0)
+                        {
+                            group.ParentGroup = message.Transactions.ElementAt(0).Groups.Where(g => g.GroupCode.Equals(groupCondition.ParentGroup)).Last();
+                        }
+                    }
 
                     Codes.Remove(groupCondition.Code);
 
