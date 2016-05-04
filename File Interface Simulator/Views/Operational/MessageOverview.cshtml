@@ -1,0 +1,62 @@
+﻿@model IEnumerable<File_Interface_Simulator.Models.MessageOverviewDetailViewModel>
+
+@{
+    ViewBag.Title = "Overview Messages";
+}
+
+<h2>@ViewBag.Title</h2>
+
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+<table class="table">
+    <tr>
+        <th>
+
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Name)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.CreationDate)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Type)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.MessageState)
+        </th>
+        <th>
+
+        </th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            <img src="~/images/thrash_icon.png" />
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Name)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.CreationDate)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Type)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.MessageState)
+        </td>
+        <td>
+            @if (item.HasErrors)
+            {
+                <img src="~/images/exclamation_mark_icon.png"/>
+            }
+        </td>
+    </tr>
+}
+
+</table>
+
+<a href="@Url.Action("CreateWorkflowTemplate", "WorkflowTemplateSetup")" class="btn btn-default"><img src="~/images/plus_icon.png" /> Add</a>

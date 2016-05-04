@@ -122,5 +122,26 @@ namespace File_Interface_Simulator.Controllers
 
             return View("MessageDetail", model);
         }
+
+        [HttpGet]
+        public ActionResult MessageOverview()
+        {
+            IEnumerable<Message> messages = operationalManager.GetMessages();
+            ICollection<MessageOverviewDetailViewModel> model = new List<MessageOverviewDetailViewModel>();
+
+            foreach (Message message in messages)
+            {
+                model.Add(new MessageOverviewDetailViewModel()
+                {
+                    Name = message.Name,
+                    CreationDate = message.Date,
+                    Type = message.FileSpecification.IsInput ? "Input" : "Output",
+                    MessageState = message.MessageState.ToString(),
+                    HasErrors = false
+                });
+            }
+
+            return View("MessageOverview", model);
+        }
     }
 }
