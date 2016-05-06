@@ -13,6 +13,8 @@ namespace FIS.BL.Util.XML.Validation
 
        internal HeaderValidator(ICollection<String> codes, IEnumerable<XMLElement> elements, ICollection<HeaderCondition> headerConditions, Message message)
         {
+            message.HeaderFields = new List<HeaderField>();
+
             foreach (HeaderCondition headerCondition in headerConditions)
             {
                 IEnumerable<XMLElement> temp = elements.Where(e => e.Code.Equals(headerCondition.HeaderFieldCode)).Where(e => e.Level.Equals("Header")).ToList();

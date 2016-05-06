@@ -19,6 +19,7 @@ namespace FIS.BL.Domain.Operational
         public GroupCondition GroupCondition { get; set; }
         public ICollection<Field> Fields { get; set; }
         public Transaction Transaction { get; set; }
+        public int Sequence { get; set; }
 
     }
 }
