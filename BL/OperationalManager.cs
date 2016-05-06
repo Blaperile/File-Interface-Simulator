@@ -108,7 +108,7 @@ namespace FIS.BL
 
         public Workflow GetWorkflow(int workflowId)
         {
-            throw new NotImplementedException();
+            return operationalRep.ReadWorkflow(workflowId);
         }
 
         public List<Workflow> GetWorkflows()

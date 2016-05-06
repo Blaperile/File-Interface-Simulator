@@ -231,5 +231,37 @@ namespace File_Interface_Simulator.Controllers
             return View("WorkflowOverview", model);
         }
 
+        [HttpGet]
+        public ActionResult WorkflowDetail(int id = 1)
+        {
+            Workflow workflow = operationalManager.GetWorkflow(id);
+
+            WorkflowDetailViewModel model = new WorkflowDetailViewModel()
+            {
+                Id = workflow.WorkflowId,
+                CreationDate = workflow.Date,
+                TemplateWorkflow = workflow.WorkflowTemplate.Name,
+                ErrorCount = 0,
+                Successful = workflow.IsSuccessful ? "Yes" : "No",
+                Messages = new List<WorkflowDetailMessageDetailViewModel>()
+            };
+
+            foreach(Message message in workflow.Messages)
+            {
+                model.ErrorCount += message.AmountOfErrors;
+
+                model.Messages.Add(new WorkflowDetailMessageDetailViewModel()
+                {
+                    Name = message.Name,
+                    CreationDate = message.Date,
+                    Type = message.FileSpecification.IsInput ? "Input" : "Output",
+                    MessageState = message.MessageState.ToString(),
+                    ErrorCount = message.AmountOfErrors
+                });
+            }
+
+            return View("WorkflowDetail", model);
+        }
+
     }
 }

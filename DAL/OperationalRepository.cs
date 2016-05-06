@@ -140,7 +140,17 @@ namespace FIS.DAL
 
         public Workflow ReadWorkflow(int workflowId)
         {
-            throw new NotImplementedException();
+            Workflow workflow = ctx.Workflows.Find(workflowId);
+
+            ctx.Entry<Workflow>(workflow).Reference<WorkflowTemplate>(w => w.WorkflowTemplate).Load();
+            ctx.Entry<Workflow>(workflow).Collection<Message>(w => w.Messages).Load();
+
+            foreach (Message message in workflow.Messages)
+            {
+                ctx.Entry<Message>(message).Reference<FileSpecification>(m => m.FileSpecification).Load();
+            }
+
+            return workflow;
         }
 
         public List<Workflow> ReadWorkflows()

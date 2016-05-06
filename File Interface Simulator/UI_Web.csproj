@@ -180,6 +180,8 @@
     <Compile Include="Models\MessageHeaderFieldDetailViewModel.cs" />
     <Compile Include="Models\MessageOverviewDetailViewModel.cs" />
     <Compile Include="Models\MessageTransactionDetailViewModel.cs" />
+    <Compile Include="Models\WorkflowDetailMessageDetailViewModel.cs" />
+    <Compile Include="Models\WorkflowDetailViewModel.cs" />
     <Compile Include="Models\WorkflowOverviewDetailViewModel.cs" />
     <Compile Include="Models\WorkflowTemplateDetailViewModel.cs" />
     <Compile Include="Models\WorkflowTemplateFileSpecificationDetailViewModel.cs" />
@@ -262,6 +264,7 @@
     <Content Include="Views\Operational\MessageOverview.cshtml" />
     <Content Include="Views\Operational\FieldDetail.cshtml" />
     <Content Include="Views\Operational\WorkflowOverview.cshtml" />
+    <Content Include="Views\Operational\WorkflowDetail.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
