@@ -20,7 +20,7 @@ namespace File_Interface_Simulator
         public static void Init()
         {
             // Create a timer
-            var myTimer = new System.Timers.Timer(30000);
+            var myTimer = new System.Timers.Timer(240000);
             // Tell the timer what to do when it elapses
             myTimer.Elapsed +=  (sender, e) => HandleTimer();
             // And start it        

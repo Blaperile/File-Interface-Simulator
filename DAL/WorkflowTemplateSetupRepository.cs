@@ -66,7 +66,17 @@ namespace FIS.DAL
 
         public WorkflowTemplate DeleteWorkflowTemplate(int workflowTemplateId)
         {
-            throw new NotImplementedException();
+            WorkflowTemplate workflowTemplate = ctx.WorkflowTemplates.Find(workflowTemplateId);
+            workflowTemplate.FileSpecifications = null;
+            List<FileSpecification> fileSpecifications = ctx.FileSpecifications.Where(f => f.WorkflowTemplate.WorkflowTemplateId == workflowTemplateId).ToList();
+            foreach (FileSpecification filespecification in fileSpecifications) {
+                filespecification.WorkflowTemplate = null;
+                ctx.FileSpecifications.Attach(filespecification);
+                ctx.Entry(filespecification).State = EntityState.Modified;
+            }
+            ctx.WorkflowTemplates.Remove(workflowTemplate);
+            ctx.SaveChanges();
+            return workflowTemplate;
         }
     }
 }

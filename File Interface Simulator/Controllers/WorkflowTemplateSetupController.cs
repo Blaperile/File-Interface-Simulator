@@ -131,5 +131,17 @@ namespace File_Interface_Simulator.Controllers
             WorkflowTemplate workflowTemplate = workflowTemplateSetupManager.SelectWorkflowTemplate(id);
             return RedirectToAction("WorkflowTemplateOverview");
         }
+
+        public HttpStatusCodeResult RemoveWorkflowTemplateRPC(int id)
+        {
+            WorkflowTemplate workflowTemplate = workflowTemplateSetupManager.RemoveWorkflowTemplate(id);
+
+            if (workflowTemplate != null)
+            {
+                return new HttpStatusCodeResult(200, "Succes");
+            }
+
+            return new HttpStatusCodeResult(500, "Workflowtemplate can not be deleted because workflows already exist.");
+        }
     }
 }

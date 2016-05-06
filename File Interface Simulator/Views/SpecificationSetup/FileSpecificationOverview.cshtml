@@ -36,7 +36,7 @@
     {
         <tr id="file_spec_@item.Id">
             <td>
-                <img src="~/images/thrash_icon.png" onclick="removeFileSpecification('@item.Id')"/>
+                <img src="~/images/thrash_icon.png" onclick="removeFileSpecification('@item.Id')" style="cursor:pointer"/>
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.Name)

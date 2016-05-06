@@ -26,9 +26,9 @@
 
         @foreach (var item in Model)
         {
-            <tr>
+            <tr id="workflow_templ_@item.Id">
                 <td>
-                    <img src="~/images/thrash_icon.png" />
+                    <img src="~/images/thrash_icon.png" onclick="removeWorkflowTemplate('@item.Id')" style="cursor: pointer"/>
                 </td>
                 <td>
                     @Html.DisplayFor(modelItem => item.Name)
@@ -45,6 +45,7 @@
                         <input type="checkbox" onclick="selectWorkflowTemplate('@item.Id')"/>
                     }
                 </td>
+                <td id="delete_error_@item.Id" class="errorMessage"></td>
             </tr>
         }
     </table>
