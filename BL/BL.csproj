@@ -57,6 +57,7 @@
     <Compile Include="Util\ISpecificationReader.cs" />
     <Compile Include="Util\IValidator.cs" />
     <Compile Include="Util\XML\IXMLGenerator.cs" />
+    <Compile Include="Util\XML\Validation\GroupValidator.cs" />
     <Compile Include="Util\XML\Validation\HeaderValidator.cs" />
     <Compile Include="Util\XML\XMLGenerator.cs" />
     <Compile Include="Util\XML\XMLParser.cs" />
