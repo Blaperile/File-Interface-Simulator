@@ -12,6 +12,7 @@ namespace FIS.BL
         FieldSpecification AddFieldSpecification(String name, String path, String version);
         FieldSpecification GetFieldSpecification(int specificationId);
         FieldSpecification GetFieldSpecification(string name, string version);
+        FieldSpecification GetFieldSpecificationWithFileSpecifications(int specificationId);
         List<FieldSpecification> GetFieldSpecificatons();
         FieldSpecification RemoveFieldSpecification(int specificationId);
         FileSpecification AddFileSpecification(String name, String path, bool isInput, String inDirectoryPath, String archiveDirectoryPath, String errorDirectoryPath, String outDirectoryPath, String version, String fieldSpecification);

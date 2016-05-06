@@ -110,6 +110,7 @@ namespace File_Interface_Simulator.Controllers
             {
                 FieldSpecificationOverviewDetailModel fileSpecificationModel = new FieldSpecificationOverviewDetailModel()
                 {
+                    Id = fieldSpecification.FieldSpecificationId,
                     Name = fieldSpecification.Name,
                     CreationDate = fieldSpecification.UploadDate,
                     Path = fieldSpecification.Path,
@@ -190,6 +191,18 @@ namespace File_Interface_Simulator.Controllers
             }
 
             return View("FileSpecificationDetail", model);
+        }
+
+        public HttpStatusCodeResult RemoveFieldSpecificationRPC(int id)
+        {
+            FieldSpecification fieldSpecification = specSetupManager.RemoveFieldSpecification(id);
+
+            if (fieldSpecification != null)
+            {
+                return new HttpStatusCodeResult(200, "Succes");
+            }
+
+            return new HttpStatusCodeResult(500, "This field specification cannot be deleted because there are file specifications linked to it!");
         }
 
         public HttpStatusCodeResult RemoveFileSpecificationRPC(int id)

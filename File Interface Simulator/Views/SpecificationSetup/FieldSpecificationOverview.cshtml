@@ -29,9 +29,9 @@
 
 @foreach (var item in Model)
 {
-    <tr>
+    <tr id="field_spec_@item.Id">
         <td>
-            <img src="~/images/thrash_icon.png" />
+            <img src="~/images/thrash_icon.png" onclick="removeFieldSpecification('@item.Id')"/>
         </td>
         <td>
             @Html.DisplayFor(modelItem => item.Name)
@@ -52,10 +52,15 @@
             }
             else
             {
-                <span>@item.Path.Substring(1, 20))...</span>
+                <span>@item.Path.Substring(0, 20))...</span>
             }
         </td>
+        <td id="delete_error_@item.Id" class="errorMessage"></td>
     </tr>
 }
 </table>
 <a href="@Url.Action("UploadFieldSpecification", "SpecificationSetup")" class="btn btn-default"><img src="~/images/plus_icon.png" /> Add</a>
+
+@section Scripts {
+    <script src="~/Scripts/Setup/fieldSpecificationOverview.js"></script>
+}
