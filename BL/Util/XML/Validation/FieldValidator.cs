@@ -80,6 +80,19 @@ namespace FIS.BL.Util.XML.Validation
                 System.Globalization.CultureInfo.CurrentCulture, out result);
         }
 
+        private Field CheckSizeOfField(Field field, FieldSpecFieldCondition fieldCondition)
+        {
+            if (fieldCondition.Size != 0)
+            {
+                if (fieldCondition.Size != field.Value.Length)
+                {
+                    field.ErrorDescription += Environment.NewLine + "The length of the value doesn't match the required length.";
+                }
+            }
+
+            return field;
+        }
+
         private void CheckIFGroupContainsAllFields(FileSpecification fileSpecification, Message message)
         {
             IEnumerable<Group> groups = message.Transactions.ElementAt(0).Groups.Where(g => message.Transactions.ElementAt(0).Groups.Where(gr => gr.GroupCode.Equals(g.GroupCode)).Count() > 1);
@@ -110,6 +123,7 @@ namespace FIS.BL.Util.XML.Validation
                     AddField(message, fileSpecfieldCondition, element, out field, out group);
                     CheckIfFieldOnlyOccursOnce(message, fileSpecfieldCondition, field, group);
                     CheckDataTypeOfField(field, fileSpecfieldCondition.FieldSpecFieldCondition);
+                    CheckSizeOfField(field, fileSpecfieldCondition.FieldSpecFieldCondition);
                 }
             }
         }
