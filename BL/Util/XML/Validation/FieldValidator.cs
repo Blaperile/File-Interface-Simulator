@@ -124,6 +124,28 @@ namespace FIS.BL.Util.XML.Validation
                     CheckIfFieldOnlyOccursOnce(message, fileSpecfieldCondition, field, group);
                     CheckDataTypeOfField(field, fileSpecfieldCondition.FieldSpecFieldCondition);
                     CheckSizeOfField(field, fileSpecfieldCondition.FieldSpecFieldCondition);
+                    CheckAllowedValuesOfField(field, fileSpecfieldCondition.FieldSpecFieldCondition);
+                }
+            }
+        }
+
+        private void CheckAllowedValuesOfField(Field field, FieldSpecFieldCondition fieldCondition)
+        {
+            if (fieldCondition.AllowedValues.Where(av => !String.IsNullOrEmpty(av.Value)).Count() > 0)
+            {
+                bool fieldHasAllowedValue = false;
+
+                foreach (AllowedValue allowedValue in fieldCondition.AllowedValues)
+                {
+                    if (allowedValue.Value.Equals(field.Value))
+                    {
+                        fieldHasAllowedValue = true;
+                    }
+                }
+
+                if (!fieldHasAllowedValue)
+                {
+                    field.ErrorDescription += Environment.NewLine + "The value of this field is not an allowed value.";
                 }
             }
         }
