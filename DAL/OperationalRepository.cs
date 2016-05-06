@@ -168,7 +168,8 @@ namespace FIS.DAL
 
         public IEnumerable<Workflow> ReadWorkflowsForTemplate(int workflowTemplateId)
         {
-            throw new NotImplementedException();
+            IEnumerable<Workflow> workflows = ctx.Workflows.Where(w => w.WorkflowTemplate.WorkflowTemplateId == workflowTemplateId).ToList();
+            return workflows;
         }
 
         public Workflow DeleteWorkflow(int workflowId)

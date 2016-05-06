@@ -13,6 +13,7 @@ namespace FIS.BL
     public class WorkflowTemplateSetupManager : IWorkflowTemplateSetupManager
     {
         private ISpecificationSetupManager specSetupManager;
+        private IOperationalManager operationalManager;
         private IWorkflowTemplateSetupRepository workflowTemplateSetupRepo;
 
         public WorkflowTemplateSetupManager()
@@ -85,7 +86,15 @@ namespace FIS.BL
 
         public WorkflowTemplate RemoveWorkflowTemplate(int workflowTemplateId)
         {
-            throw new NotImplementedException();
+            try
+            {
+                List<Workflow> workflows = operationalManager.GetWorkflowsForTemplate(workflowTemplateId);
+                return null;
+            }
+            catch
+            {
+                return workflowTemplateSetupRepo.DeleteWorkflowTemplate(workflowTemplateId);
+            }
         }
 
         public WorkflowTemplate SelectWorkflowTemplate(int workflowTemplateId)

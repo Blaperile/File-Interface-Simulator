@@ -65,6 +65,7 @@ namespace FIS.DAL.EF
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
+        
         }
     }
 }

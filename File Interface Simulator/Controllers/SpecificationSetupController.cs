@@ -51,11 +51,11 @@ namespace File_Interface_Simulator.Controllers
         [HttpPost]
         public ActionResult UploadFileSpecification(FileSpecificationViewModel model)
         {
-           try
-            {
+          // try
+            //{
                 specSetupManager.AddFileSpecification(model.Name, model.Path, model.IsInput, model.InDirectoryPath, model.ArchiveDirectoryPath, model.ErrorDirectoryPath, model.OutDirectoryPath, model.Version, model.FieldSpecification);
                 return RedirectToAction("FileSpecificationOverview");
-           } catch (Exception ex)
+           /*} catch (Exception ex)
             {
                 ViewBag.Error = ex.Message;
 
@@ -69,7 +69,7 @@ namespace File_Interface_Simulator.Controllers
                 model.FieldSpecifications = fieldSpecificationStrings;
 
                 return View(model);
-            }
+            }*/
         }
 
         [HttpGet]

@@ -118,7 +118,7 @@ namespace FIS.BL
 
         public List<Workflow> GetWorkflowsForTemplate(int workflowTemplateId)
         {
-            throw new NotImplementedException();
+            return operationalRep.ReadWorkflowsForTemplate(workflowTemplateId).ToList();
         }
 
         public Message RemoveMessage(int messageId)
