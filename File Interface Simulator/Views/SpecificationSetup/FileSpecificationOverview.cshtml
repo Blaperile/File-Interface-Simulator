@@ -27,14 +27,16 @@
         <th>
             @Html.DisplayNameFor(model => model.Path)
         </th>
-        <th></th>
+        <th>
+
+        </th>
     </tr>
 
     @foreach (var item in Model)
     {
-        <tr>
+        <tr id="file_spec_@item.Id">
             <td>
-                <img src="~/images/thrash_icon.png" />
+                <img src="~/images/thrash_icon.png" onclick="removeFileSpecification('@item.Id')"/>
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.Name)
@@ -60,9 +62,14 @@
                     <span>@item.Path.Substring(1, 20))...</span>
                 }
             </td>
+            <td id="delete_error_@item.Id" class="errorMessage"></td>
         </tr>
     }
 
 </table>
 
 <a href="@Url.Action("UploadFileSpecification", "SpecificationSetup")" class="btn btn-default"><img src="~/images/plus_icon.png" /> Add</a>
+
+@section Scripts {
+    <script src="~/Scripts/Setup/fileSpecificationOverview.js"></script>
+}

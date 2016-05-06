@@ -128,6 +128,13 @@ namespace FIS.DAL
             return fileSpecification;
         }
 
+        public FileSpecification ReadFileSpecificationWithMessages(int specificationId)
+        {
+            FileSpecification fileSpecification = ctx.FileSpecifications.Find(specificationId);
+            ctx.Entry<FileSpecification>(fileSpecification).Collection<Message>(fs => fs.Messages).Load();
+            return fileSpecification;
+        }
+
         private void LoadFileSpecFieldConditions(FileSpecification fileSpecification)
         {
             ctx.Entry<FileSpecification>(fileSpecification).Collection<FileSpecFieldCondition>(fs => fs.FileSpecFieldConditions).Load();
@@ -144,7 +151,10 @@ namespace FIS.DAL
 
         public FileSpecification DeleteFileSpecification(int specificationId)
         {
-            throw new NotImplementedException();
+            FileSpecification fileSpecification = ctx.FileSpecifications.Find(specificationId);
+            ctx.FileSpecifications.Remove(fileSpecification);
+            ctx.SaveChanges();
+            return fileSpecification;
         }
 
         public GroupCondition ReadGroupCondition(int groupConditionId)

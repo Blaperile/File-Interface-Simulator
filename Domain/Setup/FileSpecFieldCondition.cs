@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -17,6 +18,8 @@ namespace FIS.BL.Domain.Setup
         public int Level { get; set; }
         public GroupCondition Group { get; set; }
         public FieldSpecFieldCondition FieldSpecFieldCondition { get; set; }
+
+        [Required]
         public FileSpecification FileSpecification { get; set; }
     }
 }

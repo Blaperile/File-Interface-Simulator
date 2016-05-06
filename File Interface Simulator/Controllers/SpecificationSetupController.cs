@@ -81,6 +81,7 @@ namespace File_Interface_Simulator.Controllers
             {
                 FileSpecificationOverviewDetailModel fileSpecificationModel = new FileSpecificationOverviewDetailModel()
                 {
+                    Id = fileSpecification.FileSpecificationId,
                     Name = fileSpecification.Name,
                     CreationDate = fileSpecification.UploadDate,
                     Path = fileSpecification.Path,
@@ -189,6 +190,18 @@ namespace File_Interface_Simulator.Controllers
             }
 
             return View("FileSpecificationDetail", model);
+        }
+
+        public HttpStatusCodeResult RemoveFileSpecificationRPC(int id)
+        {
+            FileSpecification fileSpecification = specSetupManager.RemoveFileSpecification(id);
+
+            if (fileSpecification != null)
+            {
+                return new HttpStatusCodeResult(200, "Succes");
+            }
+
+            return new HttpStatusCodeResult(500, "This file specification cannot be deleted because there are message linked to it!");
         }
 
         [HttpGet]

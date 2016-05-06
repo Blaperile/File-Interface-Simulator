@@ -230,6 +230,7 @@
     <Content Include="Scripts\Operational\messageDetail.js" />
     <Content Include="Scripts\respond.js" />
     <Content Include="Scripts\respond.min.js" />
+    <Content Include="Scripts\Setup\fileSpecificationOverview.js" />
     <Content Include="Scripts\Setup\uploadFileSpecification.js" />
     <Content Include="Scripts\Setup\workflowTemplateDetail.js" />
     <Content Include="Scripts\Setup\workflowTemplateOverview.js" />

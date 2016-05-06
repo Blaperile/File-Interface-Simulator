@@ -12,7 +12,6 @@ namespace FIS.BL
     {
         Message GetMessageWithRelatedData(int messageId);
         List<Message> GetMessages();
-        List<Message> GetMessagesOfFileSpecification(int specificationId);
         Message RemoveMessage(int messageId);
         Group GetGroupWithRelatedDate(int groupId);
         Field GetFieldWithRelatedData(int fieldId);

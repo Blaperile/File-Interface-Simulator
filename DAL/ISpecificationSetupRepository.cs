@@ -21,6 +21,7 @@ namespace FIS.DAL
         FileSpecification ReadFileSpecification(string name);
         FileSpecification ReadFileSpecificationByDirectoryId(int directoryId);
         FileSpecification ReadFileSpecificationAtStartWorkflowTemplateWithName(string specificationName);
+        FileSpecification ReadFileSpecificationWithMessages(int specificationId);
         List<FileSpecification> ReadFileSpecifications();
         FileSpecification DeleteFileSpecification(int specificationId);
 
