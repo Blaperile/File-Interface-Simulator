@@ -174,6 +174,7 @@
     <Compile Include="Models\GroupConditionViewModel.cs" />
     <Compile Include="Models\GroupDetailViewModel.cs" />
     <Compile Include="Models\HeaderConditionDetailViewModel.cs" />
+    <Compile Include="Models\HomeViewModel.cs" />
     <Compile Include="Models\MessageDetailViewModel.cs" />
     <Compile Include="Models\MessageFieldDetailViewModel.cs" />
     <Compile Include="Models\MessageGroupDetailViewModel.cs" />

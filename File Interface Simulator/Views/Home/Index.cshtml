@@ -1,5 +1,51 @@
-﻿@{
+﻿@model File_Interface_Simulator.Models.HomeViewModel
+
+@{
     ViewBag.Title = "Start";
 }
 
-<h1>Home</h1>
+<h1>FILE INTERFACE SIMULATOR</h1>
+<h2>Use this file simulator to test workflows in MECOMS</h2>
+
+@{
+    List<SelectListItem> workflowTemplates = new List<SelectListItem>();
+
+    foreach (string workflowTemplate in Model.WorkflowTemplates)
+    {
+        workflowTemplates.Add(new SelectListItem
+        {
+            Text = workflowTemplate,
+            Value = workflowTemplate
+        });
+    }
+}
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+    <div>
+        <dl class="dl-horizontal">
+            <dt class="control-label">
+                Which workflow do you want to test?
+            </dt>
+
+            <dd style="font-weight: bold">
+                @Html.DropDownListFor(model => model.ChosenWorkflowTemplate, workflowTemplates, "Choose a Workflow Template", new { htmlAttributes = new { @class = "form-control" } })
+            </dd>
+        </dl>
+    </div>
+
+    <div class="form-group">
+        <div class="col-md-10">
+            <input type="submit" value="Save" class="btn btn-default" />
+        </div>
+    </div>
+}
+
+<div id="setup_steps" style="margin-top: 10%">
+    <h1>Setup steps</h1>
+    <hr />
+    <h2><a href="@Url.Action("UploadFieldSpecification", "SpecificationSetup")">1. Upload Field Specifications</a></h2>
+    <h2><a href="@Url.Action("UploadFileSpecification", "SpecificationSetup")">2. Upload File Specifications</a></h2>
+    <h2><a href="@Url.Action("CreateWorkflowTemplate", "WorkflowTemplateSetup")">3. Add Workflow Templates</a></h2>
+</div>
