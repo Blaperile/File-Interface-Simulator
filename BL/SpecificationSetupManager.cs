@@ -123,6 +123,11 @@ namespace FIS.BL
             throw new NotImplementedException();
         }
 
+        public FieldSpecification GetFieldSpecificationWithFileSpecifications(int specificationId)
+        {
+            return specSetupRepo.ReadFieldSpecificationWithFileSpecifications(specificationId);
+        }
+
         public FieldSpecFieldCondition GetFieldSpecFieldCondition(int fieldSpecificationId, string fieldCode)
         {
             return specSetupRepo.ReadFieldSpecFieldCondition(fieldSpecificationId, fieldCode);
@@ -180,7 +185,13 @@ namespace FIS.BL
 
         public FieldSpecification RemoveFieldSpecification(int specificationId)
         {
-            throw new NotImplementedException();
+            FieldSpecification fieldSpecification = GetFieldSpecificationWithFileSpecifications(specificationId);
+            if (fieldSpecification.FileSpecifications.Count() == 0)
+            {
+                return specSetupRepo.DeleteFieldSpecification(specificationId);
+            }
+
+            return null;
         }
 
         public FileSpecification RemoveFileSpecification(int specificationId)

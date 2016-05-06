@@ -39,6 +39,13 @@ namespace FIS.DAL
             return ctx.FieldSpecifications.Where(fs => fs.Name.Equals(name)).Where(fs => fs.Version.Equals(version)).First();
         }
 
+        public FieldSpecification ReadFieldSpecificationWithFileSpecifications(int specificationId)
+        {
+            FieldSpecification fieldSpecification = ctx.FieldSpecifications.Find(specificationId);
+            ctx.Entry<FieldSpecification>(fieldSpecification).Collection<FileSpecification>(fs => fs.FileSpecifications).Load();
+            return fieldSpecification;
+        }
+
         public List<FieldSpecification> ReadFieldSpecifications()
         {
             return ctx.FieldSpecifications.ToList();
@@ -46,7 +53,10 @@ namespace FIS.DAL
 
         public FieldSpecification DeleteFieldSpecification(int specificationId)
         {
-            throw new NotImplementedException();
+            FieldSpecification fieldSpecification = ctx.FieldSpecifications.Find(specificationId);
+            ctx.FieldSpecifications.Remove(fieldSpecification);
+            ctx.SaveChanges();
+            return fieldSpecification;
         }
 
         public FileSpecification CreateFileSpecification(FileSpecification fileSpecification)

@@ -12,6 +12,7 @@ namespace FIS.DAL
         FieldSpecification CreateFieldSpecification(FieldSpecification fieldSpecification);
         FieldSpecification ReadFieldSpecification(int specificationId);
         FieldSpecification ReadFieldSpecification(string name, string version);
+        FieldSpecification ReadFieldSpecificationWithFileSpecifications(int specificationId);
         List<FieldSpecification> ReadFieldSpecifications();
         FieldSpecification DeleteFieldSpecification(int specificationId);
 
