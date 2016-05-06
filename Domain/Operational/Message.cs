@@ -15,6 +15,7 @@ namespace FIS.BL.Domain.Operational
         public string Name { get; set; }
         public DateTime Date { get; set; }
         public MessageState MessageState { get; set; }
+        public int AmountOfErrors { get; set; }
         public string ErrorDescription { get; set; }
         public string HeaderErrorDescription { get; set; }
         public ICollection<HeaderField> HeaderFields { get; set; }

@@ -18,6 +18,6 @@ namespace FIS.BL
         WorkflowTemplate GetSelectedWorkflowTemplate();
         WorkflowTemplate RemoveWorkflowTemplate(int workflowTemplateId);
         WorkflowTemplate SelectWorkflowTemplate(int workflowTemplateId);
-
+        WorkflowTemplate SelectWorkflowTemplate(string name);
     }
 }

@@ -123,6 +123,15 @@ namespace FIS.DAL
             LoadFileSpecFieldConditions(fileSpecification);
             ctx.Entry<FileSpecification>(fileSpecification).Collection<Directory>(fs => fs.Directories).Load();
             ctx.Entry<FileSpecification>(fileSpecification).Collection<Message>(fs => fs.Messages).Load();
+            ctx.Entry<FileSpecification>(fileSpecification).Reference<WorkflowTemplate>(fs => fs.WorkflowTemplate).Load();
+            ctx.Entry<WorkflowTemplate>(fileSpecification.WorkflowTemplate).Collection<Workflow>(wt => wt.Workflows).Load();
+            return fileSpecification;
+        }
+
+        public FileSpecification ReadFileSpecificationWithMessages(int specificationId)
+        {
+            FileSpecification fileSpecification = ctx.FileSpecifications.Find(specificationId);
+            ctx.Entry<FileSpecification>(fileSpecification).Collection<Message>(fs => fs.Messages).Load();
             return fileSpecification;
         }
 
@@ -142,7 +151,10 @@ namespace FIS.DAL
 
         public FileSpecification DeleteFileSpecification(int specificationId)
         {
-            throw new NotImplementedException();
+            FileSpecification fileSpecification = ctx.FileSpecifications.Find(specificationId);
+            ctx.FileSpecifications.Remove(fileSpecification);
+            ctx.SaveChanges();
+            return fileSpecification;
         }
 
         public GroupCondition ReadGroupCondition(int groupConditionId)

@@ -1,4 +1,5 @@
-﻿using FIS.BL.Domain.Setup;
+﻿using FIS.BL.Domain.Operational;
+using FIS.BL.Domain.Setup;
 using FIS.BL.Exceptions;
 using FIS.DAL;
 using System;
@@ -46,7 +47,8 @@ namespace FIS.BL
                 {
                     Name = name,
                     CreationDate = DateTime.Now,
-                    IsChosen = false
+                    IsChosen = false,
+                    Workflows = new List<Workflow>()
                 };
 
                 return workflowTemplateSetupRepo.CreateWorkflowTemplate(workflowTemplate);
@@ -97,6 +99,21 @@ namespace FIS.BL
             }
 
             WorkflowTemplate newSelectedWorkflowTemplate = GetWorkflowTemplate(workflowTemplateId);
+            newSelectedWorkflowTemplate.IsChosen = true;
+            return workflowTemplateSetupRepo.UpdateWorkflowTemplate(newSelectedWorkflowTemplate);
+        }
+
+        public WorkflowTemplate SelectWorkflowTemplate(string name)
+        {
+            WorkflowTemplate currentlySelectedWorkflowTemplate = GetSelectedWorkflowTemplate();
+
+            if (currentlySelectedWorkflowTemplate != null)
+            {
+                currentlySelectedWorkflowTemplate.IsChosen = false;
+                currentlySelectedWorkflowTemplate = workflowTemplateSetupRepo.UpdateWorkflowTemplate(currentlySelectedWorkflowTemplate);
+            }
+
+            WorkflowTemplate newSelectedWorkflowTemplate = GetWorkflowTemplate(name);
             newSelectedWorkflowTemplate.IsChosen = true;
             return workflowTemplateSetupRepo.UpdateWorkflowTemplate(newSelectedWorkflowTemplate);
         }

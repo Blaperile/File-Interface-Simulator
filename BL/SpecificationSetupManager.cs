@@ -1,4 +1,5 @@
-﻿using FIS.BL.Domain.Setup;
+﻿using FIS.BL.Domain.Operational;
+using FIS.BL.Domain.Setup;
 using FIS.BL.Exceptions;
 using FIS.BL.Util.CSV;
 using FIS.DAL;
@@ -12,8 +13,8 @@ namespace FIS.BL
 {
     public class SpecificationSetupManager : ISpecificationSetupManager
     {
-        CSVReader csvReader;
-        ISpecificationSetupRepository specSetupRepo;
+        private CSVReader csvReader;
+        private ISpecificationSetupRepository specSetupRepo;
 
         public SpecificationSetupManager()
         {
@@ -162,6 +163,11 @@ namespace FIS.BL
             return specSetupRepo.ReadFileSpecificationAtStartWorkflowTemplateWithName(specificationName);
         }
 
+        public FileSpecification GetFileSpecificationWithMessages(int specificationId)
+        {
+            return specSetupRepo.ReadFileSpecificationWithMessages(specificationId);
+        }
+
         public List<FileSpecification> GetFileSpecifications()
         {
             return specSetupRepo.ReadFileSpecifications();
@@ -179,7 +185,13 @@ namespace FIS.BL
 
         public FileSpecification RemoveFileSpecification(int specificationId)
         {
-            throw new NotImplementedException();
+            FileSpecification fileSpecification = GetFileSpecificationWithMessages(specificationId);
+            if (fileSpecification.Messages.Count() == 0)
+            {
+                return specSetupRepo.DeleteFileSpecification(specificationId);
+            }
+
+            return null;
         }
 
         public List<Directory> GetInputDirectories()

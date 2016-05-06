@@ -4,11 +4,9 @@
     ViewBag.Title = "Overview Messages";
 }
 
-<h2>@ViewBag.Title</h2>
+<h1>@ViewBag.Title</h1>
+<hr />
 
-<p>
-    @Html.ActionLink("Create New", "Create")
-</p>
 <table class="table">
     <tr>
         <th>
@@ -18,13 +16,13 @@
             @Html.DisplayNameFor(model => model.Name)
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.CreationDate)
+            Creation Date
         </th>
         <th>
             @Html.DisplayNameFor(model => model.Type)
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.MessageState)
+            Message State
         </th>
         <th>
 
@@ -49,14 +47,12 @@
             @Html.DisplayFor(modelItem => item.MessageState)
         </td>
         <td>
-            @if (item.HasErrors)
+            @if (item.AmountOfErrors > 0)
             {
-                <img src="~/images/exclamation_mark_icon.png"/>
+                <span class="errorMessage"><img src="~/images/exclamation_mark_icon.png" /> @item.AmountOfErrors errors</span>
             }
         </td>
     </tr>
 }
 
 </table>
-
-<a href="@Url.Action("CreateWorkflowTemplate", "WorkflowTemplateSetup")" class="btn btn-default"><img src="~/images/plus_icon.png" /> Add</a>

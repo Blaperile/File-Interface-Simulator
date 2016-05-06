@@ -1,0 +1,56 @@
+﻿@model IEnumerable<File_Interface_Simulator.Models.WorkflowOverviewDetailViewModel>
+
+@{
+    ViewBag.Title = "Overview Workflows";
+}
+
+<h1>@ViewBag.Title</h1>
+<hr />
+
+<table class="table">
+    <tr>
+        <th>
+
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Id)
+        </th>
+        <th>
+            Creation Date
+        </th>
+        <th>
+            Template Name
+        </th>
+        <th>
+            Successful
+        </th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            <img src="~/images/thrash_icon.png" />
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Id)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.CreationDate)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.TemplateName)
+        </td>
+        <td>
+            @if (item.IsSuccesfull)
+            {
+                <span style="color: green" class="glyphicon glyphicon-ok"></span>
+            }
+            else
+            {
+                <span style="color: red" class="glyphicon glyphicon-remove"></span> <span>@item.AmountOfErrors errors</span>
+            }
+        </td>
+    </tr>
+}
+
+</table>

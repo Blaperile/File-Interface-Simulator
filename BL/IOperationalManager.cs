@@ -12,17 +12,16 @@ namespace FIS.BL
     {
         Message GetMessageWithRelatedData(int messageId);
         List<Message> GetMessages();
-        List<Message> GetMessagesOfFileSpecification(int specificationId);
         Message RemoveMessage(int messageId);
         Group GetGroupWithRelatedDate(int groupId);
         Field GetFieldWithRelatedData(int fieldId);
-        Workflow AddWorkflow(Message message);
+        Workflow AddWorkflow(Message message, WorkflowTemplate workflowTemplate);
         Workflow GetWorkflow(int workflowId);
         List<Workflow> GetWorkflows();
         List<Workflow> GetWorkflowsForTemplate(int workflowTemplateId);
         Workflow RemoveWorkflow(int workflowId);
         void DetectInput();
-        void ValidateInput(int messageId);
+        void ValidateInput(int messageId, int fileSpecificationId);
         void ArchiveErrorLines(Message message, FileSpecification fileSpecification, IEnumerable<String> codes);
         void GenerateAnswer(Message message, Workflow workflow, WorkflowTemplate workflowTemplate);
 

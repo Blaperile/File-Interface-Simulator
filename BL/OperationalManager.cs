@@ -23,14 +23,17 @@ namespace FIS.BL
             specSetupManager = new SpecificationSetupManager();
         }
 
-        public Workflow AddWorkflow(Message message)
+        public Workflow AddWorkflow(Message message, WorkflowTemplate workflowTemplate)
         {
             Workflow workflow = new Workflow()
             {
                 Date = DateTime.Now,
                 IsSuccessful = false,
-                Messages = new List<Message>()
+                Messages = new List<Message>(),
+                WorkflowTemplate = workflowTemplate
             };
+
+            workflowTemplate.Workflows.Add(workflow);
 
             workflow.Messages.Add(message);
 
@@ -66,9 +69,13 @@ namespace FIS.BL
                     message.Name = filename;
                     message.MessageState = MessageState.Created;
                     IEnumerable <IElement> elements = xmlParser.GetElements(message, content);
-                    operationalRep.CreateElements(elements);
-                    Workflow workflow = AddWorkflow(message);
-                    ValidateInput(message.MessageId);
+                    elements = operationalRep.CreateElements(elements);
+
+                    IEnumerable<XMLElement> xmlElements = operationalRep.GetElements(message.MessageId);
+                    XMLElement flowIdElement = xmlElements.Where(e => e.Code.Equals("FLOWID")).Single();
+                    FileSpecification fileSpecification = specSetupManager.GetFileSpecificationAtStartWorkflowTemplateWithName(flowIdElement.Value);
+                    Workflow workflow = AddWorkflow(message, fileSpecification.WorkflowTemplate);
+                    ValidateInput(message.MessageId, fileSpecification.FileSpecificationId);
                 }
             }
         
@@ -91,7 +98,7 @@ namespace FIS.BL
 
         public List<Message> GetMessages()
         {
-            throw new NotImplementedException();
+            return operationalRep.ReadMessages();
         }
 
         public List<Message> GetMessagesOfFileSpecification(int specificationId)
@@ -101,12 +108,12 @@ namespace FIS.BL
 
         public Workflow GetWorkflow(int workflowId)
         {
-            throw new NotImplementedException();
+            return operationalRep.ReadWorkflow(workflowId);
         }
 
         public List<Workflow> GetWorkflows()
         {
-            throw new NotImplementedException();
+            return operationalRep.ReadWorkflows();
         }
 
         public List<Workflow> GetWorkflowsForTemplate(int workflowTemplateId)
@@ -124,11 +131,10 @@ namespace FIS.BL
             throw new NotImplementedException();
         }
 
-        public void ValidateInput(int messageId)
+        public void ValidateInput(int messageId, int fileSpecificationId)
         {
+            FileSpecification fileSpecification = specSetupManager.GetFileSpecification(fileSpecificationId);
             IEnumerable<XMLElement> elements = operationalRep.GetElements(messageId);
-            XMLElement flowIdElement = elements.Where(e => e.Code.Equals("FLOWID")).Single();
-            FileSpecification fileSpecification = specSetupManager.GetFileSpecificationAtStartWorkflowTemplateWithName(flowIdElement.Value);
             Message message = GetMessage(messageId);
             XMLValidator validator = new XMLValidator(elements, fileSpecification, message);
             message.FileSpecification = fileSpecification;

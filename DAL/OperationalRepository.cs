@@ -83,9 +83,14 @@ namespace FIS.DAL
             }
         }
 
-        public IEnumerable<Message> ReadMessages()
+        public List<Message> ReadMessages()
         {
-            throw new NotImplementedException();
+            IEnumerable<Message> messages = ctx.Messages.ToList();
+            foreach(Message message in messages)
+            {
+                ctx.Entry<Message>(message).Reference<FileSpecification>(m => m.FileSpecification).Load();
+            }
+            return messages.ToList();
         }
 
         public IEnumerable<Message> ReadMessagesOfFileSpecification(int specificationId)
@@ -135,12 +140,30 @@ namespace FIS.DAL
 
         public Workflow ReadWorkflow(int workflowId)
         {
-            throw new NotImplementedException();
+            Workflow workflow = ctx.Workflows.Find(workflowId);
+
+            ctx.Entry<Workflow>(workflow).Reference<WorkflowTemplate>(w => w.WorkflowTemplate).Load();
+            ctx.Entry<Workflow>(workflow).Collection<Message>(w => w.Messages).Load();
+
+            foreach (Message message in workflow.Messages)
+            {
+                ctx.Entry<Message>(message).Reference<FileSpecification>(m => m.FileSpecification).Load();
+            }
+
+            return workflow;
         }
 
-        public IEnumerable<Workflow> ReadWorkflows()
+        public List<Workflow> ReadWorkflows()
         {
-            throw new NotImplementedException();
+            IEnumerable<Workflow> workflows = ctx.Workflows.ToList();
+
+            foreach (Workflow workflow in workflows)
+            {
+                ctx.Entry<Workflow>(workflow).Reference<WorkflowTemplate>(w => w.WorkflowTemplate).Load();
+                ctx.Entry<Workflow>(workflow).Collection<Message>(w => w.Messages).Load();
+            }
+
+            return workflows.ToList();
         }
 
         public IEnumerable<Workflow> ReadWorkflowsForTemplate(int workflowTemplateId)

@@ -1,0 +1,102 @@
+﻿@model File_Interface_Simulator.Models.WorkflowDetailViewModel
+
+@{
+    ViewBag.Title = "Detail workflow";
+}
+
+<h1>@ViewBag.Title: @Model.Id</h1>
+<hr />
+<div>
+    <dl class="dl-horizontal">
+        <dt class="control-label">
+            Creation Date
+        </dt>
+
+        <dd style="font-weight: bold">
+            @Html.DisplayFor(model => model.CreationDate)
+        </dd>
+
+        <dt class="control-label">
+            Template workflow
+        </dt>
+
+        <dd style="font-weight: bold">
+            @Html.DisplayFor(model => model.TemplateWorkflow)
+        </dd>
+
+        <dt class="control-label">
+            Error count
+        </dt>
+
+        <dd style="font-weight: bold">
+            @Html.DisplayFor(model => model.ErrorCount)
+        </dd>
+
+        <dt class="control-label">
+            @Html.DisplayNameFor(model => model.Successful)
+        </dt>
+
+        <dd style="font-weight: bold">
+            @Html.DisplayFor(model => model.Successful)
+        </dd>
+
+    </dl>
+</div>
+
+<h1><img src="/images/minus_icon.png" class="btn btn-default min-btn" onclick="collapse(this,'messages')" /> Messages (@Model.Messages.Count()) </h1>
+<hr />
+
+<div id="messages">
+    <table class="table">
+        <tr>
+            <th>
+                Sequence
+            </th>
+            <th>
+                Name
+            </th>
+            <th>
+                Creation Date
+            </th>
+            <th>
+                Type
+            </th>
+            <th>
+                Message State
+            </th>
+            <th>
+
+            </th>
+        </tr>
+        @for(int i = 0; i < Model.Messages.Count(); i++)
+        {
+            <tr>
+                <td>
+                    @(i+1)
+                </td>
+                <td>
+                    @Html.DisplayFor(item => Model.Messages.ElementAt(i).Name)
+                </td>
+                <td>
+                    @Html.DisplayFor(item => Model.Messages.ElementAt(i).CreationDate)
+                </td>
+                <td>
+                    @Html.DisplayFor(item => Model.Messages.ElementAt(i).Type)
+                </td>
+                <td>
+                    @Html.DisplayFor(item => Model.Messages.ElementAt(i).MessageState)
+                </td>
+                <td>
+                    @if (Model.Messages.ElementAt(i).ErrorCount > 0)
+                    {
+                        <span class="errorMessage"><img src="~/images/exclamation_mark_icon.png" /> @Model.Messages.ElementAt(i).ErrorCount errors</span>
+                    }
+                </td>
+            </tr>
+        }
+    </table>
+</div>
+
+@section Scripts {
+    <script src="~/Scripts/Operational/messageDetail.js"></script>
+}

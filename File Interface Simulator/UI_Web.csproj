@@ -174,12 +174,16 @@
     <Compile Include="Models\GroupConditionViewModel.cs" />
     <Compile Include="Models\GroupDetailViewModel.cs" />
     <Compile Include="Models\HeaderConditionDetailViewModel.cs" />
+    <Compile Include="Models\HomeViewModel.cs" />
     <Compile Include="Models\MessageDetailViewModel.cs" />
     <Compile Include="Models\MessageFieldDetailViewModel.cs" />
     <Compile Include="Models\MessageGroupDetailViewModel.cs" />
     <Compile Include="Models\MessageHeaderFieldDetailViewModel.cs" />
     <Compile Include="Models\MessageOverviewDetailViewModel.cs" />
     <Compile Include="Models\MessageTransactionDetailViewModel.cs" />
+    <Compile Include="Models\WorkflowDetailMessageDetailViewModel.cs" />
+    <Compile Include="Models\WorkflowDetailViewModel.cs" />
+    <Compile Include="Models\WorkflowOverviewDetailViewModel.cs" />
     <Compile Include="Models\WorkflowTemplateDetailViewModel.cs" />
     <Compile Include="Models\WorkflowTemplateFileSpecificationDetailViewModel.cs" />
     <Compile Include="Models\WorkflowTemplateOverviewDetailViewModel.cs" />
@@ -226,6 +230,7 @@
     <Content Include="Scripts\Operational\messageDetail.js" />
     <Content Include="Scripts\respond.js" />
     <Content Include="Scripts\respond.min.js" />
+    <Content Include="Scripts\Setup\fileSpecificationOverview.js" />
     <Content Include="Scripts\Setup\uploadFileSpecification.js" />
     <Content Include="Scripts\Setup\workflowTemplateDetail.js" />
     <Content Include="Scripts\Setup\workflowTemplateOverview.js" />
@@ -260,6 +265,8 @@
     <Content Include="Views\Operational\GroupDetail.cshtml" />
     <Content Include="Views\Operational\MessageOverview.cshtml" />
     <Content Include="Views\Operational\FieldDetail.cshtml" />
+    <Content Include="Views\Operational\WorkflowOverview.cshtml" />
+    <Content Include="Views\Operational\WorkflowDetail.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
