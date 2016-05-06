@@ -1,4 +1,5 @@
-﻿using FIS.BL.Domain.Setup;
+﻿using FIS.BL.Domain.Operational;
+using FIS.BL.Domain.Setup;
 using FIS.BL.Exceptions;
 using FIS.DAL;
 using System;
@@ -46,7 +47,8 @@ namespace FIS.BL
                 {
                     Name = name,
                     CreationDate = DateTime.Now,
-                    IsChosen = false
+                    IsChosen = false,
+                    Workflows = new List<Workflow>()
                 };
 
                 return workflowTemplateSetupRepo.CreateWorkflowTemplate(workflowTemplate);

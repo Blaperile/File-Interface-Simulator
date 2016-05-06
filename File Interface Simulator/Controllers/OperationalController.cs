@@ -14,6 +14,29 @@ namespace File_Interface_Simulator.Controllers
         private readonly IOperationalManager operationalManager = new OperationalManager();
 
         [HttpGet]
+        public ActionResult MessageOverview()
+        {
+            IEnumerable<Message> messages = operationalManager.GetMessages();
+            ICollection<MessageOverviewDetailViewModel> model = new List<MessageOverviewDetailViewModel>();
+
+            foreach (Message message in messages)
+            {
+                MessageOverviewDetailViewModel messageModel = new MessageOverviewDetailViewModel()
+                {
+                    Name = message.Name,
+                    MessageState = message.MessageState.ToString(),
+                    CreationDate = message.Date,
+                    Type = message.FileSpecification.IsInput ? "Input" : "Output",
+                    AmountOfErrors = message.AmountOfErrors
+                };
+
+                model.Add(messageModel);
+            }
+
+            return View("MessageOverview", model);
+        }
+
+        [HttpGet]
         public ActionResult MessageDetail(int id = 2)
         {
             Message message = operationalManager.GetMessageWithRelatedData(id);
@@ -177,6 +200,35 @@ namespace File_Interface_Simulator.Controllers
             };
 
             return View("FieldDetail",model);
+        }
+
+        [HttpGet]
+        public ActionResult WorkflowOverview()
+        {
+            IEnumerable<Workflow> workflows = operationalManager.GetWorkflows();
+
+            ICollection<WorkflowOverviewDetailViewModel> model = new List<WorkflowOverviewDetailViewModel>();
+
+            foreach (Workflow workflow in workflows)
+            {
+                WorkflowOverviewDetailViewModel workflowModel = new WorkflowOverviewDetailViewModel()
+                {
+                    Id = workflow.WorkflowId,
+                    CreationDate = workflow.Date,
+                    TemplateName = workflow.WorkflowTemplate.Name,
+                    IsSuccesfull = workflow.IsSuccessful,
+                    AmountOfErrors = 0
+                };
+
+                foreach (Message message in workflow.Messages)
+                {
+                    workflowModel.AmountOfErrors += message.AmountOfErrors;
+                }
+
+                model.Add(workflowModel);
+            }
+            
+            return View("WorkflowOverview", model);
         }
 
     }

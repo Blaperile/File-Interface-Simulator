@@ -123,6 +123,8 @@ namespace FIS.DAL
             LoadFileSpecFieldConditions(fileSpecification);
             ctx.Entry<FileSpecification>(fileSpecification).Collection<Directory>(fs => fs.Directories).Load();
             ctx.Entry<FileSpecification>(fileSpecification).Collection<Message>(fs => fs.Messages).Load();
+            ctx.Entry<FileSpecification>(fileSpecification).Reference<WorkflowTemplate>(fs => fs.WorkflowTemplate).Load();
+            ctx.Entry<WorkflowTemplate>(fileSpecification.WorkflowTemplate).Collection<Workflow>(wt => wt.Workflows).Load();
             return fileSpecification;
         }
 
