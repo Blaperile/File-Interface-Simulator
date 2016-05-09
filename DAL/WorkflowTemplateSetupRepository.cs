@@ -94,5 +94,13 @@ namespace FIS.DAL
         {
             return ctx.WorkflowTemplateSteps.Where(wt => wt.WorkflowTemplate.WorkflowTemplateId == workflowTemplateId).ToList();
         }
+
+        public WorkflowTemplateStep DeleteWorkflowTemplateStep(int workflowTemplateStepId)
+        {
+            WorkflowTemplateStep workflowTemplateStep = ctx.WorkflowTemplateSteps.Find(workflowTemplateStepId);
+            ctx.WorkflowTemplateSteps.Remove(workflowTemplateStep);
+            ctx.SaveChanges();
+            return workflowTemplateStep;
+        }
     }
 }

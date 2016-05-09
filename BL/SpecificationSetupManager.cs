@@ -197,7 +197,7 @@ namespace FIS.BL
         public FileSpecification RemoveFileSpecification(int specificationId)
         {
             FileSpecification fileSpecification = GetFileSpecificationWithMessages(specificationId);
-            if (fileSpecification.Messages.Count() == 0)
+            if (fileSpecification.Messages.Count() == 0 || fileSpecification.WorkflowTemplateSteps.Count()==0)
             {
                 return specSetupRepo.DeleteFileSpecification(specificationId);
             }
