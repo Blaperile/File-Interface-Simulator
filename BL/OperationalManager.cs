@@ -32,6 +32,11 @@ namespace FIS.BL
                 Messages = new List<Message>(),
                 WorkflowTemplate = workflowTemplate
             };
+            
+            if (workflowTemplate.Workflows == null)
+            {
+                workflowTemplate.Workflows = new List<Workflow>();
+            }
 
             workflowTemplate.Workflows.Add(workflow);
 
@@ -74,7 +79,7 @@ namespace FIS.BL
                     IEnumerable<XMLElement> xmlElements = operationalRep.GetElements(message.MessageId);
                     XMLElement flowIdElement = xmlElements.Where(e => e.Code.Equals("FLOWID")).Single();
                     FileSpecification fileSpecification = specSetupManager.GetFileSpecificationAtStartWorkflowTemplateWithName(flowIdElement.Value);
-                 //   Workflow workflow = AddWorkflow(message, fileSpecification.WorkflowTemplate);
+                    Workflow workflow = AddWorkflow(message, fileSpecification.WorkflowTemplateSteps.Where( wt => wt.StepNumber==1).Where(wt=>wt.WorkflowTemplate.IsChosen==true).FirstOrDefault().WorkflowTemplate);
                     ValidateInput(message.MessageId, fileSpecification.FileSpecificationId);
                 }
             }
