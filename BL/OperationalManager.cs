@@ -48,7 +48,7 @@ namespace FIS.BL
             string contentOfErrorFile = "";
             foreach (string code in codes)
             {
-                contentOfErrorFile += code + Environment.NewLine;
+                contentOfErrorFile += String.Format("{0} is an element not recognized by the specification. {1}", code, Environment.NewLine);
             }
             directoryHandler.CreateFile(message.Name + ".txt", contentOfErrorFile, fileSpecification.Directories.Where(d => d.Name.Equals("error")).First());
         }
@@ -76,14 +76,32 @@ namespace FIS.BL
                     FileSpecification fileSpecification = specSetupManager.GetFileSpecificationAtStartWorkflowTemplateWithName(flowIdElement.Value);
                     Workflow workflow = AddWorkflow(message, fileSpecification.WorkflowTemplate);
                     ValidateInput(message.MessageId, fileSpecification.FileSpecificationId);
+                    GenerateAnswer(message, workflow, fileSpecification.WorkflowTemplate, directoryHandler);
                 }
             }
         
         }
 
-        public void GenerateAnswer(Message message, Workflow workflow, WorkflowTemplate workflowTemplate)
+        public void GenerateAnswer(Message message, Workflow workflow, WorkflowTemplate workflowTemplate, DirectoryHandler directoryHandler)
         {
-            throw new NotImplementedException();
+            //TODO: Het onderstaande faalt nog --> Bij WorkflowTemplate eens proberen de FileSpecifications lijst te initialiseren bij creatie workflow template, zien ofdat tweede file specification nu wel goed wordt toegevoegd?
+            FileSpecification outputFileSpecification = workflowTemplate.FileSpecifications.Where(fs => !fs.IsInput).Last();
+
+            IAnswerGenerator answerGenerator = new AnswerGenerator();
+            Message answerMessage = answerGenerator.GenerateAnswer(message, outputFileSpecification);
+
+            IXMLGenerator xmlGenerator = new XMLGenerator();
+            string answerXmlString = xmlGenerator.GenerateXmlString(answerMessage);
+
+            Directory outDirectory = outputFileSpecification.Directories.Where(d => d.Name.Equals("out")).Single();
+
+            directoryHandler.CreateFile(answerMessage.Name, answerXmlString, outDirectory);
+
+            answerMessage.Workflow = workflow;
+            workflow.Messages.Add(answerMessage);
+
+            operationalRep.UpdateWorkflow(workflow);
+
         }
 
         public Message GetMessage(int messageId)

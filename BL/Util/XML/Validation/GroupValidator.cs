@@ -59,17 +59,17 @@ namespace FIS.BL.Util.XML.Validation
 
         }
 
-        private void CheckLevelAndRange(Message message, GroupCondition groupCondition, IEnumerable<XMLElement> temp, ICollection<String> Codes)
+        private void CheckLevelAndRange(Message message, GroupCondition groupCondition, IEnumerable<XMLElement> temp, ICollection<String> codes)
         {
             foreach (XMLElement groupElement in temp)
             {
-                Group group = CheckRange(message, groupCondition, temp, groupElement, Codes);
+                Group group = CheckRange(message, groupCondition, temp, groupElement, codes);
                 CheckLevel(groupCondition, groupElement, group, message);
                 message.Transactions.ElementAt(0).Groups.Add(group);
             }
         }
 
-        private Group CheckRange(Message message, GroupCondition groupCondition, IEnumerable<XMLElement> temp, XMLElement groupElement, ICollection<String> Codes)
+        private Group CheckRange(Message message, GroupCondition groupCondition, IEnumerable<XMLElement> temp, XMLElement groupElement, ICollection<String> codes)
         {
             Group group = new Group()
             {
@@ -89,7 +89,7 @@ namespace FIS.BL.Util.XML.Validation
                 }
             }
 
-            Codes.Remove(groupCondition.Code);
+            codes.Remove(groupCondition.Code);
 
             if (temp.Count() < Int32.Parse(groupCondition.MinimumAmountOfOccurences))
             {

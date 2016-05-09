@@ -10,17 +10,17 @@ namespace FIS.BL.Util.XML.Validation
 {
     internal class FieldValidator
     {
-        internal FieldValidator(ICollection<String> Codes, IEnumerable<XMLElement> elements, FileSpecification fileSpecification, Message message)
+        internal FieldValidator(ICollection<String> codes, IEnumerable<XMLElement> elements, FileSpecification fileSpecification, Message message)
         {
             IEnumerable<XMLElement> fieldElements = elements.Where(e => !e.Level.Equals("Header")).Where(e => !e.Code.Equals("GROUP")).ToList();
 
-            CheckFields(fileSpecification, message, fieldElements);
+            CheckFields(fileSpecification, message, fieldElements, codes);
         }
 
-        private void CheckFields(FileSpecification fileSpecification, Message message, IEnumerable<XMLElement> fieldElements)
+        private void CheckFields(FileSpecification fileSpecification, Message message, IEnumerable<XMLElement> fieldElements, ICollection<String> codes)
         {
             CheckIfMandatoryFieldExists(fileSpecification, message, fieldElements);
-            AddFieldandCheckIfOnlyOccursOnce(fileSpecification, message, fieldElements);
+            AddFieldandCheckIfOnlyOccursOnce(fileSpecification, message, fieldElements, codes);
             CheckIFGroupContainsAllFields(fileSpecification, message);
 
         }
@@ -115,7 +115,7 @@ namespace FIS.BL.Util.XML.Validation
             }
         }
 
-        private void AddFieldandCheckIfOnlyOccursOnce(FileSpecification fileSpecification, Message message, IEnumerable<XMLElement> fieldElements)
+        private void AddFieldandCheckIfOnlyOccursOnce(FileSpecification fileSpecification, Message message, IEnumerable<XMLElement> fieldElements, ICollection<String> codes)
         {
             foreach (FileSpecFieldCondition fileSpecfieldCondition in fileSpecification.FileSpecFieldConditions)
             {
@@ -125,7 +125,7 @@ namespace FIS.BL.Util.XML.Validation
                 {
                     Field field;
                     Group group;
-                    AddField(message, fileSpecfieldCondition, element, out field, out group);
+                    AddField(message, fileSpecfieldCondition, element, out field, out group, codes);
                     CheckIfFieldOnlyOccursOnce(message, fileSpecfieldCondition, field, group);
                     CheckDataTypeOfField(field, fileSpecfieldCondition.FieldSpecFieldCondition, message);
                     CheckSizeOfField(field, fileSpecfieldCondition.FieldSpecFieldCondition, message);
@@ -190,7 +190,7 @@ namespace FIS.BL.Util.XML.Validation
             }
         }
 
-        private void AddField(Message message, FileSpecFieldCondition fileSpecfieldCondition, XMLElement element, out Field field, out Group group)
+        private void AddField(Message message, FileSpecFieldCondition fileSpecfieldCondition, XMLElement element, out Field field, out Group group, ICollection<String> codes)
         {
             field = new Field()
             {
@@ -213,6 +213,8 @@ namespace FIS.BL.Util.XML.Validation
                 }
             }
             field.Group = group;
+
+            codes.Remove(field.FieldCode);
         }
 
         private void CheckIfFieldOnlyOccursOnce(Message message, FileSpecFieldCondition fileSpecfieldCondition, Field field, Group group)
