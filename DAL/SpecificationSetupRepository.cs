@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using FIS.BL.Domain.Setup;
 using FIS.DAL.EF;
 using FIS.BL.Domain.Operational;
+using System.Data.Entity;
 
 namespace FIS.DAL
 {
@@ -123,19 +124,20 @@ namespace FIS.DAL
             throw new NotImplementedException();
         }
 
-        public FileSpecification ReadFileSpecificationAtStartWorkflowTemplateWithName(string specificationName)
+       public FileSpecification ReadFileSpecificationAtStartWorkflowTemplateWithName(string specificationName)
         {
-            IEnumerable<FileSpecification> fileSpecifications = ctx.FileSpecifications.Where(fs => fs.Name.Equals(specificationName, StringComparison.CurrentCultureIgnoreCase)).Where(fs => fs.StepNumberInWorkflowTemplate == 1);
-            if (fileSpecifications.Count() == 0) return null;
-            FileSpecification fileSpecification = fileSpecifications.First();
-            ctx.Entry<FileSpecification>(fileSpecification).Collection<HeaderCondition>(fs => fs.HeaderConditions).Load();
-            ctx.Entry<FileSpecification>(fileSpecification).Collection<GroupCondition>(fs => fs.GroupConditions).Load();
-            LoadFileSpecFieldConditions(fileSpecification);
-            ctx.Entry<FileSpecification>(fileSpecification).Collection<Directory>(fs => fs.Directories).Load();
-            ctx.Entry<FileSpecification>(fileSpecification).Collection<Message>(fs => fs.Messages).Load();
-            ctx.Entry<FileSpecification>(fileSpecification).Reference<WorkflowTemplate>(fs => fs.WorkflowTemplate).Load();
-            ctx.Entry<WorkflowTemplate>(fileSpecification.WorkflowTemplate).Collection<Workflow>(wt => wt.Workflows).Load();
-            return fileSpecification;
+            /* IEnumerable<FileSpecification> fileSpecifications = ctx.FileSpecifications.Where(fs => fs.Name.Equals(specificationName, StringComparison.CurrentCultureIgnoreCase)).Where(fs => fs.StepNumberInWorkflowTemplate == 1);
+              if (fileSpecifications.Count() == 0) return null;
+              FileSpecification fileSpecification = fileSpecifications.First();
+              ctx.Entry<FileSpecification>(fileSpecification).Collection<HeaderCondition>(fs => fs.HeaderConditions).Load();
+              ctx.Entry<FileSpecification>(fileSpecification).Collection<GroupCondition>(fs => fs.GroupConditions).Load();
+              LoadFileSpecFieldConditions(fileSpecification);
+              ctx.Entry<FileSpecification>(fileSpecification).Collection<Directory>(fs => fs.Directories).Load();
+              ctx.Entry<FileSpecification>(fileSpecification).Collection<Message>(fs => fs.Messages).Load();
+              ctx.Entry<FileSpecification>(fileSpecification).Reference<WorkflowTemplate>(fs => fs.WorkflowTemplate).Load();
+              ctx.Entry<WorkflowTemplate>(fileSpecification.WorkflowTemplate).Collection<Workflow>(wt => wt.Workflows).Load();
+              return fileSpecification;*/
+            return null;
         }
 
         public FileSpecification ReadFileSpecificationWithMessages(int specificationId)
@@ -202,6 +204,14 @@ namespace FIS.DAL
         public IEnumerable<Directory> ReadInputDirectories()
         {
             return ctx.Directories.Where(d => d.Name.Equals("in"));
+        }
+
+        public FileSpecification UpdateFileSpecification(FileSpecification fileSpecification)
+        {
+            ctx.FileSpecifications.Attach(fileSpecification);
+            ctx.Entry(fileSpecification).State = EntityState.Modified;
+            ctx.SaveChanges();
+            return fileSpecification;
         }
     }
 }

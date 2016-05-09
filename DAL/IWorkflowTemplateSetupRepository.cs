@@ -16,5 +16,7 @@ namespace FIS.DAL
         ICollection<WorkflowTemplate> ReadWorkflowTemplates();
         WorkflowTemplate UpdateWorkflowTemplate(WorkflowTemplate workflowTemplate);
         WorkflowTemplate DeleteWorkflowTemplate(int workflowTemplateId);
+        WorkflowTemplateStep CreateWorkflowTemplateStep(WorkflowTemplateStep workflowTemplateStep);
+        ICollection<WorkflowTemplateStep> ReadWorkflowTemplateSteps(int workflowTemplateId);
     }
 }

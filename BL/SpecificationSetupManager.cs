@@ -209,5 +209,10 @@ namespace FIS.BL
         {
             return specSetupRepo.ReadInputDirectories().ToList();
         }
+
+        public FileSpecification UpdateFileSpecification(FileSpecification fileSpecification)
+        {
+           return  specSetupRepo.UpdateFileSpecification(fileSpecification);
+        }
     }
 }

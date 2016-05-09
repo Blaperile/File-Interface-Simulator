@@ -53,7 +53,7 @@
             </th>
         </tr>
 
-        @for (int i = 0; i < Model.CurrentFileSpecifications.Count(); i++)
+        @for (int i = 0; i < Model.CurrentWorkflowTemplateSteps.Count(); i++)
         {
             <tr>
                 <td>
@@ -63,18 +63,18 @@
                     @(i + 1)
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => Model.CurrentFileSpecifications.ElementAt(i).Name)
+                    @Html.DisplayFor(modelItem => Model.CurrentWorkflowTemplateSteps.ElementAt(i).Name)
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => Model.CurrentFileSpecifications.ElementAt(i).Type)
+                    @Html.DisplayFor(modelItem => Model.CurrentWorkflowTemplateSteps.ElementAt(i).Type)
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => Model.CurrentFileSpecifications.ElementAt(i).Version)
+                    @Html.DisplayFor(modelItem => Model.CurrentWorkflowTemplateSteps.ElementAt(i).Version)
                 </td>
             </tr>
         }
         @{
-            Model.NewSequenceNumber = Model.CurrentFileSpecifications.Count() + 1;
+            Model.NewSequenceNumber = Model.CurrentWorkflowTemplateSteps.Count() + 1;
 
             List<SelectListItem> possibleFileSpecifications = new List<SelectListItem>();
 
@@ -100,7 +100,7 @@
         </tr>
     </table>
 
-    <span id="maxSequenceNumber" hidden>@(Model.CurrentFileSpecifications.Count() + 1)</span>
+    <span id="maxSequenceNumber" hidden>@(Model.CurrentWorkflowTemplateSteps.Count() + 1)</span>
 
     <span id="errorMessage" class="errorMessage"></span>
 

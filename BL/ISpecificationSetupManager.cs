@@ -22,6 +22,7 @@ namespace FIS.BL
         FileSpecification GetFileSpecificationAtStartWorkflowTemplateWithName(string specificationName);
         List<FileSpecification> GetFileSpecifications();
         FileSpecification RemoveFileSpecification(int specificationId);
+        FileSpecification UpdateFileSpecification(FileSpecification fileSpecification);
         GroupCondition GetGroupCondition(int groupConditionId);
         FieldSpecFieldCondition GetFieldSpecFieldCondition(int fieldSpecificationId, string fieldCode);
         FileSpecFieldCondition GetFileSpecFieldCondition(int id);

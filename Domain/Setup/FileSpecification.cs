@@ -18,12 +18,11 @@ namespace FIS.BL.Domain.Setup
         public string Path { get; set; }
         public bool IsInput { get; set; }
         public ICollection<Directory> Directories { get; set; }
-        public int StepNumberInWorkflowTemplate { get; set; }
-        public WorkflowTemplate WorkflowTemplate { get; set; }
         public FieldSpecification FieldSpecification { get; set; }
         public ICollection<HeaderCondition> HeaderConditions { get; set; }
         public ICollection<GroupCondition> GroupConditions { get; set; }
         public ICollection<FileSpecFieldCondition> FileSpecFieldConditions { get; set; }
         public ICollection<Message> Messages { get; set; }
+        public ICollection<WorkflowTemplateStep> WorkflowTemplateSteps { get; set; }
     }
 }
