@@ -25,6 +25,7 @@ namespace FIS.DAL
         FileSpecification ReadFileSpecificationWithMessages(int specificationId);
         List<FileSpecification> ReadFileSpecifications();
         FileSpecification DeleteFileSpecification(int specificationId);
+        FileSpecification UpdateFileSpecification(FileSpecification fileSpecification);
 
         GroupCondition ReadGroupCondition(int groupConditionId);
         FieldSpecFieldCondition ReadFieldSpecFieldCondition(int fieldSpecificationId, string fieldCode);

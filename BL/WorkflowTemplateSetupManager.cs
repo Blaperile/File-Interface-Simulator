@@ -24,18 +24,32 @@ namespace FIS.BL
 
         public WorkflowTemplate AddStepToWorkflowTemplate(int workflowTemplateId, int stepNumber, string specificationName, string specificationVersion)
         {
-            WorkflowTemplate workflowTemplate = GetWorkflowTemplate(workflowTemplateId);
-            FileSpecification fileSpecification = specSetupManager.GetFileSpecification(specificationName, specificationVersion);
-            fileSpecification.StepNumberInWorkflowTemplate = stepNumber;
-
-            foreach(FileSpecification workflowTemplateFileSpecification in workflowTemplate.FileSpecifications.Where(fs => fs.StepNumberInWorkflowTemplate >= stepNumber))
+             WorkflowTemplate workflowTemplate = GetWorkflowTemplate(workflowTemplateId);
+             FileSpecification fileSpecification = specSetupManager.GetFileSpecification(specificationName, specificationVersion);
+             WorkflowTemplateStep workflowTemplateStep = new WorkflowTemplateStep()
             {
-                workflowTemplateFileSpecification.StepNumberInWorkflowTemplate++;
-            }
+                StepNumber = stepNumber,
+                WorkflowTemplate = workflowTemplate,
+                fileSpecification = fileSpecification
+            };
 
-            workflowTemplate.FileSpecifications.Add(fileSpecification);
-            fileSpecification.WorkflowTemplate = workflowTemplate;
-            return workflowTemplateSetupRepo.UpdateWorkflowTemplate(workflowTemplate);
+
+             foreach(WorkflowTemplateStep workflowTemplateStepInWorkflow in workflowTemplate.WorkflowTemplateSteps.Where(wts => wts.StepNumber >= stepNumber))
+             {
+                 workflowTemplateStepInWorkflow.StepNumber++;
+             }
+
+            workflowTemplateStep = workflowTemplateSetupRepo.CreateWorkflowTemplateStep(workflowTemplateStep); 
+            if(fileSpecification.WorkflowTemplateSteps == null)
+            {
+                fileSpecification.WorkflowTemplateSteps = new List<WorkflowTemplateStep>();
+            }
+            if(workflowTemplate.WorkflowTemplateSteps == null)
+            {
+                workflowTemplate.WorkflowTemplateSteps = new List<WorkflowTemplateStep>();
+            }
+            return workflowTemplate;
+
         }
 
         public WorkflowTemplate AddWorkflowTemplate(string name)

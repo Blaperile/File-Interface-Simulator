@@ -74,7 +74,7 @@ namespace FIS.BL
                     IEnumerable<XMLElement> xmlElements = operationalRep.GetElements(message.MessageId);
                     XMLElement flowIdElement = xmlElements.Where(e => e.Code.Equals("FLOWID")).Single();
                     FileSpecification fileSpecification = specSetupManager.GetFileSpecificationAtStartWorkflowTemplateWithName(flowIdElement.Value);
-                    Workflow workflow = AddWorkflow(message, fileSpecification.WorkflowTemplate);
+                 //   Workflow workflow = AddWorkflow(message, fileSpecification.WorkflowTemplate);
                     ValidateInput(message.MessageId, fileSpecification.FileSpecificationId);
                     GenerateAnswer(message, workflow, fileSpecification.WorkflowTemplate, directoryHandler);
                 }

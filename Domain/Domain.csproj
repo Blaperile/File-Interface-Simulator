@@ -69,6 +69,7 @@
     <Compile Include="Setup\GroupCondition.cs" />
     <Compile Include="Setup\HeaderCondition.cs" />
     <Compile Include="Setup\WorkflowTemplate.cs" />
+    <Compile Include="Setup\WorkflowTemplateStep.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

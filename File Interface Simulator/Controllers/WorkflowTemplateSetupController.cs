@@ -55,28 +55,46 @@ namespace File_Interface_Simulator.Controllers
                 model.IsActive = "No";
             }
 
-            IList<WorkflowTemplateFileSpecificationDetailViewModel> fileSpecifications = new List<WorkflowTemplateFileSpecificationDetailViewModel>();
+            IList<WorkflowTemplateStepDetailViewModel> workflowTemplateSteps = new List<WorkflowTemplateStepDetailViewModel>();
 
-            foreach (FileSpecification fileSpecification in workflowTemplate.FileSpecifications)
+            foreach (WorkflowTemplateStep workflowTemplateStep in workflowTemplate.WorkflowTemplateSteps)
             {
-                WorkflowTemplateFileSpecificationDetailViewModel fileSpecificationModel = new WorkflowTemplateFileSpecificationDetailViewModel()
+                WorkflowTemplateStepDetailViewModel workflowTemplateStepModel = new WorkflowTemplateStepDetailViewModel()
                 {
-                    Name = fileSpecification.Name,
-                    Type = fileSpecification.IsInput? "Input" : "Output",
-                    Version = fileSpecification.Version
+                    Step = workflowTemplateStep.StepNumber,
+                    Name = workflowTemplateStep.fileSpecification.Name,
+                    Type = workflowTemplateStep.fileSpecification.IsInput? "Input" : "Output",
+                    Version = workflowTemplateStep.fileSpecification.Version
                 };
 
-                fileSpecifications.Add(fileSpecificationModel);
+                workflowTemplateSteps.Add(workflowTemplateStepModel);
             }
 
-            model.CurrentFileSpecifications = fileSpecifications;
+            model.CurrentWorkflowTemplateSteps = workflowTemplateSteps;
 
             IList<WorkflowTemplatePossibleFileSpecificationDetailViewModel> possibleFileSpecificationModels = new List<WorkflowTemplatePossibleFileSpecificationDetailViewModel>();
             IEnumerable<FileSpecification> possibleFileSpecifications = specSetupManager.GetFileSpecifications();
 
             foreach (FileSpecification possibleFileSpecification in possibleFileSpecifications)
             {
-                if (!workflowTemplate.FileSpecifications.Contains(possibleFileSpecification))
+                if (workflowTemplate.WorkflowTemplateSteps.Count != 0)
+                {
+                    foreach (WorkflowTemplateStep workflowtemplateStep in workflowTemplate.WorkflowTemplateSteps)
+                    {
+                        if (!workflowtemplateStep.fileSpecification.Equals(possibleFileSpecification))
+                        {
+                            WorkflowTemplatePossibleFileSpecificationDetailViewModel possibleFileSpecificationModel = new WorkflowTemplatePossibleFileSpecificationDetailViewModel()
+                            {
+                                Name = possibleFileSpecification.Name,
+                                Type = possibleFileSpecification.IsInput ? "Input" : "Output",
+                                Version = possibleFileSpecification.Version
+                            };
+
+                            possibleFileSpecificationModels.Add(possibleFileSpecificationModel);
+                        }
+                    }
+                }
+                else
                 {
                     WorkflowTemplatePossibleFileSpecificationDetailViewModel possibleFileSpecificationModel = new WorkflowTemplatePossibleFileSpecificationDetailViewModel()
                     {
@@ -86,7 +104,9 @@ namespace File_Interface_Simulator.Controllers
                     };
 
                     possibleFileSpecificationModels.Add(possibleFileSpecificationModel);
+
                 }
+
             }
 
             model.PossibleFileSpecifications = possibleFileSpecificationModels;

@@ -28,8 +28,12 @@ namespace FIS.DAL
         public WorkflowTemplate ReadWorkflowTemplate(int workflowTemplateId)
         {
            WorkflowTemplate workflowTemplate = ctx.WorkflowTemplates.Find(workflowTemplateId);
-           ctx.Entry<WorkflowTemplate>(workflowTemplate).Collection<FileSpecification>(wt => wt.FileSpecifications).Load();
-           workflowTemplate.FileSpecifications = workflowTemplate.FileSpecifications.OrderBy(f => f.StepNumberInWorkflowTemplate).ToList();
+           ctx.Entry<WorkflowTemplate>(workflowTemplate).Collection<WorkflowTemplateStep>(wt => wt.WorkflowTemplateSteps).Load();
+           workflowTemplate.WorkflowTemplateSteps = workflowTemplate.WorkflowTemplateSteps.OrderBy(f => f.StepNumber).ToList();
+           foreach(WorkflowTemplateStep workflowTemplateStep in workflowTemplate.WorkflowTemplateSteps)
+            {
+                ctx.Entry<WorkflowTemplateStep>(workflowTemplateStep).Reference<FileSpecification>(wts => wts.fileSpecification).Load();
+            }
            return workflowTemplate;
         }
 
@@ -67,16 +71,28 @@ namespace FIS.DAL
         public WorkflowTemplate DeleteWorkflowTemplate(int workflowTemplateId)
         {
             WorkflowTemplate workflowTemplate = ctx.WorkflowTemplates.Find(workflowTemplateId);
-            workflowTemplate.FileSpecifications = null;
-            List<FileSpecification> fileSpecifications = ctx.FileSpecifications.Where(f => f.WorkflowTemplate.WorkflowTemplateId == workflowTemplateId).ToList();
-            foreach (FileSpecification filespecification in fileSpecifications) {
-                filespecification.WorkflowTemplate = null;
-                ctx.FileSpecifications.Attach(filespecification);
-                ctx.Entry(filespecification).State = EntityState.Modified;
+            workflowTemplate.WorkflowTemplateSteps = null;
+            List<WorkflowTemplateStep> workflowTemplateSteps = ctx.WorkflowTemplateSteps.Where(f => f.WorkflowTemplate.WorkflowTemplateId == workflowTemplateId).ToList();
+            foreach (WorkflowTemplateStep workflowTemplateStep in workflowTemplateSteps) {
+                workflowTemplateStep.WorkflowTemplate = null;
+                ctx.WorkflowTemplateSteps.Attach(workflowTemplateStep);
+                ctx.Entry(workflowTemplateStep).State = EntityState.Modified;
             }
             ctx.WorkflowTemplates.Remove(workflowTemplate);
             ctx.SaveChanges();
             return workflowTemplate;
+        }
+
+        public WorkflowTemplateStep CreateWorkflowTemplateStep(WorkflowTemplateStep workflowTemplateStep)
+        {
+            ctx.WorkflowTemplateSteps.Add(workflowTemplateStep);
+            ctx.SaveChanges();
+            return workflowTemplateStep;
+        }
+
+        public ICollection<WorkflowTemplateStep> ReadWorkflowTemplateSteps(int workflowTemplateId)
+        {
+            return ctx.WorkflowTemplateSteps.Where(wt => wt.WorkflowTemplate.WorkflowTemplateId == workflowTemplateId).ToList();
         }
     }
 }

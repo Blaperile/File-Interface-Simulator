@@ -11,7 +11,7 @@ namespace File_Interface_Simulator.Models
         public string Name { get; set; }
         public DateTime CreationDate { get; set; }
         public string IsActive { get; set; }
-        public IEnumerable<WorkflowTemplateFileSpecificationDetailViewModel> CurrentFileSpecifications { get; set; }
+        public IEnumerable<WorkflowTemplateStepDetailViewModel> CurrentWorkflowTemplateSteps { get; set; }
         public int NewSequenceNumber { get; set; }
         public string NewStep { get; set; }
         public IEnumerable<WorkflowTemplatePossibleFileSpecificationDetailViewModel> PossibleFileSpecifications { get; set; }

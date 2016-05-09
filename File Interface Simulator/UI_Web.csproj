@@ -185,7 +185,7 @@
     <Compile Include="Models\WorkflowDetailViewModel.cs" />
     <Compile Include="Models\WorkflowOverviewDetailViewModel.cs" />
     <Compile Include="Models\WorkflowTemplateDetailViewModel.cs" />
-    <Compile Include="Models\WorkflowTemplateFileSpecificationDetailViewModel.cs" />
+    <Compile Include="Models\WorkflowTemplateStepDetailViewModel.cs" />
     <Compile Include="Models\WorkflowTemplateOverviewDetailViewModel.cs" />
     <Compile Include="Models\WorkflowTemplatePossibleFileSpecificationDetailViewModel.cs" />
     <Compile Include="Models\WorkflowTemplateViewModel.cs" />
