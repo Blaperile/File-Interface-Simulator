@@ -76,7 +76,7 @@ namespace FIS.BL
                     FileSpecification fileSpecification = specSetupManager.GetFileSpecificationAtStartWorkflowTemplateWithName(flowIdElement.Value);
                  //   Workflow workflow = AddWorkflow(message, fileSpecification.WorkflowTemplate);
                     ValidateInput(message.MessageId, fileSpecification.FileSpecificationId);
-                    GenerateAnswer(message, workflow, fileSpecification.WorkflowTemplate, directoryHandler);
+                 //   GenerateAnswer(message, workflow, fileSpecification.WorkflowTemplate, directoryHandler);
                 }
             }
         
@@ -85,7 +85,7 @@ namespace FIS.BL
         public void GenerateAnswer(Message message, Workflow workflow, WorkflowTemplate workflowTemplate, DirectoryHandler directoryHandler)
         {
             //TODO: Het onderstaande faalt nog --> Bij WorkflowTemplate eens proberen de FileSpecifications lijst te initialiseren bij creatie workflow template, zien ofdat tweede file specification nu wel goed wordt toegevoegd?
-            FileSpecification outputFileSpecification = workflowTemplate.FileSpecifications.Where(fs => !fs.IsInput).Last();
+          /*  FileSpecification outputFileSpecification = workflowTemplate.FileSpecifications.Where(fs => !fs.IsInput).Last();
 
             IAnswerGenerator answerGenerator = new AnswerGenerator();
             Message answerMessage = answerGenerator.GenerateAnswer(message, outputFileSpecification);
@@ -101,7 +101,7 @@ namespace FIS.BL
             workflow.Messages.Add(answerMessage);
 
             operationalRep.UpdateWorkflow(workflow);
-
+            */
         }
 
         public Message GetMessage(int messageId)
