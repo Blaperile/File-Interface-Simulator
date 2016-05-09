@@ -146,7 +146,7 @@ namespace FIS.BL
 
         public Workflow RemoveWorkflow(int workflowId)
         {
-            throw new NotImplementedException();
+            return operationalRep.DeleteWorkflow(workflowId);
         }
 
         public void ValidateInput(int messageId, int fileSpecificationId)

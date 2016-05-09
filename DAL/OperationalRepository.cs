@@ -177,7 +177,10 @@ namespace FIS.DAL
 
         public Workflow DeleteWorkflow(int workflowId)
         {
-            throw new NotImplementedException();
+            Workflow workflow = ctx.Workflows.Find(workflowId);
+            ctx.Workflows.Remove(workflow);
+            ctx.SaveChanges();
+            return workflow;
         }
 
         public Group ReadGroupWithRelatedDate(int groupId)

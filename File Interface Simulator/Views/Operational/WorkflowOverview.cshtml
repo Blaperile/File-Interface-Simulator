@@ -27,9 +27,9 @@
     </tr>
 
 @foreach (var item in Model) {
-    <tr>
+    <tr id="workflow_@item.Id">
         <td>
-            <img src="~/images/thrash_icon.png" />
+            <img src="~/images/thrash_icon.png" onclick="removeWorkflow('@item.Id')" style="cursor:pointer"/>
         </td>
         <td>
             @Html.DisplayFor(modelItem => item.Id)
@@ -50,7 +50,12 @@
                 <span style="color: red" class="glyphicon glyphicon-remove"></span> <span>@item.AmountOfErrors errors</span>
             }
         </td>
+        <td id="delete_error_@item.Id" class="errorMessage"></td>
     </tr>
 }
 
 </table>
+
+@section Scripts {
+    <script src="~/Scripts/Operational/workflowOverview.js"></script>
+}

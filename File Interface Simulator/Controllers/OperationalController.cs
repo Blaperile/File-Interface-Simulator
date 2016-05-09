@@ -244,6 +244,18 @@ namespace File_Interface_Simulator.Controllers
             return View("WorkflowOverview", model);
         }
 
+        public HttpStatusCodeResult RemoveWorkflowRPC(int id)
+        {
+            Workflow workflow = operationalManager.RemoveWorkflow(id);
+
+            if (workflow != null)
+            {
+                return new HttpStatusCodeResult(200, "Succes");
+            }
+
+            return new HttpStatusCodeResult(500, "An error occurred while deleting the workflow.");
+        }
+
         [HttpGet]
         public ActionResult WorkflowDetail(int id = 1)
         {
