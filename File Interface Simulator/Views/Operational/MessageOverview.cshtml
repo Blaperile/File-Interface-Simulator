@@ -30,9 +30,9 @@
     </tr>
 
 @foreach (var item in Model) {
-    <tr>
+    <tr id="message_@item.Id">
         <td>
-            <img src="~/images/thrash_icon.png" />
+            <img src="~/images/thrash_icon.png" onclick="removeMessage('@item.Id')" style="cursor:pointer" />
         </td>
         <td>
             @Html.DisplayFor(modelItem => item.Name)
@@ -52,7 +52,12 @@
                 <span class="errorMessage"><img src="~/images/exclamation_mark_icon.png" /> @item.AmountOfErrors errors</span>
             }
         </td>
+        <td id="delete_error_@item.Id" class="errorMessage"></td>
     </tr>
 }
 
 </table>
+
+@section Scripts {
+    <script src="~/Scripts/Operational/messageOverview.js"></script>
+}

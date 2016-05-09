@@ -25,20 +25,5 @@ namespace FIS.BL.Util.XML.Validation
             GroupValidator groupValidator = new GroupValidator(Codes, elements, fileSpecification, message);
             FieldValidator fieldValidator = new FieldValidator(Codes, elements, fileSpecification, message);        
         }
-
-        public IElement GetElement(string elementName)
-        {
-            throw new NotImplementedException();
-        }
-
-        private IElement FindElement(string elementName)
-        {
-            throw new NotImplementedException();
-        }
-
-        private void RemoveCodeFromList(string code)
-        {
-            throw new NotImplementedException();
-        }
     }
 }

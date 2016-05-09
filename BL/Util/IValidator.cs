@@ -9,6 +9,6 @@ namespace FIS.BL.Util
 {
     public interface IValidator
     {
-        IElement GetElement(string elementName);
+
     }
 }

@@ -228,6 +228,7 @@
     <Content Include="Scripts\jquery.validate.unobtrusive.min.js" />
     <Content Include="Scripts\modernizr-2.6.2.js" />
     <Content Include="Scripts\Operational\messageDetail.js" />
+    <Content Include="Scripts\Operational\messageOverview.js" />
     <Content Include="Scripts\respond.js" />
     <Content Include="Scripts\respond.min.js" />
     <Content Include="Scripts\Setup\fieldSpecificationOverview.js" />

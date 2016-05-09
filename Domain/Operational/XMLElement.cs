@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -14,6 +15,8 @@ namespace FIS.BL.Domain.Operational
         public ICollection<Attribute> Attributes { get; set; }
         public String Level { get; set; }
         public int SequenceNumber { get; set; }
+
+        [Required]
         public Message Message { get; set; }
     }
 }
