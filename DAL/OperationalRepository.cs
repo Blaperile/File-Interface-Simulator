@@ -138,7 +138,10 @@ namespace FIS.DAL
 
         public Workflow UpdateWorkflow(Workflow workflow)
         {
-            throw new NotImplementedException();
+            ctx.Workflows.Attach(workflow);
+            ctx.Entry(workflow).State = EntityState.Modified;
+            ctx.SaveChanges();
+            return workflow;
         }
 
         public Workflow ReadWorkflow(int workflowId)

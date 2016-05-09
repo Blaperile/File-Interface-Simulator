@@ -24,13 +24,24 @@ namespace FIS.BL.Util
 
             foreach (HeaderCondition headerCondition in fileSpecification.HeaderConditions)
             {
-                answerMessage.HeaderFields.Add(new HeaderField()
+                HeaderField headerField = new HeaderField()
                 {
                     HeaderFieldCode = headerCondition.HeaderFieldCode,
                     Description = headerCondition.Description,
                     HeaderCondition = headerCondition,
                     Message = answerMessage
-                });
+                };
+
+                if (String.IsNullOrEmpty(headerField.Description))
+                {
+                    IEnumerable<HeaderField> headerFields = message.HeaderFields.Where(hf => hf.HeaderFieldCode.Equals(headerField.HeaderFieldCode));
+                    if (headerFields.Count() == 1)
+                    {
+                        headerField.Description = headerFields.Single().Description;
+                    }
+                }
+
+                answerMessage.HeaderFields.Add(headerField);
             }
 
             foreach (Transaction transaction in message.Transactions)
@@ -49,7 +60,7 @@ namespace FIS.BL.Util
                 {
                     GroupCode = groupCondition.Code,
                     Transaction = answerMessage.Transactions.ElementAt(0),
-                    // ParentGroup = groupCondition.ParentGroup
+                  //  ParentGroup = groupCondition.ParentGroup,
                     Level = groupCondition.Level,
                     GroupCondition = groupCondition,
                     Fields = new List<Field>()
@@ -63,7 +74,7 @@ namespace FIS.BL.Util
                         Level = Convert.ToString(fileSpecFieldCondition.Level),
                         Group = group,
                         FileSpecFieldCondition = fileSpecFieldCondition,
-                        //  Value = ophalen vanuit message
+                        //Value = Ophalen uit message
                     };
 
                     group.Fields.Add(field);

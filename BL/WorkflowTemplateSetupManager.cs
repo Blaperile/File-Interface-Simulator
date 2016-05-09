@@ -140,5 +140,10 @@ namespace FIS.BL
             newSelectedWorkflowTemplate.IsChosen = true;
             return workflowTemplateSetupRepo.UpdateWorkflowTemplate(newSelectedWorkflowTemplate);
         }
+
+        public WorkflowTemplateStep GetWorkflowTemplateStep(int workflowTemplateId, int stepNumber)
+        {
+            return workflowTemplateSetupRepo.ReadWorkflowTemplateStep(workflowTemplateId, stepNumber);
+        }
     }
 }
