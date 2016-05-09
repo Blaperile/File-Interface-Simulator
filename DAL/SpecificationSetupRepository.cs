@@ -126,18 +126,18 @@ namespace FIS.DAL
 
        public FileSpecification ReadFileSpecificationAtStartWorkflowTemplateWithName(string specificationName)
         {
-            /* IEnumerable<FileSpecification> fileSpecifications = ctx.FileSpecifications.Where(fs => fs.Name.Equals(specificationName, StringComparison.CurrentCultureIgnoreCase)).Where(fs => fs.StepNumberInWorkflowTemplate == 1);
-              if (fileSpecifications.Count() == 0) return null;
-              FileSpecification fileSpecification = fileSpecifications.First();
+
+            WorkflowTemplateStep workflowTemplateStep = ctx.WorkflowTemplateSteps.Where(wt => wt.StepNumber == 1).Where(wt => wt.fileSpecification.Name.Equals(specificationName)).Where(wt => wt.WorkflowTemplate.IsChosen == true).FirstOrDefault();
+            ctx.Entry<WorkflowTemplateStep>(workflowTemplateStep).Reference<FileSpecification>(wt => wt.fileSpecification).Load();
+            FileSpecification fileSpecification = workflowTemplateStep.fileSpecification;
+
               ctx.Entry<FileSpecification>(fileSpecification).Collection<HeaderCondition>(fs => fs.HeaderConditions).Load();
               ctx.Entry<FileSpecification>(fileSpecification).Collection<GroupCondition>(fs => fs.GroupConditions).Load();
               LoadFileSpecFieldConditions(fileSpecification);
               ctx.Entry<FileSpecification>(fileSpecification).Collection<Directory>(fs => fs.Directories).Load();
               ctx.Entry<FileSpecification>(fileSpecification).Collection<Message>(fs => fs.Messages).Load();
-              ctx.Entry<FileSpecification>(fileSpecification).Reference<WorkflowTemplate>(fs => fs.WorkflowTemplate).Load();
-              ctx.Entry<WorkflowTemplate>(fileSpecification.WorkflowTemplate).Collection<Workflow>(wt => wt.Workflows).Load();
-              return fileSpecification;*/
-            return null;
+              ctx.Entry<FileSpecification>(fileSpecification).Collection<WorkflowTemplateStep>(fs => fs.WorkflowTemplateSteps).Load();
+              return fileSpecification;
         }
 
         public FileSpecification ReadFileSpecificationWithMessages(int specificationId)
