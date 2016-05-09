@@ -76,12 +76,12 @@ namespace FIS.DAL
              return fileSpec;
         }
 
-        private void LoadHeaderConditions(FileSpecification fileSpecification)
+        public void LoadHeaderConditions(FileSpecification fileSpecification)
         {
             ctx.Entry<FileSpecification>(fileSpecification).Collection<HeaderCondition>(f => f.HeaderConditions).Load();
         }
 
-        private void LoadGroupConditions(FileSpecification fileSpecification)
+        public void LoadGroupConditions(FileSpecification fileSpecification)
         {
             ctx.Entry<FileSpecification>(fileSpecification).Collection<GroupCondition>(f => f.GroupConditions).Load();
             foreach(GroupCondition groupCondition in fileSpecification.GroupConditions)

@@ -13,9 +13,12 @@ namespace FIS.DAL
     {
         private readonly FISEFDbContext ctx;
 
+        private ISpecificationSetupRepository specificationSetupRepo;
+
         public WorkflowTemplateSetupRepository()
         {
             ctx = FISEFDbContext.Instance;
+            specificationSetupRepo = new SpecificationSetupRepository();
         }
 
         public WorkflowTemplate CreateWorkflowTemplate(WorkflowTemplate workflowTemplate)
@@ -100,6 +103,16 @@ namespace FIS.DAL
             WorkflowTemplateStep workflowTemplateStep = ctx.WorkflowTemplateSteps.Find(workflowTemplateStepId);
             ctx.WorkflowTemplateSteps.Remove(workflowTemplateStep);
             ctx.SaveChanges();
+            return workflowTemplateStep;
+        }
+
+        public WorkflowTemplateStep ReadWorkflowTemplateStep(int workflowTemplateId, int stepNumber)
+        {
+            WorkflowTemplateStep workflowTemplateStep = ctx.WorkflowTemplateSteps.Where(wt => wt.WorkflowTemplate.WorkflowTemplateId == workflowTemplateId).Where(wt => wt.StepNumber == stepNumber).Single();
+            ctx.Entry<WorkflowTemplateStep>(workflowTemplateStep).Reference<FileSpecification>(wts => wts.fileSpecification).Load();
+            ctx.Entry<FileSpecification>(workflowTemplateStep.fileSpecification).Collection<Directory>(f => f.Directories).Load();
+            specificationSetupRepo.LoadHeaderConditions(workflowTemplateStep.fileSpecification);
+            specificationSetupRepo.LoadGroupConditions(workflowTemplateStep.fileSpecification);
             return workflowTemplateStep;
         }
     }

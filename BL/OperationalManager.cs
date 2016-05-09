@@ -16,11 +16,13 @@ namespace FIS.BL
     {
         IOperationalRepository operationalRep;
         ISpecificationSetupManager specSetupManager;
+        IWorkflowTemplateSetupManager workflowTemplateSetupManager;
 
         public OperationalManager()
         {
             operationalRep = new OperationalRepository();
             specSetupManager = new SpecificationSetupManager();
+            workflowTemplateSetupManager = new WorkflowTemplateSetupManager();
         }
 
         public Workflow AddWorkflow(Message message, WorkflowTemplate workflowTemplate)
@@ -79,19 +81,21 @@ namespace FIS.BL
                     IEnumerable<XMLElement> xmlElements = operationalRep.GetElements(message.MessageId);
                     XMLElement flowIdElement = xmlElements.Where(e => e.Code.Equals("FLOWID")).Single();
                     FileSpecification fileSpecification = specSetupManager.GetFileSpecificationAtStartWorkflowTemplateWithName(flowIdElement.Value);
-                    Workflow workflow = AddWorkflow(message, fileSpecification.WorkflowTemplateSteps.Where( wt => wt.StepNumber==1).Where(wt=>wt.WorkflowTemplate.IsChosen==true).FirstOrDefault().WorkflowTemplate);
-                    ValidateInput(message.MessageId, fileSpecification.FileSpecificationId);
+                    WorkflowTemplate workflowTemplate = fileSpecification.WorkflowTemplateSteps.Where(wt => wt.StepNumber == 1).Where(wt => wt.WorkflowTemplate.IsChosen == true).FirstOrDefault().WorkflowTemplate;
 
-                 //   GenerateAnswer(message, workflow, fileSpecification.WorkflowTemplate, directoryHandler);
+                    WorkflowTemplateStep workflowTemplateStep = workflowTemplateSetupManager.GetWorkflowTemplateStep(workflowTemplate.WorkflowTemplateId, 2);
+
+                    Workflow workflow = AddWorkflow(message, workflowTemplate);
+                    ValidateInput(message.MessageId, fileSpecification.FileSpecificationId);
+                    GenerateAnswer(message, workflow, workflowTemplateStep, directoryHandler);
                 }
             }
         
         }
 
-        public void GenerateAnswer(Message message, Workflow workflow, WorkflowTemplate workflowTemplate, DirectoryHandler directoryHandler)
+        public void GenerateAnswer(Message message, Workflow workflow, WorkflowTemplateStep workflowTemplateStep, DirectoryHandler directoryHandler)
         {
-            //TODO: Het onderstaande faalt nog --> Bij WorkflowTemplate eens proberen de FileSpecifications lijst te initialiseren bij creatie workflow template, zien ofdat tweede file specification nu wel goed wordt toegevoegd?
-          /*  FileSpecification outputFileSpecification = workflowTemplate.FileSpecifications.Where(fs => !fs.IsInput).Last();
+            FileSpecification outputFileSpecification = workflowTemplateStep.fileSpecification; 
 
             IAnswerGenerator answerGenerator = new AnswerGenerator();
             Message answerMessage = answerGenerator.GenerateAnswer(message, outputFileSpecification);
@@ -107,7 +111,7 @@ namespace FIS.BL
             workflow.Messages.Add(answerMessage);
 
             operationalRep.UpdateWorkflow(workflow);
-            */
+           
         }
 
         public Message GetMessage(int messageId)

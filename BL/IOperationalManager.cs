@@ -24,7 +24,7 @@ namespace FIS.BL
         void DetectInput();
         void ValidateInput(int messageId, int fileSpecificationId);
         void ArchiveErrorLines(Message message, FileSpecification fileSpecification, IEnumerable<String> codes);
-        void GenerateAnswer(Message message, Workflow workflow, WorkflowTemplate workflowTemplate, DirectoryHandler directoryHandler);
+        void GenerateAnswer(Message message, Workflow workflow, WorkflowTemplateStep workflowTemplateStep, DirectoryHandler directoryHandler);
 
     }
 }

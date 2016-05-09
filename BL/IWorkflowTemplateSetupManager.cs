@@ -19,5 +19,7 @@ namespace FIS.BL
         WorkflowTemplate RemoveWorkflowTemplate(int workflowTemplateId);
         WorkflowTemplate SelectWorkflowTemplate(int workflowTemplateId);
         WorkflowTemplate SelectWorkflowTemplate(string name);
+
+        WorkflowTemplateStep GetWorkflowTemplateStep(int workflowTemplateId, int stepNumber);
     }
 }

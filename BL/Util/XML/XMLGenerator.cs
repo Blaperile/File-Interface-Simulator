@@ -11,7 +11,18 @@ namespace FIS.BL.Util.XML
     {
         public string GenerateXmlString(Message message)
         {
-            throw new NotImplementedException();
+            string xmlString = "";
+
+            xmlString += String.Format("<header>", Environment.NewLine);
+
+            foreach (HeaderField headerField in message.HeaderFields)
+            {
+                xmlString += String.Format("{0}<{1}>{2}</{1}>", Environment.NewLine, headerField.HeaderFieldCode, headerField.Description);
+            }
+
+            xmlString += String.Format("{0}</header>{0}", Environment.NewLine);
+
+            return xmlString;
         }
     }
 }
