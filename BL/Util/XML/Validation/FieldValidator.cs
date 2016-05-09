@@ -25,13 +25,14 @@ namespace FIS.BL.Util.XML.Validation
 
         }
 
-        private Field CheckDataTypeOfField(Field field, FieldSpecFieldCondition fieldCondition)
+        private Field CheckDataTypeOfField(Field field, FieldSpecFieldCondition fieldCondition, Message message)
         {
             if (fieldCondition.Datatype.Equals("INT"))
             {
                 bool isNumber = isNumeric(field.Value, System.Globalization.NumberStyles.Integer);
                 if (isNumber == false)
                 {
+                    message.AmountOfErrors++;
                     field.ErrorDescription += Environment.NewLine + "The datatype of the field must be an Integer.";
                 }
             }
@@ -40,6 +41,7 @@ namespace FIS.BL.Util.XML.Validation
                 bool isNumber = isNumeric(field.Value, System.Globalization.NumberStyles.Float);
                 if (isNumber == false)
                 {
+                    message.AmountOfErrors++;
                     field.ErrorDescription += Environment.NewLine + "The datatype of the field must be a Decimal.";
                 }
             }
@@ -59,6 +61,7 @@ namespace FIS.BL.Util.XML.Validation
                         isDateTime = DateTime.TryParse(dateConverted, out dateTime);
                         if (isDateTime == false)
                         {
+                            message.AmountOfErrors++;
                             field.ErrorDescription += Environment.NewLine + "The value must be a date.";
                         }
                     }
@@ -66,6 +69,7 @@ namespace FIS.BL.Util.XML.Validation
                 string dateTimeFormatted = dateTime.ToString(fieldCondition.Format);
                 if (!dateTimeFormatted.Equals(field.Value))
                 {
+                    message.AmountOfErrors++;
                     field.ErrorDescription += Environment.NewLine + "The value doesn't match the format";
                 }
             }
@@ -80,12 +84,13 @@ namespace FIS.BL.Util.XML.Validation
                 System.Globalization.CultureInfo.CurrentCulture, out result);
         }
 
-        private Field CheckSizeOfField(Field field, FieldSpecFieldCondition fieldCondition)
+        private Field CheckSizeOfField(Field field, FieldSpecFieldCondition fieldCondition, Message message)
         {
             if (fieldCondition.Size != 0)
             {
                 if (fieldCondition.Size != field.Value.Length)
                 {
+                    message.AmountOfErrors++;
                     field.ErrorDescription += Environment.NewLine + "The length of the value doesn't match the required length.";
                 }
             }
@@ -103,7 +108,7 @@ namespace FIS.BL.Util.XML.Validation
 
                     if (message.Transactions.ElementAt(0).Groups.Where(g => g.Equals(group)).First().Fields.Where(f => f.FieldCode.Equals(fileSpecFieldCondition.Code)).Count() == 0)
                     {
-
+                        message.AmountOfErrors++;
                         group.ErrorDescription += String.Format("Field {0} is missing." + Environment.NewLine, fileSpecFieldCondition.Code);
                     }
                 }
@@ -122,14 +127,34 @@ namespace FIS.BL.Util.XML.Validation
                     Group group;
                     AddField(message, fileSpecfieldCondition, element, out field, out group);
                     CheckIfFieldOnlyOccursOnce(message, fileSpecfieldCondition, field, group);
-                    CheckDataTypeOfField(field, fileSpecfieldCondition.FieldSpecFieldCondition);
-                    CheckSizeOfField(field, fileSpecfieldCondition.FieldSpecFieldCondition);
-                    CheckAllowedValuesOfField(field, fileSpecfieldCondition.FieldSpecFieldCondition);
+                    CheckDataTypeOfField(field, fileSpecfieldCondition.FieldSpecFieldCondition, message);
+                    CheckSizeOfField(field, fileSpecfieldCondition.FieldSpecFieldCondition, message);
+                    CheckAllowedValuesOfField(field, fileSpecfieldCondition.FieldSpecFieldCondition, message);
+                    CheckLevelOfField(fileSpecfieldCondition, field, message);
+                    CheckGroupOfField(fileSpecfieldCondition, field, message);
                 }
             }
         }
 
-        private void CheckAllowedValuesOfField(Field field, FieldSpecFieldCondition fieldCondition)
+        private void CheckGroupOfField(FileSpecFieldCondition fileSpecfieldCondition, Field field, Message message)
+        {
+            if (!field.Group.GroupCode.Equals(fileSpecfieldCondition.Group.Code))
+            {
+                message.AmountOfErrors++;
+                field.ErrorDescription += String.Format("This field should be in group {0} instead of group {1}", fileSpecfieldCondition.Group.Code, field.Group.GroupCode);
+            }
+        }
+
+        private void CheckLevelOfField(FileSpecFieldCondition fileSpecfieldCondition, Field field, Message message)
+        {
+            if (fileSpecfieldCondition.Level != Int32.Parse(field.Level))
+            {
+                message.AmountOfErrors++;
+                field.ErrorDescription += String.Format("{0}This field should be on level {1} instead of level {2}", Environment.NewLine, fileSpecfieldCondition.Level, field.Level);
+            }
+        }
+
+        private void CheckAllowedValuesOfField(Field field, FieldSpecFieldCondition fieldCondition, Message message)
         {
             if (fieldCondition.AllowedValues.Where(av => !String.IsNullOrEmpty(av.Value)).Count() > 0)
             {
@@ -145,6 +170,7 @@ namespace FIS.BL.Util.XML.Validation
 
                 if (!fieldHasAllowedValue)
                 {
+                    message.AmountOfErrors++;
                     field.ErrorDescription += Environment.NewLine + "The value of this field is not an allowed value.";
                 }
             }
@@ -158,6 +184,7 @@ namespace FIS.BL.Util.XML.Validation
 
                 if (temp.Count() == 0)
                 {
+                    message.AmountOfErrors++;
                     message.Transactions.ElementAt(0).Groups.Where(g => g.GroupCode.Equals(fileSpecfieldCondition.Group.Code)).First().ErrorDescription += String.Format("Field {0} is missing." + Environment.NewLine, fileSpecfieldCondition.Code);
                 }
             }
@@ -172,7 +199,7 @@ namespace FIS.BL.Util.XML.Validation
                 Level = element.Level,
                 FileSpecFieldCondition = fileSpecfieldCondition
             };
-            List<Group> potentialGroups = message.Transactions.ElementAt(0).Groups.Where(g => g.GroupCode.Equals(fileSpecfieldCondition.Group.Code)).ToList();
+            List<Group> potentialGroups = message.Transactions.ElementAt(0).Groups.ToList();
 
             group = new Group();
             foreach (Group groupP in potentialGroups)
@@ -196,6 +223,7 @@ namespace FIS.BL.Util.XML.Validation
             }
             else
             {
+                message.AmountOfErrors++;
                 message.Transactions.ElementAt(0).Groups.Where(g => g.Sequence == group.Sequence).First().ErrorDescription += String.Format("Field {0} can only occur once in this group." + Environment.NewLine, fileSpecfieldCondition.Code);
             }
         }

@@ -37,7 +37,7 @@ namespace File_Interface_Simulator.Controllers
         }
 
         [HttpGet]
-        public ActionResult MessageDetail(int id = 2)
+        public ActionResult MessageDetail(int id = 1)
         {
             Message message = operationalManager.GetMessageWithRelatedData(id);
 
@@ -52,13 +52,12 @@ namespace File_Interface_Simulator.Controllers
                 Transactions = new List<MessageTransactionDetailViewModel>(),
                 HeaderError = message.HeaderErrorDescription,
                 AmountOfHeaderErrors = 0,
-                AmountOfErrors = 0
+                AmountOfErrors = message.AmountOfErrors
             };
 
             if(!String.IsNullOrEmpty(model.HeaderError))
             {
                 model.AmountOfHeaderErrors++;
-                model.AmountOfErrors++;
             }
 
             foreach (HeaderField headerField in message.HeaderFields)
@@ -75,7 +74,6 @@ namespace File_Interface_Simulator.Controllers
                 if (!String.IsNullOrEmpty(headerFieldModel.ErrorMessage))
                 {
                     model.AmountOfHeaderErrors++;
-                    model.AmountOfErrors++;
                 }
 
                 model.HeaderFields.Add(headerFieldModel);
@@ -108,7 +106,6 @@ namespace File_Interface_Simulator.Controllers
                     if(!String.IsNullOrEmpty(groupModel.ErrorMessage))
                     {
                         transactionModel.AmountOfGroupErrors++;
-                        model.AmountOfErrors++;
                     }
 
                     transactionModel.Groups.Add(groupModel);
@@ -134,7 +131,6 @@ namespace File_Interface_Simulator.Controllers
                         if (!String.IsNullOrEmpty(fieldModel.ErrorMessage))
                         {
                             transactionModel.AmountOfFieldErrors++;
-                            model.AmountOfErrors++;
                         }
 
                         transactionModel.Fields.Add(fieldModel);

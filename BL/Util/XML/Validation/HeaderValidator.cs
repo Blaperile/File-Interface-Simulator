@@ -22,9 +22,9 @@ namespace FIS.BL.Util.XML.Validation
                 HeaderField headerField = null;
 
                 headerField = CheckAmountOfOccurencesOfHeaderField(codes, message, headerCondition, temp, headerField);
-                temp = CheckContentOfHeaderField(headerCondition, temp, headerField);
-                headerField = CheckDataTypeHeaderField(headerField, headerCondition);
-                headerField = CheckSizeHeaderField(headerField, headerCondition);
+                temp = CheckContentOfHeaderField(headerCondition, temp, headerField, message);
+                headerField = CheckDataTypeHeaderField(headerField, headerCondition, message);
+                headerField = CheckSizeHeaderField(headerField, headerCondition, message);
 
             }
 
@@ -42,7 +42,7 @@ namespace FIS.BL.Util.XML.Validation
             }
         }
 
-        private IEnumerable<XMLElement> CheckContentOfHeaderField(HeaderCondition headerCondition, IEnumerable<XMLElement> temp, HeaderField headerField)
+        private IEnumerable<XMLElement> CheckContentOfHeaderField(HeaderCondition headerCondition, IEnumerable<XMLElement> temp, HeaderField headerField, Message message)
         {
             if (temp.Count() > 0 && !String.IsNullOrEmpty(headerCondition.Description))
             {
@@ -50,7 +50,8 @@ namespace FIS.BL.Util.XML.Validation
 
                 if (temp.Count() == 0)
                 {
-                    headerField.ErrorDescription = String.Format("Value of this field must be {0}", headerCondition.Description);
+                    message.AmountOfErrors++;
+                    headerField.ErrorDescription += String.Format("Value of this field must be {0}", headerCondition.Description);
                 }
             }
 
@@ -75,17 +76,19 @@ namespace FIS.BL.Util.XML.Validation
 
             if (temp.Count() > 1)
             {
-                headerField.ErrorDescription = "There can be only one occurence of every headerfield code.";
+                message.AmountOfErrors++;
+                headerField.ErrorDescription += "There can be only one occurence of every headerfield code.";
             }
             else if (temp.Count() == 0)
             {
+                message.AmountOfErrors++;
                 message.HeaderErrorDescription += String.Format("Headerfield {0} is missing from this message.", headerCondition.HeaderFieldCode);
             }
 
             return headerField;
         }
 
-        private HeaderField CheckDataTypeHeaderField(HeaderField headerfield, HeaderCondition headercondition)
+        private HeaderField CheckDataTypeHeaderField(HeaderField headerfield, HeaderCondition headercondition, Message message)
         {
             if (headercondition.Datatype != null && headerfield.Description != null)
             {
@@ -94,6 +97,7 @@ namespace FIS.BL.Util.XML.Validation
                     bool isNumber = isNumeric(headerfield.Description, System.Globalization.NumberStyles.Integer);
                     if (isNumber == false)
                     {
+                        message.AmountOfErrors++;
                         headerfield.ErrorDescription += Environment.NewLine + "The datatype of the headerfield must be an Integer.";
                     }
                 }
@@ -113,6 +117,7 @@ namespace FIS.BL.Util.XML.Validation
                             isDateTime = DateTime.TryParse(dateConverted, out dateTime);
                             if (isDateTime == false)
                             {
+                                message.AmountOfErrors++;
                                 headerfield.ErrorDescription += Environment.NewLine + "The value must be a date.";
                             }
                         }
@@ -120,6 +125,7 @@ namespace FIS.BL.Util.XML.Validation
                     string dateTimeFormatted = dateTime.ToString(headercondition.Format);
                     if (!dateTimeFormatted.Equals(headerfield.Description))
                     {
+                        message.AmountOfErrors++;
                         headerfield.ErrorDescription += Environment.NewLine + "The value doesn't match the format";
                     }
                 }
@@ -127,12 +133,13 @@ namespace FIS.BL.Util.XML.Validation
             return headerfield;
         }
 
-        private HeaderField CheckSizeHeaderField(HeaderField headerField, HeaderCondition headerCondition)
+        private HeaderField CheckSizeHeaderField(HeaderField headerField, HeaderCondition headerCondition, Message message)
         {
             if (headerCondition.Size != 0)
             {
                 if (headerCondition.Size != headerField.Description.Length)
                 {
+                    message.AmountOfErrors++;
                     headerField.ErrorDescription += Environment.NewLine + "The length of the value doesn't match the format.";
                 }
             }

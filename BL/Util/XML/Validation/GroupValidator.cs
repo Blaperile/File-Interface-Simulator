@@ -38,11 +38,13 @@ namespace FIS.BL.Util.XML.Validation
 
             if (String.IsNullOrEmpty(groupCondition.ParentGroup) && group.ParentGroup != null)
             {
+                message.AmountOfErrors++;
                 group.ErrorDescription = "This group is not allowed to have a parent group.";
 
             }
             if (!String.IsNullOrEmpty(groupCondition.ParentGroup) && group.ParentGroup == null)
             {
+                message.AmountOfErrors++;
                 group.ErrorDescription = "This group must have a parent group.";
 
             }
@@ -50,6 +52,7 @@ namespace FIS.BL.Util.XML.Validation
             {
                 if (groupCondition.ParentGroup != group.ParentGroup.GroupCode)
                 {
+                    message.AmountOfErrors++;
                     group.ErrorDescription = "This group has the wrong parent group.";
                 }
             }
@@ -61,7 +64,7 @@ namespace FIS.BL.Util.XML.Validation
             foreach (XMLElement groupElement in temp)
             {
                 Group group = CheckRange(message, groupCondition, temp, groupElement, Codes);
-                CheckLevel(groupCondition, groupElement, group);
+                CheckLevel(groupCondition, groupElement, group, message);
                 message.Transactions.ElementAt(0).Groups.Add(group);
             }
         }
@@ -90,21 +93,24 @@ namespace FIS.BL.Util.XML.Validation
 
             if (temp.Count() < Int32.Parse(groupCondition.MinimumAmountOfOccurences))
             {
+                message.AmountOfErrors++;
                 group.ErrorDescription += "This group needs to occur at least " + groupCondition.MinimumAmountOfOccurences + " times";
             }
 
             if (!groupCondition.MaximumAmountOfOccurences.Equals("n") && temp.Count() > Int32.Parse(groupCondition.MaximumAmountOfOccurences))
             {
+                message.AmountOfErrors++;
                 group.ErrorDescription += "This group needs to occur less than " + (Int32.Parse(groupCondition.MaximumAmountOfOccurences) + 1) + " times";
             }
 
             return group;
         }
 
-        private static void CheckLevel(GroupCondition groupCondition, XMLElement groupElement, Group group)
+        private static void CheckLevel(GroupCondition groupCondition, XMLElement groupElement, Group group, Message message)
         {
             if (!groupElement.Level.Equals(groupCondition.Level))
             {
+                message.AmountOfErrors++;
                 group.ErrorDescription = "This group is on the wrong level.";
             }
         }
@@ -113,6 +119,7 @@ namespace FIS.BL.Util.XML.Validation
         {
             if (temp.Count() == 0 && Int32.Parse(groupCondition.MinimumAmountOfOccurences) > 0)
             {
+                message.AmountOfErrors++;
                 message.Transactions.ElementAt(0).GroupsErrorDescription += String.Format("Group {0} is missing." + Environment.NewLine, groupCondition.Code);
             }
         }
