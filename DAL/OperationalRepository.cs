@@ -108,7 +108,10 @@ namespace FIS.DAL
 
         public Message DeleteMessage(int messageId)
         {
-            throw new NotImplementedException();
+            Message message = ctx.Messages.Find(messageId);
+            ctx.Messages.Remove(message);
+            ctx.SaveChanges();
+            return message;
         }
 
        public IEnumerable<IElement> CreateElements(IEnumerable<IElement> elements)

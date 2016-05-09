@@ -75,7 +75,7 @@ namespace FIS.BL
                     XMLElement flowIdElement = xmlElements.Where(e => e.Code.Equals("FLOWID")).Single();
                     FileSpecification fileSpecification = specSetupManager.GetFileSpecificationAtStartWorkflowTemplateWithName(flowIdElement.Value);
                  //   Workflow workflow = AddWorkflow(message, fileSpecification.WorkflowTemplate);
-                    ValidateInput(message.MessageId, fileSpecification.FileSpecificationId);
+                    //ValidateInput(message.MessageId, fileSpecification.FileSpecificationId);
                  //   GenerateAnswer(message, workflow, fileSpecification.WorkflowTemplate, directoryHandler);
                 }
             }
@@ -141,7 +141,7 @@ namespace FIS.BL
 
         public Message RemoveMessage(int messageId)
         {
-            throw new NotImplementedException();
+            return operationalRep.DeleteMessage(messageId);
         }
 
         public Workflow RemoveWorkflow(int workflowId)

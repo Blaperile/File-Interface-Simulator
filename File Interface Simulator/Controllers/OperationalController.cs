@@ -21,19 +21,35 @@ namespace File_Interface_Simulator.Controllers
 
             foreach (Message message in messages)
             {
-                MessageOverviewDetailViewModel messageModel = new MessageOverviewDetailViewModel()
+                if (message.FileSpecification != null) //TODO: deze controle is onnodig, doe terug weg wanneer het inlezen van berichten terug in orde is
                 {
-                    Name = message.Name,
-                    MessageState = message.MessageState.ToString(),
-                    CreationDate = message.Date,
-                    Type = message.FileSpecification.IsInput ? "Input" : "Output",
-                    AmountOfErrors = message.AmountOfErrors
-                };
+                    MessageOverviewDetailViewModel messageModel = new MessageOverviewDetailViewModel()
+                    {
+                        Id = message.MessageId,
+                        Name = message.Name,
+                        MessageState = message.MessageState.ToString(),
+                        CreationDate = message.Date,
+                        Type = message.FileSpecification.IsInput ? "Input" : "Output",
+                        AmountOfErrors = message.AmountOfErrors
+                    };
 
-                model.Add(messageModel);
+                    model.Add(messageModel);
+                }
             }
 
             return View("MessageOverview", model);
+        }
+
+        public HttpStatusCodeResult RemoveMessageRPC(int id)
+        {
+            Message message = operationalManager.RemoveMessage(id);
+
+            if (message != null)
+            {
+                return new HttpStatusCodeResult(200, "Succes");
+            }
+
+            return new HttpStatusCodeResult(500, "An error occurred while deleting the message.");
         }
 
         [HttpGet]
@@ -55,7 +71,7 @@ namespace File_Interface_Simulator.Controllers
                 AmountOfErrors = message.AmountOfErrors
             };
 
-            if(!String.IsNullOrEmpty(model.HeaderError))
+            if (!String.IsNullOrEmpty(model.HeaderError))
             {
                 model.AmountOfHeaderErrors++;
             }
@@ -77,14 +93,14 @@ namespace File_Interface_Simulator.Controllers
                 }
 
                 model.HeaderFields.Add(headerFieldModel);
-             
+
             }
 
             foreach (Transaction transaction in message.Transactions)
             {
                 MessageTransactionDetailViewModel transactionModel = new MessageTransactionDetailViewModel()
                 {
-                     AmountOfFieldErrors = 0,
+                    AmountOfFieldErrors = 0,
                     Fields = new List<MessageFieldDetailViewModel>(),
                     AmountOfGroupErrors = 0,
                     GroupsErrorMessage = transaction.GroupsErrorDescription,
@@ -103,14 +119,14 @@ namespace File_Interface_Simulator.Controllers
                         ErrorMessage = group.ErrorDescription
                     };
 
-                    if(!String.IsNullOrEmpty(groupModel.ErrorMessage))
+                    if (!String.IsNullOrEmpty(groupModel.ErrorMessage))
                     {
                         transactionModel.AmountOfGroupErrors++;
                     }
 
                     transactionModel.Groups.Add(groupModel);
 
-                    
+
 
                     foreach (Field field in group.Fields)
                     {
@@ -146,31 +162,32 @@ namespace File_Interface_Simulator.Controllers
         public ActionResult GroupDetail(int id = 1)
         {
             Group group = operationalManager.GetGroupWithRelatedDate(id);
-            GroupDetailViewModel groupDetailModel = new GroupDetailViewModel {
+            GroupDetailViewModel groupDetailModel = new GroupDetailViewModel
+            {
                 Code = group.GroupCode,
                 Description = group.GroupCondition.Description,
                 Range = group.GroupCondition.MinimumAmountOfOccurences + "-" + group.GroupCondition.MaximumAmountOfOccurences,
                 Level = group.Level,
                 ErrorMessage = group.ErrorDescription,
-                AmountOfErrorMessages = group.Fields.Where(f => f.ErrorDescription!=null).Count(),
+                AmountOfErrorMessages = group.Fields.Where(f => f.ErrorDescription != null).Count(),
                 AmountOfFields = group.Fields.Count(),
                 Transactie = "T1",/*group.Transaction.Name,*/
                 Fields = new List<MessageFieldDetailViewModel>()
             };
-            foreach(Field field in group.Fields)
+            foreach (Field field in group.Fields)
             {
                 MessageFieldDetailViewModel fieldDetailModel = new MessageFieldDetailViewModel
                 {
-                            Code = field.FieldCode,
-                            Datatype = field.FileSpecFieldCondition.FieldSpecFieldCondition.Datatype,
-                            Format = field.FileSpecFieldCondition.FieldSpecFieldCondition.Format.Count() > 0 ? field.FileSpecFieldCondition.FieldSpecFieldCondition.Format : "-",
-                            Group = group.GroupCode,
-                            Level = field.Level,
-                            Name = field.FileSpecFieldCondition.Description,
-                            Size = field.FileSpecFieldCondition.FieldSpecFieldCondition.Size,
-                            Optional = field.FileSpecFieldCondition.IsOptional ? "O" : "M",
-                            Value = field.Value,
-                            ErrorMessage = field.ErrorDescription
+                    Code = field.FieldCode,
+                    Datatype = field.FileSpecFieldCondition.FieldSpecFieldCondition.Datatype,
+                    Format = field.FileSpecFieldCondition.FieldSpecFieldCondition.Format.Count() > 0 ? field.FileSpecFieldCondition.FieldSpecFieldCondition.Format : "-",
+                    Group = group.GroupCode,
+                    Level = field.Level,
+                    Name = field.FileSpecFieldCondition.Description,
+                    Size = field.FileSpecFieldCondition.FieldSpecFieldCondition.Size,
+                    Optional = field.FileSpecFieldCondition.IsOptional ? "O" : "M",
+                    Value = field.Value,
+                    ErrorMessage = field.ErrorDescription
                 };
                 groupDetailModel.Fields.Add(fieldDetailModel);
             }
@@ -195,7 +212,7 @@ namespace File_Interface_Simulator.Controllers
                 ErrorMessage = field.ErrorDescription
             };
 
-            return View("FieldDetail",model);
+            return View("FieldDetail", model);
         }
 
         [HttpGet]
@@ -223,7 +240,7 @@ namespace File_Interface_Simulator.Controllers
 
                 model.Add(workflowModel);
             }
-            
+
             return View("WorkflowOverview", model);
         }
 
@@ -242,7 +259,7 @@ namespace File_Interface_Simulator.Controllers
                 Messages = new List<WorkflowDetailMessageDetailViewModel>()
             };
 
-            foreach(Message message in workflow.Messages)
+            foreach (Message message in workflow.Messages)
             {
                 model.ErrorCount += message.AmountOfErrors;
 
