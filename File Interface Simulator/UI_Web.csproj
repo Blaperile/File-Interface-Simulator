@@ -164,6 +164,7 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Models\ErrorViewModel.cs" />
     <Compile Include="Models\FieldConditionViewModel.cs" />
     <Compile Include="Models\FieldSpecificationViewModel.cs" />
     <Compile Include="Models\FieldSpecificationOverviewDetailModel.cs" />
@@ -272,6 +273,7 @@
     <Content Include="Views\Operational\WorkflowOverview.cshtml" />
     <Content Include="Views\Operational\WorkflowDetail.cshtml" />
     <Content Include="Views\SpecificationSetup\SearchFileSpecification.cshtml" />
+    <Content Include="Views\Home\Error.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

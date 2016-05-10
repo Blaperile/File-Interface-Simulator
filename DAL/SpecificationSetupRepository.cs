@@ -76,10 +76,13 @@ namespace FIS.DAL
 
         public FileSpecification ReadFileSpecification(int specificationId)
         {
-             FileSpecification fileSpec = ctx.FileSpecifications.FirstOrDefault(f => f.FileSpecificationId == specificationId);
-            ctx.Entry<FileSpecification>(fileSpec).Collection<Directory>(f => f.Directories).Load();
-            LoadHeaderConditions(fileSpec);
-            LoadGroupConditions(fileSpec);
+             FileSpecification fileSpec = ctx.FileSpecifications.Find(specificationId);
+            if (fileSpec != null)
+            {
+                ctx.Entry<FileSpecification>(fileSpec).Collection<Directory>(f => f.Directories).Load();
+                LoadHeaderConditions(fileSpec);
+                LoadGroupConditions(fileSpec);
+            }
              return fileSpec;
         }
 
