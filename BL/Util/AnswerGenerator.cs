@@ -56,32 +56,44 @@ namespace FIS.BL.Util
 
             foreach (GroupCondition groupCondition in fileSpecification.GroupConditions)
             {
-                foreach (Group groupInList in message.Transactions.ElementAt(0).Groups.Where(g => g.Level.Equals(groupCondition.Level)))
+                foreach (Group groupInList in message.Transactions.ElementAt(0).Groups.Where(g => g.GroupCode.Equals(groupCondition.Code)))
                 {
                     Group group = new Group()
                     {
                         GroupCode = groupCondition.Code,
                         Transaction = answerMessage.Transactions.ElementAt(0),
-                        //  ParentGroup = groupCondition.ParentGroup,
                         Level = groupCondition.Level,
                         GroupCondition = groupCondition,
-                        Fields = new List<Field>()
+                        Fields = new List<Field>(),
                     };
 
-                    foreach (FileSpecFieldCondition fileSpecFieldCondition in groupCondition.FileSpecFieldConditions)
+                    if (!group.GroupCode.Equals("A01"))
                     {
-                        Field field = new Field()
-                        {
-                            FieldCode = fileSpecFieldCondition.Code,
-                            Level = Convert.ToString(fileSpecFieldCondition.Level),
-                            Group = group,
-                            FileSpecFieldCondition = fileSpecFieldCondition,
-                            Value = message.Transactions.ElementAt(0).Groups.Where(g => g.GroupId == groupInList.GroupId).FirstOrDefault().Fields.Where(f=>f.FieldCode == fileSpecFieldCondition.Code).FirstOrDefault().Value
-                        };
-
-                        group.Fields.Add(field);
+                        group.ParentGroup = answerMessage.Transactions.ElementAt(0).Groups.Where(g => g.GroupCode.Equals(groupCondition.ParentGroup)).Last();
                     }
 
+                    foreach (FileSpecFieldCondition fileSpecFieldCondition in groupInList.GroupCondition.FileSpecFieldConditions)
+                    {
+                        if (Int32.Parse(fileSpecFieldCondition.Group.MinimumAmountOfOccurences) > 0 || groupInList.Fields.Count() > 0)
+                        {
+                            if ((fileSpecFieldCondition.IsOptional == true && groupInList.Fields.Where(f => f.FieldCode.Equals(fileSpecFieldCondition.Code)).Count() > 0) || fileSpecFieldCondition.IsOptional == false)
+                            {
+                                Field field = new Field()
+                                {
+                                    FieldCode = fileSpecFieldCondition.Code,
+                                    Level = Convert.ToString(fileSpecFieldCondition.Level),
+                                    Group = group,
+                                    FileSpecFieldCondition = fileSpecFieldCondition,
+                                    Value = groupInList.Fields.Where(f => f.FieldCode == fileSpecFieldCondition.Code).FirstOrDefault().Value
+                                };
+
+                                group.Fields.Add(field);
+                            }
+                        }
+                       
+                    }
+
+                  
                     answerMessage.Transactions.ElementAt(0).Groups.Add(group);
                 }
             }
