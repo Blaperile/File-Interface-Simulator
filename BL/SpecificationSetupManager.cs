@@ -47,6 +47,72 @@ namespace FIS.BL
 
             if (fileSpec == null)
             {
+                IList<Directory> directories = new List<Directory>();
+
+                if (isInput)
+                {
+                    if (!System.IO.Directory.Exists(inDirectoryPath))
+                    {
+                        throw new SpecificationSetupException("Path " + inDirectoryPath + " for the input directory is not a valid path.");
+                    }
+                    else if (!System.IO.Directory.Exists(archiveDirectoryPath))
+                    {
+                        throw new SpecificationSetupException("Path " + archiveDirectoryPath + " for the archive directory is not a valid path.");
+                    }
+                    else if (!System.IO.Directory.Exists(errorDirectoryPath))
+                    {
+                        throw new SpecificationSetupException("Path " + errorDirectoryPath + " for the error directory is not a valid path.");
+                    }
+                    else
+                    {
+
+                        Directory inDirectory = new Directory()
+                        {
+                            Name = "in",
+                            Location = inDirectoryPath,
+                            FileSpecification = fileSpec
+                        };
+
+                        directories.Add(inDirectory);
+
+                        Directory errorDirectory = new Directory()
+                        {
+                            Name = "error",
+                            Location = errorDirectoryPath,
+                            FileSpecification = fileSpec
+                        };
+
+                        directories.Add(errorDirectory);
+
+                        Directory archiveDirectory = new Directory()
+                        {
+                            Name = "archive",
+                            Location = archiveDirectoryPath,
+                            FileSpecification = fileSpec
+                        };
+
+                        directories.Add(archiveDirectory);
+                    }
+                }
+                else
+                {
+                    if (!System.IO.Directory.Exists(outDirectoryPath))
+                    {
+                        throw new SpecificationSetupException("Path " + outDirectoryPath + " for the out directory is not a valid path.");
+                    }
+                    else
+                    {
+
+                        Directory outDirectory = new Directory()
+                        {
+                            Name = "out",
+                            Location = outDirectoryPath,
+                            FileSpecification = fileSpec
+                        };
+
+                        directories.Add(outDirectory);
+                    }
+                }
 
                 IEnumerable<String> fieldSpecificationProperties = fieldSpecification.Split('-');
 
@@ -58,50 +124,6 @@ namespace FIS.BL
                 fileSpec.IsInput = isInput;
                 fileSpec.Version = version;
                 fileSpec.FieldSpecification = fieldSpec;
-
-                IList<Directory> directories = new List<Directory>();
-
-                if (isInput)
-                {
-
-                    Directory inDirectory = new Directory()
-                    {
-                        Name = "in",
-                        Location = inDirectoryPath,
-                        FileSpecification = fileSpec
-                    };
-
-                    directories.Add(inDirectory);
-
-                    Directory errorDirectory = new Directory()
-                    {
-                        Name = "error",
-                        Location = errorDirectoryPath,
-                        FileSpecification = fileSpec
-                    };
-
-                    directories.Add(errorDirectory);
-
-                    Directory archiveDirectory = new Directory()
-                    {
-                        Name = "archive",
-                        Location = archiveDirectoryPath,
-                        FileSpecification = fileSpec
-                    };
-
-                    directories.Add(archiveDirectory);
-                }
-                else
-                {
-                    Directory outDirectory = new Directory()
-                    {
-                        Name = "out",
-                        Location = outDirectoryPath,
-                        FileSpecification = fileSpec
-                    };
-
-                    directories.Add(outDirectory);
-                }
 
                 fileSpec.Directories = directories;
 

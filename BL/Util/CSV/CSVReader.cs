@@ -64,85 +64,91 @@ namespace FIS.BL.Util.CSV
             List<GroupCondition> groupConditions = new List<GroupCondition>();
             List<HeaderCondition> headerConditions = new List<HeaderCondition>();
 
-            foreach (var fileSpecLine in fileSpecLines)
+            try
             {
-                string code = fileSpecLine.First();
-
-                if (!String.IsNullOrEmpty(code) && Char.IsLetter(code[0]) && Char.IsNumber(code[1]) && !code.StartsWith("A"))
+                foreach (var fileSpecLine in fileSpecLines)
                 {
-                    FieldSpecFieldCondition fieldSpecFieldCondition = specSetupManager.GetFieldSpecFieldCondition(fieldSpecification.FieldSpecificationId, code);
+                    string code = fileSpecLine.First();
 
-                    if (fieldSpecFieldCondition != null)
+                    if (!String.IsNullOrEmpty(code) && Char.IsLetter(code[0]) && Char.IsNumber(code[1]) && !code.StartsWith("A"))
                     {
-                        GroupCondition groupCondition = groupConditions.Where(g => g.Code.Equals(fileSpecLine.ElementAt(6))).First();
-                        FileSpecFieldCondition fileSpecFieldCondition = new FileSpecFieldCondition()
+                        FieldSpecFieldCondition fieldSpecFieldCondition = specSetupManager.GetFieldSpecFieldCondition(fieldSpecification.FieldSpecificationId, code);
+
+                        if (fieldSpecFieldCondition != null)
+                        {
+                            GroupCondition groupCondition = groupConditions.Where(g => g.Code.Equals(fileSpecLine.ElementAt(6))).First();
+                            FileSpecFieldCondition fileSpecFieldCondition = new FileSpecFieldCondition()
+                            {
+                                Code = code,
+                                Description = fileSpecLine.ElementAt(1),
+                                Level = Convert.ToInt32(fileSpecLine.ElementAt(5)),
+                                Group = groupCondition
+                            };
+                            groupCondition.FileSpecFieldConditions.Add(fileSpecFieldCondition);
+                            fileSpecFieldCondition.FileSpecification = fileSpec;
+
+                            string optionalOrMandatory = fileSpecLine.ElementAt(4);
+
+                            if (optionalOrMandatory.Equals("O"))
+                            {
+                                fileSpecFieldCondition.IsOptional = true;
+                            }
+                            else if (optionalOrMandatory.Equals("M"))
+                            {
+                                fileSpecFieldCondition.IsOptional = false;
+                            }
+
+                            fileSpecFieldCondition.FieldSpecFieldCondition = fieldSpecFieldCondition;
+                            fileSpecFieldConditions.Add(fileSpecFieldCondition);
+                        }
+                        else
+                        {
+                            throw new FileReadException("Field " + code + " is missing in the selected field specification!");
+                        }
+                    }
+                    else if (code.StartsWith("A"))
+                    {
+                        GroupCondition groupCondition = new GroupCondition()
                         {
                             Code = code,
                             Description = fileSpecLine.ElementAt(1),
-                            Level = Convert.ToInt32(fileSpecLine.ElementAt(5)),
-                            Group = groupCondition
+                            Level = fileSpecLine.ElementAt(5),
+                            ParentGroup = fileSpecLine.ElementAt(6),
+                            MinimumAmountOfOccurences = fileSpecLine.ElementAt(7),
+                            MaximumAmountOfOccurences = fileSpecLine.ElementAt(8),
+                            FileSpecFieldConditions = new List<FileSpecFieldCondition>()
                         };
-                        groupCondition.FileSpecFieldConditions.Add(fileSpecFieldCondition);
-                        fileSpecFieldCondition.FileSpecification = fileSpec;
 
-                        string optionalOrMandatory = fileSpecLine.ElementAt(4);
-
-                        if (optionalOrMandatory.Equals("O"))
-                        {
-                            fileSpecFieldCondition.IsOptional = true;
-                        }
-                        else if (optionalOrMandatory.Equals("M"))
-                        {
-                            fileSpecFieldCondition.IsOptional = false;
-                        }
-
-                        fileSpecFieldCondition.FieldSpecFieldCondition = fieldSpecFieldCondition;
-                        fileSpecFieldConditions.Add(fileSpecFieldCondition);
+                        groupCondition.FileSpecification = fileSpec;
+                        groupConditions.Add(groupCondition);
                     }
                     else
                     {
-                        throw new FileReadException("Field " + code + " is missing in the selected field specification!");
+                        HeaderCondition headerCondition = new HeaderCondition()
+                        {
+                            HeaderFieldCode = code,
+                            Description = fileSpecLine.ElementAt(1),
+                            Datatype = fileSpecLine.ElementAt(2),
+                            Format = fileSpecLine.ElementAt(9)
+                        };
+
+                        int size = 0;
+                        Int32.TryParse(fileSpecLine.ElementAt(3), out size);
+
+                        headerCondition.Size = size;
+
+                        headerCondition.FileSpecification = fileSpec;
+                        headerConditions.Add(headerCondition);
                     }
                 }
-                else if (code.StartsWith("A"))
-                {
-                    GroupCondition groupCondition = new GroupCondition()
-                    {
-                        Code = code,
-                        Description = fileSpecLine.ElementAt(1),
-                        Level = fileSpecLine.ElementAt(5),
-                        ParentGroup = fileSpecLine.ElementAt(6),
-                        MinimumAmountOfOccurences = fileSpecLine.ElementAt(7),
-                        MaximumAmountOfOccurences = fileSpecLine.ElementAt(8),
-                        FileSpecFieldConditions = new List<FileSpecFieldCondition>()
-                    };
-
-                    groupCondition.FileSpecification = fileSpec;
-                    groupConditions.Add(groupCondition);
-                }
-                else
-                {
-                    HeaderCondition headerCondition = new HeaderCondition()
-                    {
-                        HeaderFieldCode = code,
-                        Description = fileSpecLine.ElementAt(1),
-                        Datatype = fileSpecLine.ElementAt(2),
-                        Format = fileSpecLine.ElementAt(9)
-                    };
-
-                    int size = 0;
-                    Int32.TryParse(fileSpecLine.ElementAt(3), out size);
-
-                    headerCondition.Size = size;
-
-                    headerCondition.FileSpecification = fileSpec;
-                    headerConditions.Add(headerCondition);
-                }
+                fileSpec.FileSpecFieldConditions = fileSpecFieldConditions;
+                fileSpec.GroupConditions = groupConditions;
+                fileSpec.HeaderConditions = headerConditions;
+                return fileSpec;
+            } catch (Exception ex)
+            {
+                throw new FileReadException("An error occurred while parsing the file specification. Make sure it has the correct format!");
             }
-            fileSpec.FileSpecFieldConditions = fileSpecFieldConditions;
-            fileSpec.GroupConditions = groupConditions;
-            fileSpec.HeaderConditions = headerConditions;
-            return fileSpec;
         }
 
         public static List<List<String>> ReadFile(string path)
