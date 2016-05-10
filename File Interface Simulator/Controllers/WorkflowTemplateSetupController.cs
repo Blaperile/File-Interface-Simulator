@@ -37,8 +37,10 @@ namespace File_Interface_Simulator.Controllers
         }
 
         [HttpGet]
-        public ActionResult WorkflowTemplateDetail(int workflowTemplateId = 1)
+        public ActionResult WorkflowTemplateDetail(int workflowTemplateId = 1, string error = "")
         {
+            ViewBag.error = error;
+
             WorkflowTemplate workflowTemplate = workflowTemplateSetupManager.GetWorkflowTemplate(workflowTemplateId);
             WorkflowTemplateDetailViewModel model = new WorkflowTemplateDetailViewModel()
             {
@@ -118,12 +120,18 @@ namespace File_Interface_Simulator.Controllers
         [HttpPost]
         public ActionResult WorkflowTemplateDetail(WorkflowTemplateDetailViewModel model)
         {
-            string[] newStep = model.NewStep.Split('-');
-            string specificationName = newStep.ElementAt(0).Trim();
-            string specificationVersion = newStep.ElementAt(2).Trim();
-            workflowTemplateSetupManager.AddStepToWorkflowTemplate(model.WorkflowTemplateId, model.NewSequenceNumber, specificationName, specificationVersion);
+            if (!String.IsNullOrEmpty(model.NewStep))
+            {
+                string[] newStep = model.NewStep.Split('-');
+                string specificationName = newStep.ElementAt(0).Trim();
+                string specificationVersion = newStep.ElementAt(2).Trim();
+                workflowTemplateSetupManager.AddStepToWorkflowTemplate(model.WorkflowTemplateId, model.NewSequenceNumber, specificationName, specificationVersion);
 
-            return RedirectToAction("WorkflowTemplateDetail", new { workflowTemplateId = model.WorkflowTemplateId });
+                return RedirectToAction("WorkflowTemplateDetail", new { workflowTemplateId = model.WorkflowTemplateId });
+            } else
+            {
+                return RedirectToAction("WorkflowTemplateDetail", new { workflowTemplateId = model.WorkflowTemplateId, error = "You must select a file specification when you add a new step." });
+            }
         }
 
         [HttpGet]

@@ -103,7 +103,7 @@
 
     <span id="maxSequenceNumber" hidden>@(Model.CurrentWorkflowTemplateSteps.Count() + 1)</span>
 
-    <span id="errorMessage" class="errorMessage"></span>
+    <span id="errorMessage" class="errorMessage">@ViewBag.error</span>
 
     <div class="form-group">
         <div class="col-md-10">
@@ -113,7 +113,7 @@
 
     <div class="form-group">
         <div class="col-md-10">
-            <input id="save" type="hidden" value="Save" class="btn btn-default" />
+            <input id="save" type="hidden" value="Save" class="btn btn-default"/>
         </div>
     </div>
             }

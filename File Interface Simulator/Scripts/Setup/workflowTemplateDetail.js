@@ -30,16 +30,19 @@ function addNewRow(addButton) {
 }
 
 function addStep() {
-    alert("addStep");
     if (Number(sequenceNumber.value) != sequenceNumber.value || Number(sequenceNumber.value) == 0) {
-        errorMessage.innerHTML = 'Sequence number must be numeric.';
+        errorMessage.innerHTML = 'Sequence number must be numeric and not equal to 0.';
+        saveButton.disabled = true;
     } else if (sequenceNumber.value > maxSequenceNumber.innerHTML) {
-        errorMessage.innerHTML = 'Sequence number can not be higher than ' + maxSequenceNumber.innerHTML;
+        errorMessage.innerHTML = 'Sequence number can not be higher than ' + maxSequenceNumber.innerHTML + '.';
+        saveButton.disabled = true;
     } else if (sequenceNumber.value < 0) {
-        errorMessage.innerHTML = 'Sequence number must be at least 1';
+        errorMessage.innerHTML = 'Sequence number must be at least 1.';
+        saveButton.disabled = true;
     }
     else {
         errorMessage.innerHTML = '';
+        saveButton.disabled = false;
     }
 }
 
