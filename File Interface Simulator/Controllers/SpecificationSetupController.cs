@@ -127,72 +127,83 @@ namespace File_Interface_Simulator.Controllers
         [HttpGet]
         public ActionResult FileSpecificationDetail(int id = 1)
         {
+            try
+            {
+                FileSpecification fileSpecification = specSetupManager.GetFileSpecification(id);
 
-            FileSpecification fileSpecification = specSetupManager.GetFileSpecification(id);
-
-            FileSpecificationDetailViewModel model = new FileSpecificationDetailViewModel()
-            {
-                Name = fileSpecification.Name,
-                Version = fileSpecification.Version,
-                CreationDate = fileSpecification.UploadDate,
-                InputOutput = fileSpecification.IsInput ? "Input" : "Output",
-                HeaderConditions = new List<HeaderConditionDetailViewModel>(),
-                GroupConditions = new List<GroupConditionViewModel>(),
-                FieldConditions = new List<FieldConditionViewModel>()
-            };
-            if (fileSpecification.IsInput)
-            {
-                model.InFolder = fileSpecification.Directories.Where(d => d.Name.Equals("in")).First().Location;
-                model.ArchiveFolder = fileSpecification.Directories.Where(d => d.Name.Equals("archive")).First().Location;
-                model.ErrorFolder = fileSpecification.Directories.Where(d => d.Name.Equals("error")).First().Location;
-            }
-            else
-            {
-                model.OutputFolder = fileSpecification.Directories.Where(d => d.Name.Equals("out")).First().Location;
-            }
-            foreach(HeaderCondition headerCondition in fileSpecification.HeaderConditions)
-            {
-                HeaderConditionDetailViewModel headerConditionModel = new HeaderConditionDetailViewModel()
+                FileSpecificationDetailViewModel model = new FileSpecificationDetailViewModel()
                 {
-                    Code = headerCondition.HeaderFieldCode,
-                    Content = headerCondition.Description,
-                    Datatype = headerCondition.Datatype,
-                    Size = headerCondition.Size.ToString()
+                    Name = fileSpecification.Name,
+                    Version = fileSpecification.Version,
+                    CreationDate = fileSpecification.UploadDate,
+                    InputOutput = fileSpecification.IsInput ? "Input" : "Output",
+                    HeaderConditions = new List<HeaderConditionDetailViewModel>(),
+                    GroupConditions = new List<GroupConditionViewModel>(),
+                    FieldConditions = new List<FieldConditionViewModel>()
                 };
-                model.HeaderConditions.Add(headerConditionModel);
-            }
-
-            foreach(GroupCondition groupCondition in fileSpecification.GroupConditions)
-            {
-                GroupConditionViewModel groupConditionModel = new GroupConditionViewModel()
+                if (fileSpecification.IsInput)
                 {
-                    Code = groupCondition.Code,
-                    Description = groupCondition.Code,
-                    Range = groupCondition.MinimumAmountOfOccurences + "-" + groupCondition.MaximumAmountOfOccurences,
-                    AmountFields = groupCondition.FileSpecFieldConditions.Count,
-                    Level = groupCondition.Level
-                };
-                model.GroupConditions.Add(groupConditionModel);
-                
-                foreach(FileSpecFieldCondition fileSpecFieldCondition in groupCondition.FileSpecFieldConditions)
-                {
-                    FieldConditionViewModel fieldConditionModel = new FieldConditionViewModel()
-                    {
-                        Code = fileSpecFieldCondition.Code,
-                        Name = fileSpecFieldCondition.Description,
-                        Optional = fileSpecFieldCondition.IsOptional ? "O" : "M",
-                        Values = fileSpecFieldCondition.FieldSpecFieldCondition.AllowedValues.Count,
-                        Datatype = fileSpecFieldCondition.FieldSpecFieldCondition.Datatype,
-                        Size = fileSpecFieldCondition.FieldSpecFieldCondition.Size,
-                        Format = fileSpecFieldCondition.FieldSpecFieldCondition.Format,
-                        Group = fileSpecFieldCondition.Group.Description,
-                        Level = "L"+fileSpecFieldCondition.Level.ToString()
-                    };
-                    model.FieldConditions.Add(fieldConditionModel);
+                    model.InFolder = fileSpecification.Directories.Where(d => d.Name.Equals("in")).First().Location;
+                    model.ArchiveFolder = fileSpecification.Directories.Where(d => d.Name.Equals("archive")).First().Location;
+                    model.ErrorFolder = fileSpecification.Directories.Where(d => d.Name.Equals("error")).First().Location;
                 }
-            }
+                else
+                {
+                    model.OutputFolder = fileSpecification.Directories.Where(d => d.Name.Equals("out")).First().Location;
+                }
+                foreach (HeaderCondition headerCondition in fileSpecification.HeaderConditions)
+                {
+                    HeaderConditionDetailViewModel headerConditionModel = new HeaderConditionDetailViewModel()
+                    {
+                        Code = headerCondition.HeaderFieldCode,
+                        Content = headerCondition.Description,
+                        Datatype = headerCondition.Datatype,
+                        Size = headerCondition.Size.ToString()
+                    };
+                    model.HeaderConditions.Add(headerConditionModel);
+                }
 
-            return View("FileSpecificationDetail", model);
+                foreach (GroupCondition groupCondition in fileSpecification.GroupConditions)
+                {
+                    GroupConditionViewModel groupConditionModel = new GroupConditionViewModel()
+                    {
+                        Code = groupCondition.Code,
+                        Description = groupCondition.Code,
+                        Range = groupCondition.MinimumAmountOfOccurences + "-" + groupCondition.MaximumAmountOfOccurences,
+                        AmountFields = groupCondition.FileSpecFieldConditions.Count,
+                        Level = groupCondition.Level
+                    };
+                    model.GroupConditions.Add(groupConditionModel);
+
+                    foreach (FileSpecFieldCondition fileSpecFieldCondition in groupCondition.FileSpecFieldConditions)
+                    {
+                        FieldConditionViewModel fieldConditionModel = new FieldConditionViewModel()
+                        {
+                            Code = fileSpecFieldCondition.Code,
+                            Name = fileSpecFieldCondition.Description,
+                            Optional = fileSpecFieldCondition.IsOptional ? "O" : "M",
+                            Values = fileSpecFieldCondition.FieldSpecFieldCondition.AllowedValues.Count,
+                            Datatype = fileSpecFieldCondition.FieldSpecFieldCondition.Datatype,
+                            Size = fileSpecFieldCondition.FieldSpecFieldCondition.Size,
+                            Format = fileSpecFieldCondition.FieldSpecFieldCondition.Format,
+                            Group = fileSpecFieldCondition.Group.Description,
+                            Level = "L" + fileSpecFieldCondition.Level.ToString()
+                        };
+                        model.FieldConditions.Add(fieldConditionModel);
+                    }
+                }
+
+                return View("FileSpecificationDetail", model);
+
+            } catch (Exception e)
+            {
+                ErrorViewModel model = new ErrorViewModel()
+                {
+                    ErrorMessage = e.Message
+                };
+
+                return RedirectToAction("Error", "Home", model);
+            }
         }
 
         public HttpStatusCodeResult RemoveFieldSpecificationRPC(int id)

@@ -182,7 +182,15 @@ namespace FIS.BL
 
         public FileSpecification GetFileSpecification(int specificationId)
         {
-            return specSetupRepo.ReadFileSpecification(specificationId);
+            FileSpecification fileSpecification = specSetupRepo.ReadFileSpecification(specificationId);
+
+            if (fileSpecification != null)
+            {
+                return fileSpecification;
+            } else
+            {
+                throw new SpecificationSetupException("The requested File Specification with id " + specificationId + " does not exist!");
+            }
         }
 
         public FileSpecification GetFileSpecification(string name)
