@@ -80,7 +80,15 @@ namespace FIS.BL
 
         public WorkflowTemplate GetWorkflowTemplate(int workflowTemplateId)
         {
-            return workflowTemplateSetupRepo.ReadWorkflowTemplate(workflowTemplateId);
+            WorkflowTemplate workflowTemplate = workflowTemplateSetupRepo.ReadWorkflowTemplate(workflowTemplateId);
+
+            if (workflowTemplate != null)
+            {
+                return workflowTemplate;
+            } else
+            {
+                throw new WorkflowTemplateSetupException("The workflow template with id " + workflowTemplateId + " does not exist.");
+            }
         }
 
         public WorkflowTemplate GetWorkflowTemplate(string name)

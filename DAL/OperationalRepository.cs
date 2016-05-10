@@ -35,10 +35,17 @@ namespace FIS.DAL
         public Message ReadMessageWithRelatedData(int messageId)
         {
             Message message = ReadMessage(messageId);
-            ctx.Entry<Message>(message).Reference<FileSpecification>(m => m.FileSpecification).Load();
-            LoadHeaderFields(message);
-            LoadTransactions(message);
-            return message;
+
+            if (message != null)
+            {
+                ctx.Entry<Message>(message).Reference<FileSpecification>(m => m.FileSpecification).Load();
+                LoadHeaderFields(message);
+                LoadTransactions(message);
+                return message;
+            } else
+            {
+                return null;
+            }
         }
 
         private void LoadHeaderFields(Message message)

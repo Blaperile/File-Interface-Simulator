@@ -31,13 +31,20 @@ namespace FIS.DAL
         public WorkflowTemplate ReadWorkflowTemplate(int workflowTemplateId)
         {
             WorkflowTemplate workflowTemplate = ctx.WorkflowTemplates.Find(workflowTemplateId);
-            ctx.Entry<WorkflowTemplate>(workflowTemplate).Collection<WorkflowTemplateStep>(wt => wt.WorkflowTemplateSteps).Load();
-            workflowTemplate.WorkflowTemplateSteps = workflowTemplate.WorkflowTemplateSteps.OrderBy(f => f.StepNumber).ToList();
-            foreach (WorkflowTemplateStep workflowTemplateStep in workflowTemplate.WorkflowTemplateSteps)
+
+            if (workflowTemplate != null)
             {
-                ctx.Entry<WorkflowTemplateStep>(workflowTemplateStep).Reference<FileSpecification>(wts => wts.fileSpecification).Load();
+                ctx.Entry<WorkflowTemplate>(workflowTemplate).Collection<WorkflowTemplateStep>(wt => wt.WorkflowTemplateSteps).Load();
+                workflowTemplate.WorkflowTemplateSteps = workflowTemplate.WorkflowTemplateSteps.OrderBy(f => f.StepNumber).ToList();
+                foreach (WorkflowTemplateStep workflowTemplateStep in workflowTemplate.WorkflowTemplateSteps)
+                {
+                    ctx.Entry<WorkflowTemplateStep>(workflowTemplateStep).Reference<FileSpecification>(wts => wts.fileSpecification).Load();
+                }
+                return workflowTemplate;
+            } else
+            {
+                return null;
             }
-            return workflowTemplate;
         }
 
         public WorkflowTemplate ReadWorkflowTemplate(string name)
