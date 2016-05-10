@@ -197,14 +197,14 @@ namespace File_Interface_Simulator.Controllers
 
         public HttpStatusCodeResult RemoveFieldSpecificationRPC(int id)
         {
-            FieldSpecification fieldSpecification = specSetupManager.RemoveFieldSpecification(id);
-
-            if (fieldSpecification != null)
+            try
             {
+                FieldSpecification fieldSpecification = specSetupManager.RemoveFieldSpecification(id);
                 return new HttpStatusCodeResult(200, "Succes");
+            } catch (Exception ex)
+            {
+                return new HttpStatusCodeResult(500, ex.Message);
             }
-
-            return new HttpStatusCodeResult(500, "This field specification cannot be deleted because there are file specifications linked to it!");
         }
 
         public HttpStatusCodeResult RemoveFileSpecificationRPC(int id)
