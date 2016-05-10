@@ -154,10 +154,11 @@ namespace FIS.DAL
             return null;
         }
 
-        public FileSpecification ReadFileSpecificationWithMessages(int specificationId)
+        public FileSpecification ReadFileSpecificationWithMessagesAndWorkflowTemplateSteps(int specificationId)
         {
             FileSpecification fileSpecification = ctx.FileSpecifications.Find(specificationId);
             ctx.Entry<FileSpecification>(fileSpecification).Collection<Message>(fs => fs.Messages).Load();
+            ctx.Entry<FileSpecification>(fileSpecification).Collection<WorkflowTemplateStep>(fs => fs.WorkflowTemplateSteps).Load();
             return fileSpecification;
         }
 

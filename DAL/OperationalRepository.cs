@@ -189,10 +189,15 @@ namespace FIS.DAL
         public Group ReadGroupWithRelatedDate(int groupId)
         {
             Group group = ctx.Groups.Find(groupId);
-            ctx.Entry<Group>(group).Reference<GroupCondition>(g => g.GroupCondition).Load();
-            ctx.Entry<Group>(group).Reference<Transaction>(g => g.Transaction).Load();
-            LoadFields(group);
-            return group;
+            if (group != null)
+            {
+                ctx.Entry<Group>(group).Reference<GroupCondition>(g => g.GroupCondition).Load();
+                ctx.Entry<Group>(group).Reference<Transaction>(g => g.Transaction).Load();
+                LoadFields(group);
+                return group;
+            }
+
+            return null;
         }
 
         public Field ReadFieldWithRelatedData(int fieldId)

@@ -220,14 +220,15 @@ namespace File_Interface_Simulator.Controllers
 
         public HttpStatusCodeResult RemoveFileSpecificationRPC(int id)
         {
-            FileSpecification fileSpecification = specSetupManager.RemoveFileSpecification(id);
-
-            if (fileSpecification != null)
+            try
             {
+                FileSpecification fileSpecification = specSetupManager.RemoveFileSpecification(id);
                 return new HttpStatusCodeResult(200, "Succes");
             }
-
-            return new HttpStatusCodeResult(500, "This file specification cannot be deleted because there are message or workflowsteps linked to it!");
+            catch (Exception ex)
+            {
+                return new HttpStatusCodeResult(500, ex.Message);
+            }
         }
 
         [HttpGet]

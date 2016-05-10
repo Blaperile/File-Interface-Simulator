@@ -21,20 +21,20 @@ namespace File_Interface_Simulator.Controllers
 
             foreach (Message message in messages)
             {
-                if (message.FileSpecification != null) //TODO: deze controle is onnodig, doe terug weg wanneer het inlezen van berichten terug in orde is
+                MessageOverviewDetailViewModel messageModel = new MessageOverviewDetailViewModel()
                 {
-                    MessageOverviewDetailViewModel messageModel = new MessageOverviewDetailViewModel()
-                    {
-                        Id = message.MessageId,
-                        Name = message.Name,
-                        MessageState = message.MessageState.ToString(),
-                        CreationDate = message.Date,
-                        Type = message.FileSpecification.IsInput ? "Input" : "Output",
-                        AmountOfErrors = message.AmountOfErrors
-                    };
+                    Id = message.MessageId,
+                    Name = message.Name,
+                    MessageState = message.MessageState.ToString(),
+                    CreationDate = message.Date,
+                    AmountOfErrors = message.AmountOfErrors
+                };
 
-                    model.Add(messageModel);
+                if (message.FileSpecification != null) {
+                    messageModel.Type = message.FileSpecification.IsInput ? "Input" : "Output";
                 }
+
+                model.Add(messageModel);
             }
 
             return View("MessageOverview", model);
@@ -161,38 +161,50 @@ namespace File_Interface_Simulator.Controllers
 
         public ActionResult GroupDetail(int id = 1)
         {
-            Group group = operationalManager.GetGroupWithRelatedDate(id);
-            GroupDetailViewModel groupDetailModel = new GroupDetailViewModel
+            try
             {
-                Code = group.GroupCode,
-                Description = group.GroupCondition.Description,
-                Range = group.GroupCondition.MinimumAmountOfOccurences + "-" + group.GroupCondition.MaximumAmountOfOccurences,
-                Level = group.Level,
-                ErrorMessage = group.ErrorDescription,
-                AmountOfErrorMessages = group.Fields.Where(f => f.ErrorDescription != null).Count(),
-                AmountOfFields = group.Fields.Count(),
-                Transactie = "T1",/*group.Transaction.Name,*/
-                Fields = new List<MessageFieldDetailViewModel>()
-            };
-            foreach (Field field in group.Fields)
-            {
-                MessageFieldDetailViewModel fieldDetailModel = new MessageFieldDetailViewModel
+                Group group = operationalManager.GetGroupWithRelatedDate(id);
+                GroupDetailViewModel groupDetailModel = new GroupDetailViewModel
                 {
-                    Code = field.FieldCode,
-                    Datatype = field.FileSpecFieldCondition.FieldSpecFieldCondition.Datatype,
-                    Format = field.FileSpecFieldCondition.FieldSpecFieldCondition.Format.Count() > 0 ? field.FileSpecFieldCondition.FieldSpecFieldCondition.Format : "-",
-                    Group = group.GroupCode,
-                    Level = field.Level,
-                    Name = field.FileSpecFieldCondition.Description,
-                    Size = field.FileSpecFieldCondition.FieldSpecFieldCondition.Size,
-                    Optional = field.FileSpecFieldCondition.IsOptional ? "O" : "M",
-                    Value = field.Value,
-                    ErrorMessage = field.ErrorDescription
+                    Code = group.GroupCode,
+                    Description = group.GroupCondition.Description,
+                    Range = group.GroupCondition.MinimumAmountOfOccurences + "-" + group.GroupCondition.MaximumAmountOfOccurences,
+                    Level = group.Level,
+                    ErrorMessage = group.ErrorDescription,
+                    AmountOfErrorMessages = group.Fields.Where(f => f.ErrorDescription != null).Count(),
+                    AmountOfFields = group.Fields.Count(),
+                    Transactie = "T1",/*group.Transaction.Name,*/
+                    Fields = new List<MessageFieldDetailViewModel>()
                 };
-                groupDetailModel.Fields.Add(fieldDetailModel);
-            }
+                foreach (Field field in group.Fields)
+                {
+                    MessageFieldDetailViewModel fieldDetailModel = new MessageFieldDetailViewModel
+                    {
+                        Code = field.FieldCode,
+                        Datatype = field.FileSpecFieldCondition.FieldSpecFieldCondition.Datatype,
+                        Format = field.FileSpecFieldCondition.FieldSpecFieldCondition.Format.Count() > 0 ? field.FileSpecFieldCondition.FieldSpecFieldCondition.Format : "-",
+                        Group = group.GroupCode,
+                        Level = field.Level,
+                        Name = field.FileSpecFieldCondition.Description,
+                        Size = field.FileSpecFieldCondition.FieldSpecFieldCondition.Size,
+                        Optional = field.FileSpecFieldCondition.IsOptional ? "O" : "M",
+                        Value = field.Value,
+                        ErrorMessage = field.ErrorDescription
+                    };
+                    groupDetailModel.Fields.Add(fieldDetailModel);
+                }
 
-            return View("GroupDetail", groupDetailModel);
+                return View("GroupDetail", groupDetailModel);
+
+            } catch (Exception e)
+            {
+                ErrorViewModel model = new ErrorViewModel()
+                {
+                    ErrorMessage = e.Message
+                };
+
+                return RedirectToAction("Error", "Home", model);
+            }
         }
 
         public ActionResult FieldDetail(int id = 1)

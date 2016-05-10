@@ -1,5 +1,6 @@
 ﻿using FIS.BL.Domain.Operational;
 using FIS.BL.Domain.Setup;
+using FIS.BL.Exceptions;
 using FIS.BL.Util;
 using FIS.BL.Util.XML;
 using FIS.BL.Util.XML.Validation;
@@ -85,11 +86,17 @@ namespace FIS.BL
                     {
                         WorkflowTemplate workflowTemplate = fileSpecification.WorkflowTemplateSteps.Where(wt => wt.StepNumber == 1).Where(wt => wt.WorkflowTemplate.IsChosen == true).FirstOrDefault().WorkflowTemplate;
 
-                        WorkflowTemplateStep workflowTemplateStep = workflowTemplateSetupManager.GetWorkflowTemplateStep(workflowTemplate.WorkflowTemplateId, 2);
-
                         Workflow workflow = AddWorkflow(message, workflowTemplate);
                         ValidateInput(message.MessageId, fileSpecification.FileSpecificationId);
-                        GenerateAnswer(message, workflow, workflowTemplateStep, directoryHandler);
+
+                        try
+                        {
+                            WorkflowTemplateStep workflowTemplateStep = workflowTemplateSetupManager.GetWorkflowTemplateStep(workflowTemplate.WorkflowTemplateId, 2);
+                            GenerateAnswer(message, workflow, workflowTemplateStep, directoryHandler);
+                        } catch(Exception e)
+                        {
+                            //An answer is not generated.
+                        }
                     }
                 }
             }
@@ -176,7 +183,15 @@ namespace FIS.BL
 
         public Group GetGroupWithRelatedDate(int groupId)
         {
-            return operationalRep.ReadGroupWithRelatedDate(groupId);
+            Group group = operationalRep.ReadGroupWithRelatedDate(groupId);
+
+            if (group != null)
+            {
+                return group;
+            } else
+            {
+                throw new OperationalException("The requested Group with id " + groupId + " does not exist!");
+            }
         }
 
         public Field GetFieldWithRelatedData(int fieldId)

@@ -162,7 +162,15 @@ namespace FIS.BL
 
         public WorkflowTemplateStep GetWorkflowTemplateStep(int workflowTemplateId, int stepNumber)
         {
-            return workflowTemplateSetupRepo.ReadWorkflowTemplateStep(workflowTemplateId, stepNumber);
+            WorkflowTemplateStep workflowTemplateStep = workflowTemplateSetupRepo.ReadWorkflowTemplateStep(workflowTemplateId, stepNumber);
+
+            if (workflowTemplateStep != null)
+            {
+                return workflowTemplateStep;
+            } else
+            {
+                throw new WorkflowTemplateSetupException(String.Format("Workflow template {0} does not have a step {1}", workflowTemplateId, stepNumber));
+            }
         }
     }
 }
