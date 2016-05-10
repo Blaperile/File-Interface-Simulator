@@ -61,7 +61,7 @@ namespace FIS.BL.Util.CSV
             {
                 string code = fileSpecLine.First();
 
-                if (code.StartsWith("K"))
+                if (!String.IsNullOrEmpty(code) && Char.IsLetter(code[0]) && Char.IsNumber(code[1]) && !code.StartsWith("A"))
                 {
                     FieldSpecFieldCondition fieldSpecFieldCondition = specSetupManager.GetFieldSpecFieldCondition(fieldSpecification.FieldSpecificationId, code);
 

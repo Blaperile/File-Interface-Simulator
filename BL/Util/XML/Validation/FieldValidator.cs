@@ -88,7 +88,7 @@ namespace FIS.BL.Util.XML.Validation
         {
             if (fieldCondition.Size != 0)
             {
-                if (fieldCondition.Size != field.Value.Length)
+                if (fieldCondition.Size < field.Value.Length)
                 {
                     message.AmountOfErrors++;
                     field.ErrorDescription += Environment.NewLine + "The length of the value doesn't match the required length.";
@@ -182,7 +182,7 @@ namespace FIS.BL.Util.XML.Validation
             {
                 IEnumerable<XMLElement> temp = fieldElements.Where(e => e.Code.Equals(fileSpecfieldCondition.Code)).ToList();
 
-                if (temp.Count() == 0)
+                if (temp.Count() == 0 && Int32.Parse(fileSpecfieldCondition.Group.MinimumAmountOfOccurences) > 0)
                 {
                     message.AmountOfErrors++;
                     message.Transactions.ElementAt(0).Groups.Where(g => g.GroupCode.Equals(fileSpecfieldCondition.Group.Code)).First().ErrorDescription += String.Format("Field {0} is missing." + Environment.NewLine, fileSpecfieldCondition.Code);

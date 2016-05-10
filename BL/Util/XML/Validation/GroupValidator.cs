@@ -34,26 +34,30 @@ namespace FIS.BL.Util.XML.Validation
 
         private static void CheckParentGroup(Message message, GroupCondition groupCondition)
         {
-            Group group = message.Transactions.ElementAt(0).Groups.Where(g => g.GroupCode.Equals(groupCondition.Code)).First();
-
-            if (String.IsNullOrEmpty(groupCondition.ParentGroup) && group.ParentGroup != null)
+            if (Int32.Parse(groupCondition.MinimumAmountOfOccurences) > 0 || message.Transactions.ElementAt(0).Groups.Where(g => g.GroupCode.Equals(groupCondition.Code)).Count() > 0)
             {
-                message.AmountOfErrors++;
-                group.ErrorDescription = "This group is not allowed to have a parent group.";
+                Group group = message.Transactions.ElementAt(0).Groups.Where(g => g.GroupCode.Equals(groupCondition.Code)).First();
 
-            }
-            if (!String.IsNullOrEmpty(groupCondition.ParentGroup) && group.ParentGroup == null)
-            {
-                message.AmountOfErrors++;
-                group.ErrorDescription = "This group must have a parent group.";
 
-            }
-            if (!String.IsNullOrEmpty(groupCondition.ParentGroup) && group.ParentGroup != null)
-            {
-                if (groupCondition.ParentGroup != group.ParentGroup.GroupCode)
+                if (String.IsNullOrEmpty(groupCondition.ParentGroup) && group.ParentGroup != null)
                 {
                     message.AmountOfErrors++;
-                    group.ErrorDescription = "This group has the wrong parent group.";
+                    group.ErrorDescription = "This group is not allowed to have a parent group.";
+
+                }
+                if (!String.IsNullOrEmpty(groupCondition.ParentGroup) && group.ParentGroup == null)
+                {
+                    message.AmountOfErrors++;
+                    group.ErrorDescription = "This group must have a parent group.";
+
+                }
+                if (!String.IsNullOrEmpty(groupCondition.ParentGroup) && group.ParentGroup != null)
+                {
+                    if (groupCondition.ParentGroup != group.ParentGroup.GroupCode)
+                    {
+                        message.AmountOfErrors++;
+                        group.ErrorDescription = "This group has the wrong parent group.";
+                    }
                 }
             }
 
@@ -64,8 +68,10 @@ namespace FIS.BL.Util.XML.Validation
             foreach (XMLElement groupElement in temp)
             {
                 Group group = CheckRange(message, groupCondition, temp, groupElement, codes);
-                CheckLevel(groupCondition, groupElement, group, message);
-                message.Transactions.ElementAt(0).Groups.Add(group);
+            
+                    CheckLevel(groupCondition, groupElement, group, message);
+                    message.Transactions.ElementAt(0).Groups.Add(group);
+           
             }
         }
 
@@ -90,6 +96,8 @@ namespace FIS.BL.Util.XML.Validation
             }
 
             codes.Remove(groupCondition.Code);
+
+     
 
             if (temp.Count() < Int32.Parse(groupCondition.MinimumAmountOfOccurences))
             {

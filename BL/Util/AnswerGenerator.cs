@@ -56,31 +56,34 @@ namespace FIS.BL.Util
 
             foreach (GroupCondition groupCondition in fileSpecification.GroupConditions)
             {
-                Group group = new Group()
+                foreach (Group groupInList in message.Transactions.ElementAt(0).Groups.Where(g => g.Level.Equals(groupCondition.Level)))
                 {
-                    GroupCode = groupCondition.Code,
-                    Transaction = answerMessage.Transactions.ElementAt(0),
-                  //  ParentGroup = groupCondition.ParentGroup,
-                    Level = groupCondition.Level,
-                    GroupCondition = groupCondition,
-                    Fields = new List<Field>()
-                };
-
-                foreach(FileSpecFieldCondition fileSpecFieldCondition in groupCondition.FileSpecFieldConditions)
-                {
-                    Field field = new Field()
+                    Group group = new Group()
                     {
-                        FieldCode = fileSpecFieldCondition.Code,
-                        Level = Convert.ToString(fileSpecFieldCondition.Level),
-                        Group = group,
-                        FileSpecFieldCondition = fileSpecFieldCondition,
-                        //Value = Ophalen uit message
+                        GroupCode = groupCondition.Code,
+                        Transaction = answerMessage.Transactions.ElementAt(0),
+                        //  ParentGroup = groupCondition.ParentGroup,
+                        Level = groupCondition.Level,
+                        GroupCondition = groupCondition,
+                        Fields = new List<Field>()
                     };
 
-                    group.Fields.Add(field);
-                }
+                    foreach (FileSpecFieldCondition fileSpecFieldCondition in groupCondition.FileSpecFieldConditions)
+                    {
+                        Field field = new Field()
+                        {
+                            FieldCode = fileSpecFieldCondition.Code,
+                            Level = Convert.ToString(fileSpecFieldCondition.Level),
+                            Group = group,
+                            FileSpecFieldCondition = fileSpecFieldCondition,
+                            Value = message.Transactions.ElementAt(0).Groups.Where(g => g.GroupId == groupInList.GroupId).FirstOrDefault().Fields.Where(f=>f.FieldCode == fileSpecFieldCondition.Code).FirstOrDefault().Value
+                        };
 
-                answerMessage.Transactions.ElementAt(0).Groups.Add(group);
+                        group.Fields.Add(field);
+                    }
+
+                    answerMessage.Transactions.ElementAt(0).Groups.Add(group);
+                }
             }
 
             return answerMessage;

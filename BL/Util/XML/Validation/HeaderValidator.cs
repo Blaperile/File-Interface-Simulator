@@ -137,7 +137,7 @@ namespace FIS.BL.Util.XML.Validation
         {
             if (headerCondition.Size != 0)
             {
-                if (headerCondition.Size != headerField.Description.Length)
+                if (headerCondition.Size < headerField.Description.Length)
                 {
                     message.AmountOfErrors++;
                     headerField.ErrorDescription += Environment.NewLine + "The length of the value doesn't match the format.";
