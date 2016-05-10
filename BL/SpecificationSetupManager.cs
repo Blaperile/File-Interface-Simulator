@@ -24,12 +24,21 @@ namespace FIS.BL
 
         public FieldSpecification AddFieldSpecification(string name, string path, string version)
         {
-            FieldSpecification fieldSpec = csvReader.ReadFieldSpecification(path);
-            fieldSpec.Path = path;
-            fieldSpec.Name = name;
-            fieldSpec.Version = version;
-            fieldSpec.UploadDate = DateTime.Now;
-            return specSetupRepo.CreateFieldSpecification(fieldSpec);
+            FieldSpecification fieldSpec = GetFieldSpecification(name, version);
+
+            if (fieldSpec == null)
+            {
+                fieldSpec = csvReader.ReadFieldSpecification(path);
+                fieldSpec.Path = path;
+                fieldSpec.Name = name;
+                fieldSpec.Version = version;
+                fieldSpec.UploadDate = DateTime.Now;
+                return specSetupRepo.CreateFieldSpecification(fieldSpec);
+            }
+            else
+            {
+                throw new SpecificationSetupException("Name combined with version must be unique");
+            }
         }
 
         public FileSpecification AddFileSpecification(string name, string path, bool isInput, string inDirectoryPath, string archiveDirectoryPath, string errorDirectoryPath, string outDirectoryPath, string version, string fieldSpecification)
@@ -102,7 +111,8 @@ namespace FIS.BL
                 }
                 fieldSpec.FileSpecifications.Add(fileSpec);
                 return specSetupRepo.CreateFileSpecification(fileSpec);
-            } else
+            }
+            else
             {
                 throw new SpecificationSetupException("A file specification with name " + fileSpec.Name + " and version " + fileSpec.Version + " already exists.");
             }
@@ -186,18 +196,24 @@ namespace FIS.BL
         public FieldSpecification RemoveFieldSpecification(int specificationId)
         {
             FieldSpecification fieldSpecification = GetFieldSpecificationWithFileSpecifications(specificationId);
-            if (fieldSpecification.FileSpecifications.Count() == 0)
+            int amountOfFileSpecsLinkedToFieldSpec = fieldSpecification.FileSpecifications.Count();
+            if (amountOfFileSpecsLinkedToFieldSpec == 0)
             {
                 return specSetupRepo.DeleteFieldSpecification(specificationId);
             }
-
-            return null;
+            else
+            {
+                throw new SpecificationSetupException(
+                    String.Format("This field specification cannot be deleted because there are {0} file specifications linked to it!",
+                    amountOfFileSpecsLinkedToFieldSpec)
+                );
+            }
         }
 
         public FileSpecification RemoveFileSpecification(int specificationId)
         {
             FileSpecification fileSpecification = GetFileSpecificationWithMessages(specificationId);
-            if (fileSpecification.Messages.Count() == 0 || fileSpecification.WorkflowTemplateSteps.Count()==0)
+            if (fileSpecification.Messages.Count() == 0 || fileSpecification.WorkflowTemplateSteps.Count() == 0)
             {
                 return specSetupRepo.DeleteFileSpecification(specificationId);
             }
@@ -212,7 +228,7 @@ namespace FIS.BL
 
         public FileSpecification UpdateFileSpecification(FileSpecification fileSpecification)
         {
-           return  specSetupRepo.UpdateFileSpecification(fileSpecification);
+            return specSetupRepo.UpdateFileSpecification(fileSpecification);
         }
     }
 }

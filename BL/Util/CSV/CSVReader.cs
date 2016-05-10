@@ -22,30 +22,37 @@ namespace FIS.BL.Util.CSV
         {
             FieldSpecification fieldspec = new FieldSpecification();
             List<List<String>> fieldConditionLines = ReadFile(path);
-            List<FieldSpecFieldCondition> fieldSpecFieldConditions = new List<FieldSpecFieldCondition>();
-            foreach (var fieldConditionLine in fieldConditionLines)
+            try
             {
-                FieldSpecFieldCondition fieldSpecFieldCondition = new FieldSpecFieldCondition();
-                fieldSpecFieldCondition.FieldCode = fieldConditionLine[0];
-                fieldSpecFieldCondition.Datatype = fieldConditionLine[1];
-                fieldSpecFieldCondition.Size = Int32.Parse(fieldConditionLine[2]);
-                fieldSpecFieldCondition.Format = fieldConditionLine[3];
-                fieldSpecFieldCondition.FieldSpecification = fieldspec;
-                List<String> stringAllowedValues = fieldConditionLine[4].Split('-').ToList();
-                List<AllowedValue> allowedValues = new List<AllowedValue>();
-                foreach(var stringAllowedValue in stringAllowedValues)
+                List<FieldSpecFieldCondition> fieldSpecFieldConditions = new List<FieldSpecFieldCondition>();
+                foreach (var fieldConditionLine in fieldConditionLines)
                 {
-                    AllowedValue allowedValue = new AllowedValue();
-                    allowedValue.Value = stringAllowedValue;
-                    allowedValue.fieldSpecFieldCondition = fieldSpecFieldCondition;
-                    allowedValues.Add(allowedValue);
-                }
-                fieldSpecFieldCondition.AllowedValues = allowedValues;
+                    FieldSpecFieldCondition fieldSpecFieldCondition = new FieldSpecFieldCondition();
+                    fieldSpecFieldCondition.FieldCode = fieldConditionLine[0];
+                    fieldSpecFieldCondition.Datatype = fieldConditionLine[1];
+                    fieldSpecFieldCondition.Size = Int32.Parse(fieldConditionLine[2]);
+                    fieldSpecFieldCondition.Format = fieldConditionLine[3];
+                    fieldSpecFieldCondition.FieldSpecification = fieldspec;
+                    List<String> stringAllowedValues = fieldConditionLine[4].Split('-').ToList();
+                    List<AllowedValue> allowedValues = new List<AllowedValue>();
+                    foreach (var stringAllowedValue in stringAllowedValues)
+                    {
+                        AllowedValue allowedValue = new AllowedValue();
+                        allowedValue.Value = stringAllowedValue;
+                        allowedValue.fieldSpecFieldCondition = fieldSpecFieldCondition;
+                        allowedValues.Add(allowedValue);
+                    }
+                    fieldSpecFieldCondition.AllowedValues = allowedValues;
 
-                fieldSpecFieldConditions.Add(fieldSpecFieldCondition);
+                    fieldSpecFieldConditions.Add(fieldSpecFieldCondition);
+                }
+                fieldspec.FieldSpecFieldConditions = fieldSpecFieldConditions;
+                return fieldspec;
             }
-            fieldspec.FieldSpecFieldConditions = fieldSpecFieldConditions;
-            return fieldspec;
+            catch (Exception ex)
+            {
+                throw new FileReadException("An error occurred while parsing the field specification. Make sure it has the correct format!");
+            }
         }
 
         public FileSpecification ReadFileSpecification(string path, FieldSpecification fieldSpecification)
@@ -91,11 +98,13 @@ namespace FIS.BL.Util.CSV
 
                         fileSpecFieldCondition.FieldSpecFieldCondition = fieldSpecFieldCondition;
                         fileSpecFieldConditions.Add(fileSpecFieldCondition);
-                    } else
+                    }
+                    else
                     {
                         throw new FileReadException("Field " + code + " is missing in the selected field specification!");
                     }
-                } else if (code.StartsWith("A"))
+                }
+                else if (code.StartsWith("A"))
                 {
                     GroupCondition groupCondition = new GroupCondition()
                     {
@@ -110,7 +119,8 @@ namespace FIS.BL.Util.CSV
 
                     groupCondition.FileSpecification = fileSpec;
                     groupConditions.Add(groupCondition);
-                } else
+                }
+                else
                 {
                     HeaderCondition headerCondition = new HeaderCondition()
                     {
@@ -137,18 +147,31 @@ namespace FIS.BL.Util.CSV
 
         public static List<List<String>> ReadFile(string path)
         {
-            var reader = new StreamReader(File.OpenRead(path));
-            List<List<String>> lines = new List<List<String>>();
-            reader.ReadLine(); //prevents header line from being read
-            while (!reader.EndOfStream)
+            string extension = Path.GetExtension(path);
+
+            if (extension == null) //No file is selected
             {
-                var line = reader.ReadLine();
-                List<String> values = line.Split(';').ToList();
-
-                lines.Add(values);
+                throw new FileReadException("Please upload a CSV file.");
             }
+            else if (!extension.Equals(".csv", StringComparison.CurrentCultureIgnoreCase))
+            {
+                throw new FileReadException("The uploaded file is expected to be .csv but was " + extension + ". Please upload a .csv file instead.");
+            }
+            else
+            {
+                var reader = new StreamReader(File.OpenRead(path));
+                List<List<String>> lines = new List<List<String>>();
+                reader.ReadLine(); //prevents header line from being read
+                while (!reader.EndOfStream)
+                {
+                    var line = reader.ReadLine();
+                    List<String> values = line.Split(';').ToList();
 
-            return lines;
+                    lines.Add(values);
+                }
+
+                return lines;
+            }
         }
     }
 }
