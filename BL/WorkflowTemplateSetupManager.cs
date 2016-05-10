@@ -134,9 +134,15 @@ namespace FIS.BL
                 currentlySelectedWorkflowTemplate = workflowTemplateSetupRepo.UpdateWorkflowTemplate(currentlySelectedWorkflowTemplate);
             }
 
-            WorkflowTemplate newSelectedWorkflowTemplate = GetWorkflowTemplate(workflowTemplateId);
-            newSelectedWorkflowTemplate.IsChosen = true;
-            return workflowTemplateSetupRepo.UpdateWorkflowTemplate(newSelectedWorkflowTemplate);
+            if (currentlySelectedWorkflowTemplate == null || currentlySelectedWorkflowTemplate.WorkflowTemplateId != workflowTemplateId)
+            {
+                WorkflowTemplate newSelectedWorkflowTemplate = GetWorkflowTemplate(workflowTemplateId);
+                newSelectedWorkflowTemplate.IsChosen = true;
+                return workflowTemplateSetupRepo.UpdateWorkflowTemplate(newSelectedWorkflowTemplate);
+            } else
+            {
+                return currentlySelectedWorkflowTemplate;
+            }
         }
 
         public WorkflowTemplate SelectWorkflowTemplate(string name)
