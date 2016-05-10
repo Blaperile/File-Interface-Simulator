@@ -70,6 +70,7 @@ namespace FIS.BL.Util
                     if (!group.GroupCode.Equals("A01"))
                     {
                         group.ParentGroup = answerMessage.Transactions.ElementAt(0).Groups.Where(g => g.GroupCode.Equals(groupCondition.ParentGroup)).Last();
+                       
                     }
 
                     foreach (FileSpecFieldCondition fileSpecFieldCondition in groupInList.GroupCondition.FileSpecFieldConditions)
@@ -92,8 +93,6 @@ namespace FIS.BL.Util
                         }
                        
                     }
-
-                  
                     answerMessage.Transactions.ElementAt(0).Groups.Add(group);
                 }
             }
