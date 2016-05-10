@@ -33,7 +33,7 @@ namespace FIS.BL.Util.CSV
                 fieldSpecFieldCondition.FieldSpecification = fieldspec;
                 List<String> stringAllowedValues = fieldConditionLine[4].Split('-').ToList();
                 List<AllowedValue> allowedValues = new List<AllowedValue>();
-                foreach(var stringAllowedValue in stringAllowedValues)
+                foreach (var stringAllowedValue in stringAllowedValues)
                 {
                     AllowedValue allowedValue = new AllowedValue();
                     allowedValue.Value = stringAllowedValue;
@@ -91,11 +91,13 @@ namespace FIS.BL.Util.CSV
 
                         fileSpecFieldCondition.FieldSpecFieldCondition = fieldSpecFieldCondition;
                         fileSpecFieldConditions.Add(fileSpecFieldCondition);
-                    } else
+                    }
+                    else
                     {
                         throw new FileReadException("Field " + code + " is missing in the selected field specification!");
                     }
-                } else if (code.StartsWith("A"))
+                }
+                else if (code.StartsWith("A"))
                 {
                     GroupCondition groupCondition = new GroupCondition()
                     {
@@ -110,7 +112,8 @@ namespace FIS.BL.Util.CSV
 
                     groupCondition.FileSpecification = fileSpec;
                     groupConditions.Add(groupCondition);
-                } else
+                }
+                else
                 {
                     HeaderCondition headerCondition = new HeaderCondition()
                     {
@@ -137,18 +140,26 @@ namespace FIS.BL.Util.CSV
 
         public static List<List<String>> ReadFile(string path)
         {
-            var reader = new StreamReader(File.OpenRead(path));
-            List<List<String>> lines = new List<List<String>>();
-            reader.ReadLine(); //prevents header line from being read
-            while (!reader.EndOfStream)
+            string extension = Path.GetExtension(path);
+
+            if (extension.Equals(".csv"))
             {
-                var line = reader.ReadLine();
-                List<String> values = line.Split(';').ToList();
+                var reader = new StreamReader(File.OpenRead(path));
+                List<List<String>> lines = new List<List<String>>();
+                reader.ReadLine(); //prevents header line from being read
+                while (!reader.EndOfStream)
+                {
+                    var line = reader.ReadLine();
+                    List<String> values = line.Split(';').ToList();
 
-                lines.Add(values);
+                    lines.Add(values);
+                }
+
+                return lines;
+            } else
+            {
+                throw new FileReadException("The uploaded file is expected to be .csv but was " + extension + ". Please upload a .csv file instead.");
             }
-
-            return lines;
         }
     }
 }

@@ -37,7 +37,14 @@ namespace FIS.DAL
 
         public FieldSpecification ReadFieldSpecification(string name, string version)
         {
-            return ctx.FieldSpecifications.Where(fs => fs.Name.Equals(name)).Where(fs => fs.Version.Equals(version)).First();
+            IEnumerable<FieldSpecification> fieldSpecifications = ctx.FieldSpecifications.Where(fs => fs.Name.Equals(name)).Where(fs => fs.Version.Equals(version));
+            
+            if (fieldSpecifications.Count() == 0)
+            {
+                return null;
+            }
+
+            return fieldSpecifications.Single();
         }
 
         public FieldSpecification ReadFieldSpecificationWithFileSpecifications(int specificationId)

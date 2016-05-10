@@ -24,12 +24,20 @@ namespace FIS.BL
 
         public FieldSpecification AddFieldSpecification(string name, string path, string version)
         {
-            FieldSpecification fieldSpec = csvReader.ReadFieldSpecification(path);
-            fieldSpec.Path = path;
-            fieldSpec.Name = name;
-            fieldSpec.Version = version;
-            fieldSpec.UploadDate = DateTime.Now;
-            return specSetupRepo.CreateFieldSpecification(fieldSpec);
+            FieldSpecification fieldSpec = GetFieldSpecification(name, version);
+
+            if (fieldSpec == null)
+            {
+                fieldSpec = csvReader.ReadFieldSpecification(path);
+                fieldSpec.Path = path;
+                fieldSpec.Name = name;
+                fieldSpec.Version = version;
+                fieldSpec.UploadDate = DateTime.Now;
+                return specSetupRepo.CreateFieldSpecification(fieldSpec);
+            } else
+            {
+                throw new SpecificationSetupException("Name combined with version must be unique");
+            }
         }
 
         public FileSpecification AddFileSpecification(string name, string path, bool isInput, string inDirectoryPath, string archiveDirectoryPath, string errorDirectoryPath, string outDirectoryPath, string version, string fieldSpecification)

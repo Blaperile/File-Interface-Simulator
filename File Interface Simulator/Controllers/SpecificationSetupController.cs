@@ -24,14 +24,16 @@ namespace File_Interface_Simulator.Controllers
         [HttpPost]
         public ActionResult UploadFieldSpecification(FieldSpecificationViewModel fieldspecificationViewModel) //save entered data
         {
-            FieldSpecification fieldSpecification = specSetupManager.AddFieldSpecification(fieldspecificationViewModel.Name, fieldspecificationViewModel.Path, fieldspecificationViewModel.Version);
-            if (fieldSpecification != null)
+            try
             {
+                FieldSpecification fieldSpecification = specSetupManager.AddFieldSpecification(fieldspecificationViewModel.Name, fieldspecificationViewModel.Path, fieldspecificationViewModel.Version);
                 return RedirectToAction("FieldSpecificationOverview");
+            } catch (Exception ex)
+            {
+                ViewBag.error = ex.Message;
+
+                return View(fieldspecificationViewModel);
             }
-            else
-            ViewBag.error = "Name combined with version must be unique";
-            return View(fieldspecificationViewModel);
         }
 
         [HttpGet]
