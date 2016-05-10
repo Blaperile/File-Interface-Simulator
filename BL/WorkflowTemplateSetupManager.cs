@@ -93,9 +93,22 @@ namespace FIS.BL
             return workflowTemplateSetupRepo.ReadWorkflowTemplates();
         }
 
-        public WorkflowTemplate RemoveStepFromWorkflowTemplate(int workflowTemplateId, int stepNumber)
+        public WorkflowTemplateStep RemoveStepFromWorkflowTemplate(int workflowTemplateStepId, int workflowTemplateId)
         {
-            throw new NotImplementedException();
+            try
+            {
+                List<Workflow> workflows = operationalManager.GetWorkflowsForTemplate(workflowTemplateId);
+                return null;
+            }
+            catch
+            {
+                WorkflowTemplate workflowTemplate = workflowTemplateSetupRepo.ReadWorkflowTemplate(workflowTemplateId);
+                foreach (WorkflowTemplateStep workflowTemplateStepInWorkflow in workflowTemplate.WorkflowTemplateSteps.Where(wts => wts.StepNumber >= workflowTemplate.WorkflowTemplateSteps.Where(wfts=>wfts.WorkflowTemplateStepId == workflowTemplateStepId).FirstOrDefault().StepNumber))
+                {
+                    workflowTemplateStepInWorkflow.StepNumber--;
+                }
+                return workflowTemplateSetupRepo.DeleteWorkflowTemplateStep(workflowTemplateStepId);
+            }
         }
 
         public WorkflowTemplate RemoveWorkflowTemplate(int workflowTemplateId)

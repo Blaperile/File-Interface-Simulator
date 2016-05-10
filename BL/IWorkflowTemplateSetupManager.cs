@@ -10,7 +10,7 @@ namespace FIS.BL
     public interface IWorkflowTemplateSetupManager
     {
         WorkflowTemplate AddStepToWorkflowTemplate(int workflowTemplateId, int stepNumber, string specificationName, string specificationVersion);
-        WorkflowTemplate RemoveStepFromWorkflowTemplate(int workflowTemplateId, int stepNumber);
+        WorkflowTemplateStep RemoveStepFromWorkflowTemplate(int workflowTemplateStepId, int workflowTemplateId);
         WorkflowTemplate AddWorkflowTemplate(String name);
         WorkflowTemplate GetWorkflowTemplate(int workflowTemplateId);
         WorkflowTemplate GetWorkflowTemplate(string name);

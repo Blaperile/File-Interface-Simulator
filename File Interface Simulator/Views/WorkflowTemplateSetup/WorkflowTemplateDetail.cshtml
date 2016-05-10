@@ -53,24 +53,25 @@
             </th>
         </tr>
 
-        @for (int i = 0; i < Model.CurrentWorkflowTemplateSteps.Count(); i++)
+        @foreach (var item in  Model.CurrentWorkflowTemplateSteps)
         {
-            <tr>
+            <tr id="workflow_templ_step_@item.Id">
                 <td>
-                    <img src="~/images/thrash_icon.png" />
+                    <img src="~/images/thrash_icon.png" onclick="removeStep(@item.Id, @Model.WorkflowTemplateId)" style="cursor:pointer"/>
                 </td>
                 <td>
-                    @(i + 1)
+                    @item.Step
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => Model.CurrentWorkflowTemplateSteps.ElementAt(i).Name)
+                    @Html.DisplayFor(modelItem => item.Name)
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => Model.CurrentWorkflowTemplateSteps.ElementAt(i).Type)
+                    @Html.DisplayFor(modelItem => item.Type)
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => Model.CurrentWorkflowTemplateSteps.ElementAt(i).Version)
+                    @Html.DisplayFor(modelItem => item.Version)
                 </td>
+                <td id="delete_error_@item.Id" class="errorMessage"></td>
             </tr>
         }
         @{
