@@ -126,18 +126,22 @@ namespace FIS.DAL
 
        public FileSpecification ReadFileSpecificationAtStartWorkflowTemplateWithName(string specificationName)
         {
-
+   
             WorkflowTemplateStep workflowTemplateStep = ctx.WorkflowTemplateSteps.Where(wt => wt.StepNumber == 1).Where(wt => wt.fileSpecification.Name.Equals(specificationName)).Where(wt => wt.WorkflowTemplate.IsChosen == true).FirstOrDefault();
-            ctx.Entry<WorkflowTemplateStep>(workflowTemplateStep).Reference<FileSpecification>(wt => wt.fileSpecification).Load();
-            FileSpecification fileSpecification = workflowTemplateStep.fileSpecification;
+            if (workflowTemplateStep != null)
+            {
+                ctx.Entry<WorkflowTemplateStep>(workflowTemplateStep).Reference<FileSpecification>(wt => wt.fileSpecification).Load();
+                FileSpecification fileSpecification = workflowTemplateStep.fileSpecification;
 
-              ctx.Entry<FileSpecification>(fileSpecification).Collection<HeaderCondition>(fs => fs.HeaderConditions).Load();
-              ctx.Entry<FileSpecification>(fileSpecification).Collection<GroupCondition>(fs => fs.GroupConditions).Load();
-              LoadFileSpecFieldConditions(fileSpecification);
-              ctx.Entry<FileSpecification>(fileSpecification).Collection<Directory>(fs => fs.Directories).Load();
-              ctx.Entry<FileSpecification>(fileSpecification).Collection<Message>(fs => fs.Messages).Load();
-              ctx.Entry<FileSpecification>(fileSpecification).Collection<WorkflowTemplateStep>(fs => fs.WorkflowTemplateSteps).Load();
-              return fileSpecification;
+                ctx.Entry<FileSpecification>(fileSpecification).Collection<HeaderCondition>(fs => fs.HeaderConditions).Load();
+                ctx.Entry<FileSpecification>(fileSpecification).Collection<GroupCondition>(fs => fs.GroupConditions).Load();
+                LoadFileSpecFieldConditions(fileSpecification);
+                ctx.Entry<FileSpecification>(fileSpecification).Collection<Directory>(fs => fs.Directories).Load();
+                ctx.Entry<FileSpecification>(fileSpecification).Collection<Message>(fs => fs.Messages).Load();
+                ctx.Entry<FileSpecification>(fileSpecification).Collection<WorkflowTemplateStep>(fs => fs.WorkflowTemplateSteps).Load();
+                return fileSpecification;
+            }
+            return null;
         }
 
         public FileSpecification ReadFileSpecificationWithMessages(int specificationId)

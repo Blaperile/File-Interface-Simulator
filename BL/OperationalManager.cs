@@ -81,13 +81,16 @@ namespace FIS.BL
                     IEnumerable<XMLElement> xmlElements = operationalRep.GetElements(message.MessageId);
                     XMLElement flowIdElement = xmlElements.Where(e => e.Code.Equals("FLOWID")).Single();
                     FileSpecification fileSpecification = specSetupManager.GetFileSpecificationAtStartWorkflowTemplateWithName(flowIdElement.Value);
-                    WorkflowTemplate workflowTemplate = fileSpecification.WorkflowTemplateSteps.Where(wt => wt.StepNumber == 1).Where(wt => wt.WorkflowTemplate.IsChosen == true).FirstOrDefault().WorkflowTemplate;
+                    if (fileSpecification != null)
+                    {
+                        WorkflowTemplate workflowTemplate = fileSpecification.WorkflowTemplateSteps.Where(wt => wt.StepNumber == 1).Where(wt => wt.WorkflowTemplate.IsChosen == true).FirstOrDefault().WorkflowTemplate;
 
-                    WorkflowTemplateStep workflowTemplateStep = workflowTemplateSetupManager.GetWorkflowTemplateStep(workflowTemplate.WorkflowTemplateId, 2);
+                        WorkflowTemplateStep workflowTemplateStep = workflowTemplateSetupManager.GetWorkflowTemplateStep(workflowTemplate.WorkflowTemplateId, 2);
 
-                    Workflow workflow = AddWorkflow(message, workflowTemplate);
-                    ValidateInput(message.MessageId, fileSpecification.FileSpecificationId);
-                    GenerateAnswer(message, workflow, workflowTemplateStep, directoryHandler);
+                        Workflow workflow = AddWorkflow(message, workflowTemplate);
+                        ValidateInput(message.MessageId, fileSpecification.FileSpecificationId);
+                        GenerateAnswer(message, workflow, workflowTemplateStep, directoryHandler);
+                    }
                 }
             }
         

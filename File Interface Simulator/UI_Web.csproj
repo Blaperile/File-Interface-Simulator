@@ -169,6 +169,7 @@
     <Compile Include="Models\FieldSpecificationOverviewDetailModel.cs" />
     <Compile Include="Models\FileSpecificationDetailViewModel.cs" />
     <Compile Include="Models\FileSpecificationOverviewDetailModel.cs" />
+    <Compile Include="Models\FileSpecificationSearchViewModel.cs" />
     <Compile Include="Models\FileSpecificationViewModel.cs" />
     <Compile Include="Models\GroupConditionDetailViewModel.cs" />
     <Compile Include="Models\GroupConditionViewModel.cs" />
@@ -270,6 +271,7 @@
     <Content Include="Views\Operational\FieldDetail.cshtml" />
     <Content Include="Views\Operational\WorkflowOverview.cshtml" />
     <Content Include="Views\Operational\WorkflowDetail.cshtml" />
+    <Content Include="Views\SpecificationSetup\SearchFileSpecification.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

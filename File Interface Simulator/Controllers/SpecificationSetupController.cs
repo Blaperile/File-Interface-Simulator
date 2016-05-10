@@ -275,5 +275,21 @@ namespace File_Interface_Simulator.Controllers
 
             return View("FileSpecificationFieldDetail", model);
         }
+
+        [HttpGet]
+        public ActionResult SearchFileSpecification()
+        {
+            FileSpecificationSearchViewModel model = new FileSpecificationSearchViewModel()
+            {
+                SearchOnPossibilities = new List<String>()
+            };
+
+            model.SearchOnPossibilities.Add("Transaction-number");
+            model.SearchOnPossibilities.Add("Group-code");
+            model.SearchOnPossibilities.Add("Field-code");
+            model.SearchOnPossibilities.Add("Level-code");
+
+            return View("SearchFileSpecification", model);
+        }
     }
 }
