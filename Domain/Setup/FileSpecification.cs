@@ -24,5 +24,6 @@ namespace FIS.BL.Domain.Setup
         public ICollection<FileSpecFieldCondition> FileSpecFieldConditions { get; set; }
         public ICollection<Message> Messages { get; set; }
         public ICollection<WorkflowTemplateStep> WorkflowTemplateSteps { get; set; }
+        public ICollection<AnswerContent> AnswerContents { get; set; }
     }
 }

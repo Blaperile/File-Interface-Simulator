@@ -19,6 +19,7 @@ namespace FIS.BL
         FileSpecification GetFileSpecification(int specificationId);
         FileSpecification GetFileSpecification(string name);
         FileSpecification GetFileSpecification(string name, string version);
+        FileSpecification GetFileSpecificationWithFieldConditions(string name, string version);
         FileSpecification GetFileSpecificationAtStartWorkflowTemplateWithName(string specificationName);
         List<FileSpecification> GetFileSpecifications();
         FileSpecification RemoveFileSpecification(int specificationId);
@@ -29,5 +30,7 @@ namespace FIS.BL
         List<FileSpecFieldCondition> GetFileSpecFieldConditionsOfGroup(int specificationId, String groupCode);
         List<FileSpecFieldCondition> GetFileSpecFieldConditionsLinkedToFieldSpecFieldCondition(int fieldSpecFieldConditionId);
         List<Directory> GetInputDirectories();
+        AnswerContent AddAnswerContent(string name, string path, string fileSpecification);
+        AnswerContent GetAnswerContent(string name);
     }
 }

@@ -27,6 +27,8 @@ namespace FIS.DAL.EF
         public DbSet<XMLElement> XmlElements { get; set;  }
         public DbSet<BL.Domain.Operational.Attribute> Attributes { get; set; }
         public DbSet<WorkflowTemplateStep> WorkflowTemplateSteps { get; set; }
+        public DbSet<AnswerContent> AnswerContents { get; set; }
+        public DbSet<AnswerContentLine> AnswerContentLines { get; set; }
 
         // Operational
         public DbSet<Field> Fields { get; set; }

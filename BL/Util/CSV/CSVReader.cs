@@ -151,6 +151,34 @@ namespace FIS.BL.Util.CSV
             }
         }
 
+        public AnswerContent ReadAnswerContent(string path, FileSpecification fileSpecification)
+        {
+            AnswerContent answerContent = new AnswerContent();
+            answerContent.Path = path;
+            List<List<String>> StringAnswerContentLines = ReadFile(path);
+            List<AnswerContentLine> answerContentLines = new List<AnswerContentLine>();
+            foreach (var StringAnswerContentLine in StringAnswerContentLines)
+            {
+                if (fileSpecification.FileSpecFieldConditions.Where(f=>f.Code.Equals(StringAnswerContentLine.First())).Count()>0)
+                {
+                    AnswerContentLine answerContentLine = new AnswerContentLine()
+                    {
+                        Code = StringAnswerContentLine.First(),
+                        Value = StringAnswerContentLine.ElementAt(1),
+                        AnswerContent = answerContent
+                    };
+                    answerContentLines.Add(answerContentLine);
+                }
+                else
+                { 
+                        throw new FileReadException("Field " + StringAnswerContentLine.First() + " is missing in the selected file specification!");   
+                }
+            }
+            answerContent.AnswerContentLines = answerContentLines;
+            return answerContent;    
+        }
+
+
         public static List<List<String>> ReadFile(string path)
         {
             string extension = Path.GetExtension(path);

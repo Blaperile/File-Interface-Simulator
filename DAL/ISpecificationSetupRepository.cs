@@ -20,6 +20,7 @@ namespace FIS.DAL
         FileSpecification ReadFileSpecification(int specificationId);
         FileSpecification ReadFileSpecification(string name, string version);
         FileSpecification ReadFileSpecification(string name);
+        FileSpecification ReadFileSpecificationWithFieldConditions(string name, string version);
         FileSpecification ReadFileSpecificationByDirectoryId(int directoryId);
         FileSpecification ReadFileSpecificationAtStartWorkflowTemplateWithName(string specificationName);
         FileSpecification ReadFileSpecificationWithMessagesAndWorkflowTemplateSteps(int specificationId);
@@ -37,5 +38,8 @@ namespace FIS.DAL
         IEnumerable<FileSpecFieldCondition> ReadFileSpecFieldConditionsLinkedToFieldSpecFieldCondition(int fieldConditionId);
 
         IEnumerable<Directory> ReadInputDirectories();
+
+        AnswerContent ReadAnswerContent(string name);
+        AnswerContent CreateAnswerContent(AnswerContent answerContent);
     }
 }

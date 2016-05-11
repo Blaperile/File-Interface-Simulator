@@ -12,5 +12,6 @@ namespace FIS.BL.Domain.Setup
         public int StepNumber { get; set; }
         public FileSpecification fileSpecification { get; set; }
         public WorkflowTemplate WorkflowTemplate { get; set; }
+        public AnswerContent AnswerContent { get; set; }
     }
 }
