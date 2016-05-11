@@ -75,6 +75,43 @@ namespace File_Interface_Simulator.Controllers
         }
 
         [HttpGet]
+        public ActionResult UploadAnswerContent()
+        {
+            AnswerContentViewModel model = new AnswerContentViewModel();
+            IEnumerable<FileSpecification> fileSpecifications = specSetupManager.GetFileSpecifications().Where(f => f.IsInput == false);
+            IList<String> fileSpecificationStrings = new List<String>();
+            foreach (FileSpecification fileSpecification  in fileSpecifications)
+            {
+                fileSpecificationStrings.Add(fileSpecification.Name + " - " + fileSpecification.Version);
+            }
+            model.FileSpecifications = fileSpecificationStrings;
+            return View("UploadAnswerContent", model);           
+        }
+
+        [HttpPost]
+        public ActionResult UploadAnswerContent(AnswerContentViewModel model)
+        {
+            try {
+                specSetupManager.AddAnswerContent(model.Name, model.Path, model.FileSpecification);
+                return RedirectToAction("FileSpecificationOverview");
+            }
+            catch (Exception ex)
+            {
+                ViewBag.Error = ex.Message;
+
+                IEnumerable<FileSpecification> fileSpecifications = specSetupManager.GetFileSpecifications().Where(f => f.IsInput == false);
+                IList<String> fileSpecificationStrings = new List<String>();
+                foreach (FileSpecification fileSpecification in fileSpecifications)
+                {
+                    fileSpecificationStrings.Add(fileSpecification.Name + " - " + fileSpecification.Version);
+                }
+                model.FileSpecifications = fileSpecificationStrings;
+
+                return View(model);
+            }
+        }
+
+        [HttpGet]
         public ActionResult FileSpecificationOverview()
         {
             IList<FileSpecification> fileSpecifications = specSetupManager.GetFileSpecifications();

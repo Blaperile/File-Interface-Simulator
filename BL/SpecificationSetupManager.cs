@@ -202,6 +202,10 @@ namespace FIS.BL
         {
             return specSetupRepo.ReadFileSpecification(name, version);
         }
+        public FileSpecification GetFileSpecificationWithFieldConditions(string name, string version)
+        {
+            return specSetupRepo.ReadFileSpecificationWithFieldConditions(name, version);
+        }
 
         public FileSpecification GetFileSpecificationAtStartWorkflowTemplateWithName(string specificationName)
         {
@@ -259,6 +263,32 @@ namespace FIS.BL
         public FileSpecification UpdateFileSpecification(FileSpecification fileSpecification)
         {
             return specSetupRepo.UpdateFileSpecification(fileSpecification);
+        }
+
+        public AnswerContent AddAnswerContent(string name, string path, string fileSpecificationString)
+        {
+            AnswerContent answerContent = GetAnswerContent(name);
+            if(answerContent == null)
+            {
+                IEnumerable<String> fileSpecificationProperties = fileSpecificationString.Split('-');
+                FileSpecification fileSpec = GetFileSpecificationWithFieldConditions(fileSpecificationProperties.First().Trim(), fileSpecificationProperties.ElementAt(1).Trim());
+                answerContent = csvReader.ReadAnswerContent(path, fileSpec);
+                answerContent.Name = name;
+                answerContent.UploadDate = DateTime.Now;
+                answerContent.fileSpecification = fileSpec;
+                specSetupRepo.CreateAnswerContent(answerContent);
+                return answerContent;
+            }
+            else
+            {
+                throw new SpecificationSetupException("Answer Content with name " + answerContent.Name + " already exists.");
+            }
+            
+        }
+
+        public AnswerContent GetAnswerContent(string name)
+        {
+            return specSetupRepo.ReadAnswerContent(name);
         }
     }
 }

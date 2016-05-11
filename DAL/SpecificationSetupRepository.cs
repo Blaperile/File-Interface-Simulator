@@ -129,6 +129,15 @@ namespace FIS.DAL
             return fileSpecifications.First();
         }
 
+        public FileSpecification ReadFileSpecificationWithFieldConditions(string name, string version)
+        {
+            IEnumerable<FileSpecification> fileSpecifications = ctx.FileSpecifications.Where(fs => fs.Name.Equals(name)).Where(fs => fs.Version.Equals(version));
+            if (fileSpecifications.Count() == 0) return null;
+            FileSpecification fileSpecification = fileSpecifications.First();
+            ctx.Entry<FileSpecification>(fileSpecification).Collection<FileSpecFieldCondition>(f => f.FileSpecFieldConditions).Load();
+            return fileSpecification;
+        }
+
         public FileSpecification ReadFileSpecificationByDirectoryId(int directoryId)
         {
             throw new NotImplementedException();
@@ -227,6 +236,20 @@ namespace FIS.DAL
             ctx.Entry(fileSpecification).State = EntityState.Modified;
             ctx.SaveChanges();
             return fileSpecification;
+        }
+
+        public AnswerContent ReadAnswerContent(string name)
+        {
+            IEnumerable<AnswerContent> answerContents = ctx.AnswerContents.Where(ac => ac.Name.Equals(name));
+            if (answerContents.Count() == 0) return null;
+            return answerContents.First();
+        }
+
+        public AnswerContent CreateAnswerContent(AnswerContent answerContent)
+        {
+            ctx.AnswerContents.Add(answerContent);
+            ctx.SaveChanges();
+            return answerContent;
         }
     }
 }
