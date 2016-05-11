@@ -89,14 +89,21 @@ namespace FIS.BL
                         Workflow workflow = AddWorkflow(message, workflowTemplate);
                         ValidateInput(message.MessageId, fileSpecification.FileSpecificationId);
 
-                        try
+                        if (message.AmountOfErrors == 0)
                         {
-                            WorkflowTemplateStep workflowTemplateStep = workflowTemplateSetupManager.GetWorkflowTemplateStep(workflowTemplate.WorkflowTemplateId, 2);
-                            GenerateAnswer(message, workflow, workflowTemplateStep, directoryHandler);
-                        } catch(Exception e)
-                        {
-                            //An answer is not generated.
+                            try
+                            {
+                                WorkflowTemplateStep workflowTemplateStep = workflowTemplateSetupManager.GetWorkflowTemplateStep(workflowTemplate.WorkflowTemplateId, 2);
+                                GenerateAnswer(message, workflow, workflowTemplateStep, directoryHandler);
+                            }
+                            catch (Exception e)
+                            {
+                                //An answer is not generated.
+                            }
                         }
+
+                        workflow.IsFinished = true;
+                        operationalRep.UpdateWorkflow(workflow);
                     }
                 }
             }
