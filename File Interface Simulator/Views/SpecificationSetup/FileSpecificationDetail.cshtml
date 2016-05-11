@@ -35,6 +35,7 @@
     </dl>
 </div>
 <h1>Folders</h1>
+<hr />
 @if (Model.InputOutput.Equals("Input"))
 {
     <div class="row">
@@ -146,7 +147,7 @@ else
         </tr>
         @foreach (var group in Model.GroupConditions)
         {
-            <tr>
+            <tr onclick="goToGroupCondition('@group.Id')" class="clickable">
                 <td>
                     @Html.DisplayFor(item => group.Code)
                 </td>
@@ -200,7 +201,7 @@ else
             </th>
             @foreach (var field in Model.FieldConditions)
             {
-            <tr>
+            <tr onclick="goToFieldCondition('@field.Id')" class="clickable">
                 <td>
                     @Html.DisplayFor(item => field.Code)
                 </td>
@@ -232,7 +233,10 @@ else
             }
         </table>
 </div>
+
+<a href="@Url.Action("FileSpecificationOverview", "SpecificationSetup")" class="btn btn-default">Back to overview</a>
        
         @section Scripts {
             <script src="~/Scripts/Operational/messageDetail.js"></script>
+            <script src="~/Scripts/Setup/fileSpecificationDetail.js"></script>
         }

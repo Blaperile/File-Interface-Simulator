@@ -167,6 +167,7 @@ namespace File_Interface_Simulator.Controllers
                 {
                     GroupConditionViewModel groupConditionModel = new GroupConditionViewModel()
                     {
+                        Id = groupCondition.GroupConditionId,
                         Code = groupCondition.Code,
                         Description = groupCondition.Code,
                         Range = groupCondition.MinimumAmountOfOccurences + "-" + groupCondition.MaximumAmountOfOccurences,
@@ -179,6 +180,7 @@ namespace File_Interface_Simulator.Controllers
                     {
                         FieldConditionViewModel fieldConditionModel = new FieldConditionViewModel()
                         {
+                            Id = fileSpecFieldCondition.FileSpecFieldConditionId,
                             Code = fileSpecFieldCondition.Code,
                             Name = fileSpecFieldCondition.Description,
                             Optional = fileSpecFieldCondition.IsOptional ? "O" : "M",
