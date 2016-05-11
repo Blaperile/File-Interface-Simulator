@@ -65,14 +65,18 @@ namespace File_Interface_Simulator.Controllers
                     CreationDate = message.Date,
                     MessageId = id.ToString(),
                     MessageState = message.MessageState.ToString(),
-                    SpecificationFile = message.FileSpecification.Name,
-                    Type = message.FileSpecification.IsInput ? "Input" : "Output",
                     HeaderFields = new List<MessageHeaderFieldDetailViewModel>(),
                     Transactions = new List<MessageTransactionDetailViewModel>(),
                     HeaderError = message.HeaderErrorDescription,
                     AmountOfHeaderErrors = 0,
                     AmountOfErrors = message.AmountOfErrors
                 };
+
+                if(message.FileSpecification != null)
+                {
+                    model.SpecificationFile = message.FileSpecification.Name;
+                    model.Type = message.FileSpecification.IsInput ? "Input" : "Output";
+                }
 
                 if (!String.IsNullOrEmpty(model.HeaderError))
                 {

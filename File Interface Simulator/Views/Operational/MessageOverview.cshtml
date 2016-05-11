@@ -30,7 +30,7 @@
     </tr>
 
 @foreach (var item in Model) {
-    <tr id="message_@item.Id">
+    <tr id="message_@item.Id" onclick="goToMessage('@item.Id')" class="clickable">
         <td>
             <img src="~/images/thrash_icon.png" onclick="removeMessage('@item.Id')" style="cursor:pointer" />
         </td>
