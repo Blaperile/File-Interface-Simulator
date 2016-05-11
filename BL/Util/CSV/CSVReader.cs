@@ -70,7 +70,7 @@ namespace FIS.BL.Util.CSV
                 {
                     string code = fileSpecLine.First();
 
-                    if (!String.IsNullOrEmpty(code) && Char.IsLetter(code[0]) && Char.IsNumber(code[1]) && !code.StartsWith("A"))
+                    if (fileSpecLine.ElementAt(10).Equals("Field"))
                     {
                         FieldSpecFieldCondition fieldSpecFieldCondition = specSetupManager.GetFieldSpecFieldCondition(fieldSpecification.FieldSpecificationId, code);
 
@@ -106,7 +106,7 @@ namespace FIS.BL.Util.CSV
                             throw new FileReadException("Field " + code + " is missing in the selected field specification!");
                         }
                     }
-                    else if (code.StartsWith("A"))
+                    else if (fileSpecLine.ElementAt(10).Equals("Group"))
                     {
                         GroupCondition groupCondition = new GroupCondition()
                         {

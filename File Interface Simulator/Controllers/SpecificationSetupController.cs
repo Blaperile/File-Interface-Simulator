@@ -59,7 +59,7 @@ namespace File_Interface_Simulator.Controllers
                 return RedirectToAction("FileSpecificationOverview");
            } catch (Exception ex)
             {
-                ViewBag.Error = ex.Message;
+               ViewBag.Error = ex.Message;
 
                 //TODO: manier vinden om dit uit model te laten onthouden?
                 IEnumerable<FieldSpecification> fieldSpecifications = specSetupManager.GetFieldSpecificatons();
@@ -71,7 +71,7 @@ namespace File_Interface_Simulator.Controllers
                 model.FieldSpecifications = fieldSpecificationStrings;
 
                 return View(model);
-            }
+           }
         }
 
         [HttpGet]
