@@ -118,6 +118,7 @@ namespace File_Interface_Simulator.Controllers
                     {
                         MessageGroupDetailViewModel groupModel = new MessageGroupDetailViewModel()
                         {
+                            Id = group.GroupId,
                             Code = group.GroupCode,
                             AmountOfFields = group.Fields.Count(),
                             Count = transaction.Groups.Where(g => g.GroupCode.Equals(group.GroupCode)).Count(),
@@ -139,6 +140,7 @@ namespace File_Interface_Simulator.Controllers
                         {
                             MessageFieldDetailViewModel fieldModel = new MessageFieldDetailViewModel()
                             {
+                                Id = field.FieldId,
                                 Code = field.FieldCode,
                                 Datatype = field.FileSpecFieldCondition.FieldSpecFieldCondition.Datatype,
                                 Format = field.FileSpecFieldCondition.FieldSpecFieldCondition.Format.Count() > 0 ? field.FileSpecFieldCondition.FieldSpecFieldCondition.Format : "-",

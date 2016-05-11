@@ -173,7 +173,7 @@ else
                 {
                     if (String.IsNullOrEmpty(group.ErrorMessage))
                     {
-                        <tr>
+                        <tr onclick="goToGroup('@group.Id')" class="clickable">
                             <td>
                                 @Html.DisplayFor(item => group.Code)
                             </td>
@@ -193,7 +193,7 @@ else
                     }
                     else
                     {
-                        <tr style="background-color: RGBA(255,0,0,0.5)">
+                        <tr style="background-color: RGBA(255,0,0,0.5)" onclick="goToGroup('@group.Id')" class="clickable">
                             <td>
                                 @Html.DisplayFor(item => group.Code)
                             </td>
@@ -262,7 +262,7 @@ else
                     {
                         if (String.IsNullOrEmpty(field.ErrorMessage))
                         {
-                            <tr>
+                            <tr onclick="goToField('@field.Id')" class="clickable">
                                 <td>
                                     @Html.DisplayFor(item => field.Code)
                                 </td>
@@ -294,7 +294,7 @@ else
                         }
                         else
                         {
-                            <tr style="background-color: RGBA(255,0,0,0.5)">
+                            <tr style="background-color: RGBA(255,0,0,0.5)" onclick="goToField('@field.Id')" class="clickable">
                                 <td>
                                     @Html.DisplayFor(item => field.Code)
                                 </td>
@@ -336,3 +336,5 @@ else
 @section Scripts {
     <script src="~/Scripts/Operational/messageDetail.js"></script>
 }
+
+<a href="@Url.Action("MessageOverview", "Operational")" class="btn btn-default">Back to Overview</a>
