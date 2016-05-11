@@ -64,7 +64,7 @@
             </th>
             @foreach (var field in Model.FieldConditions)
             {
-            <tr>
+            <tr onclick="goToFieldCondition('@field.Id')" class="clickable">
                 <td>
                     @Html.DisplayFor(item => field.Code)
                 </td>
@@ -94,6 +94,9 @@
         </table>
     </div>
 
+<a href="@Url.Action("FileSpecificationDetail", "SpecificationSetup", new { id = Model.FileSpecificationId })" class="btn btn-default">Back to File Specification</a>
+
     @section Scripts {
         <script src="~/Scripts/Operational/messageDetail.js"></script>
+        <script src="~/Scripts/Setup/fileSpecificationGroupDetail.js"></script>
     }

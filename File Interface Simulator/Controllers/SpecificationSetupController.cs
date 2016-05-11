@@ -234,14 +234,15 @@ namespace File_Interface_Simulator.Controllers
         }
 
         [HttpGet]
-        public ActionResult FileSpecificationGroupDetail(int groupConditionId = 1)
+        public ActionResult FileSpecificationGroupDetail(int id = 1)
         {
+            GroupCondition groupCondition = specSetupManager.GetGroupCondition(id);
+
             GroupConditionDetailViewModel model = new GroupConditionDetailViewModel()
             {
+                FileSpecificationId = groupCondition.FileSpecification.FileSpecificationId,
                 FieldConditions = new List<FieldConditionViewModel>()
             };
-
-            GroupCondition groupCondition = specSetupManager.GetGroupCondition(groupConditionId);
 
             model.GroupCondition = new GroupConditionViewModel()
             {
@@ -256,6 +257,7 @@ namespace File_Interface_Simulator.Controllers
             {
                 FieldConditionViewModel fieldConditionModel = new FieldConditionViewModel()
                 {
+                    Id = fileSpecFieldCondition.FileSpecFieldConditionId,
                     Code = fileSpecFieldCondition.Code,
                     Name = fileSpecFieldCondition.Description,
                     Optional = fileSpecFieldCondition.IsOptional ? "O" : "M",
@@ -286,7 +288,8 @@ namespace File_Interface_Simulator.Controllers
                 Datatype = fileSpecFieldCondition.FieldSpecFieldCondition.Datatype,
                 Size = fileSpecFieldCondition.FieldSpecFieldCondition.Size,
                 Format = fileSpecFieldCondition.FieldSpecFieldCondition.Format,
-                Level = "L" + fileSpecFieldCondition.Level.ToString()
+                Level = "L" + fileSpecFieldCondition.Level.ToString(),
+                 GroupConditionId = fileSpecFieldCondition.Group.GroupConditionId
             };
 
             return View("FileSpecificationFieldDetail", model);

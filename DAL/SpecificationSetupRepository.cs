@@ -188,7 +188,7 @@ namespace FIS.DAL
         public GroupCondition ReadGroupCondition(int groupConditionId)
         {
             GroupCondition groupCondition = ctx.GroupConditions.Find(groupConditionId);
-            ctx.Entry<GroupCondition>(groupCondition).Collection<FileSpecFieldCondition>(gc => gc.FileSpecFieldConditions).Load();
+            ctx.Entry<GroupCondition>(groupCondition).Reference<FileSpecification>(gc => gc.FileSpecification).Load();
             LoadFieldConditions(groupCondition);
             return groupCondition;
         }
@@ -203,6 +203,7 @@ namespace FIS.DAL
         public FileSpecFieldCondition ReadFileSpecFieldCondition(int id)
         {
             FileSpecFieldCondition fileSpecFieldCondition = ctx.FileSpecFieldConditions.Find(id);
+            ctx.Entry<FileSpecFieldCondition>(fileSpecFieldCondition).Reference<GroupCondition>(fsfc => fsfc.Group).Load();
             LoadFieldSpecFieldCondition(fileSpecFieldCondition);
             return fileSpecFieldCondition;
         }
