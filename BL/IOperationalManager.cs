@@ -11,6 +11,7 @@ namespace FIS.BL
 {
     public interface IOperationalManager
     {
+        Message GetMessageWithWorkflow(int messageId);
         Message GetMessageWithRelatedData(int messageId);
         List<Message> GetMessages();
         Message RemoveMessage(int messageId);
@@ -18,6 +19,7 @@ namespace FIS.BL
         Field GetFieldWithRelatedData(int fieldId);
         Workflow AddWorkflow(Message message, WorkflowTemplate workflowTemplate);
         Workflow GetWorkflow(int workflowId);
+        Workflow GetWorkflowForMessage(int messageId);
         List<Workflow> GetWorkflows();
         List<Workflow> GetWorkflowsForTemplate(int workflowTemplateId);
         Workflow RemoveWorkflow(int workflowId);

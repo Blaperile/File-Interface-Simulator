@@ -32,6 +32,13 @@ namespace FIS.DAL
             return ctx.Messages.Find(messageId);
         }
 
+        public Message ReadMessageWithWorkflow(int messageId)
+        {
+            Message message = ReadMessage(messageId);
+            ctx.Entry<Message>(message).Reference<Workflow>(m => m.Workflow).Load();
+            return message;
+        }
+
         public Message ReadMessageWithRelatedData(int messageId)
         {
             Message message = ReadMessage(messageId);
@@ -172,6 +179,13 @@ namespace FIS.DAL
             }
         }
 
+        public Workflow ReadWorkflowForMessage(int messageId)
+        {
+            Message message = ReadMessage(messageId);
+            Workflow workflow = ctx.Workflows.Where(w => w.Messages.Contains(message)).FirstOrDefault();
+            return workflow;
+        }
+
         public List<Workflow> ReadWorkflows()
         {
             IEnumerable<Workflow> workflows = ctx.Workflows.ToList();
@@ -220,5 +234,5 @@ namespace FIS.DAL
             ctx.Entry<FileSpecFieldCondition>(field.FileSpecFieldCondition).Reference<FieldSpecFieldCondition>(fsfc => fsfc.FieldSpecFieldCondition).Load();
             return field;
         }
-    }
+   }
 }

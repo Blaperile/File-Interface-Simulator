@@ -129,6 +129,11 @@ namespace FIS.BL
             return operationalRep.ReadMessage(messageId);
         }
 
+        public Message GetMessageWithWorkflow(int messageId)
+        {
+            return operationalRep.ReadMessageWithWorkflow(messageId);
+        }
+
         public Message GetMessageWithRelatedData(int messageId)
         {
             Message message = operationalRep.ReadMessageWithRelatedData(messageId);
@@ -165,6 +170,11 @@ namespace FIS.BL
             }
         }
 
+        public Workflow GetWorkflowForMessage(int messageId)
+        {
+            return operationalRep.ReadWorkflowForMessage(messageId);
+        }
+
         public List<Workflow> GetWorkflows()
         {
             return operationalRep.ReadWorkflows();
@@ -177,7 +187,15 @@ namespace FIS.BL
 
         public Message RemoveMessage(int messageId)
         {
-            return operationalRep.DeleteMessage(messageId);
+            Message message = GetMessageWithWorkflow(messageId);
+
+            if (message.Workflow == null || message.Workflow.IsFinished)
+            {
+                return operationalRep.DeleteMessage(messageId);
+            } else
+            {
+                throw new OperationalException("The message cannot be removed yet because the workflow to which it is linked is not finished yet");
+            }
         }
 
         public Workflow RemoveWorkflow(int workflowId)

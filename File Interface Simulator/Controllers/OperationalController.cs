@@ -42,14 +42,15 @@ namespace File_Interface_Simulator.Controllers
 
         public HttpStatusCodeResult RemoveMessageRPC(int id)
         {
-            Message message = operationalManager.RemoveMessage(id);
-
-            if (message != null)
+            try
             {
+                Message message = operationalManager.RemoveMessage(id);
                 return new HttpStatusCodeResult(200, "Succes");
             }
-
-            return new HttpStatusCodeResult(500, "An error occurred while deleting the message.");
+            catch (Exception ex)
+            {
+                return new HttpStatusCodeResult(500, ex.Message);
+            }
         }
 
         [HttpGet]
@@ -252,6 +253,7 @@ namespace File_Interface_Simulator.Controllers
                     Id = workflow.WorkflowId,
                     CreationDate = workflow.Date,
                     TemplateName = workflow.WorkflowTemplate.Name,
+                    IsFinished = workflow.IsFinished,
                     IsSuccesfull = workflow.IsSuccessful,
                     AmountOfErrors = 0
                 };
