@@ -1,4 +1,8 @@
-﻿function removeMessage(id) {
+﻿function goToMessage(id) {
+    window.location.href = document.location.origin + "/Operational/MessageDetail/" + id;
+}
+
+function removeMessage(id) {
     $.ajax('/Operational/RemoveMessageRPC/', {
         type: "GET",
         data: { id: id }

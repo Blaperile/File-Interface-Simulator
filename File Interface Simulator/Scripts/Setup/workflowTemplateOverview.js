@@ -1,4 +1,8 @@
-﻿function selectWorkflowTemplate(id) {
+﻿function goToWorkflowTemplate(id) {
+    window.location.href = document.location.origin + "/WorkflowTemplateSetup/WorkflowTemplateDetail/" + id;
+}
+
+function selectWorkflowTemplate(id) {
     $.ajax('/WorkflowTemplateSetup/SelectWorkflowTemplateRPC/', {
         type: "GET",
         data: { id: id}

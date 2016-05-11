@@ -7,6 +7,10 @@ var name = document.getElementById('name');
 var type = document.getElementById('type');
 var errorMessage = document.getElementById('errorMessage');
 
+function goToFileSpecification(id) {
+    window.location.href = document.location.origin + "/SpecificationSetup/FileSpecificationDetail/" + id;
+}
+
 function removeStep(workflowTemplateStepId, workflowTemplateId) {
       $.ajax('/WorkflowTemplateSetup/RemoveStepFromWorkflowTemplateRPC/', {
         type: "GET",

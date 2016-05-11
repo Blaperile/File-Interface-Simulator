@@ -37,16 +37,16 @@ namespace File_Interface_Simulator.Controllers
         }
 
         [HttpGet]
-        public ActionResult WorkflowTemplateDetail(int workflowTemplateId = 1, string error = "")
+        public ActionResult WorkflowTemplateDetail(int id = 1, string error = "")
         {
             ViewBag.error = error;
 
             try { 
-            WorkflowTemplate workflowTemplate = workflowTemplateSetupManager.GetWorkflowTemplate(workflowTemplateId);
+            WorkflowTemplate workflowTemplate = workflowTemplateSetupManager.GetWorkflowTemplate(id);
 
                 WorkflowTemplateDetailViewModel model = new WorkflowTemplateDetailViewModel()
                 {
-                    WorkflowTemplateId = workflowTemplateId,
+                    WorkflowTemplateId = id,
                     Name = workflowTemplate.Name,
                     CreationDate = workflowTemplate.CreationDate,
                 };
@@ -70,7 +70,8 @@ namespace File_Interface_Simulator.Controllers
                         Name = workflowTemplateStep.fileSpecification.Name,
                         Type = workflowTemplateStep.fileSpecification.IsInput ? "Input" : "Output",
                         Version = workflowTemplateStep.fileSpecification.Version,
-                        Id = workflowTemplateStep.WorkflowTemplateStepId
+                        Id = workflowTemplateStep.WorkflowTemplateStepId,
+                        FileSpecificationId = workflowTemplateStep.fileSpecification.FileSpecificationId
                     };
 
                     workflowTemplateSteps.Add(workflowTemplateStepModel);
