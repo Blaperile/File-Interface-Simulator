@@ -75,7 +75,7 @@ namespace FIS.BL
                     Message message = new Message();
                     message.Date = DateTime.Now;
                     message.Name = filename;
-                    message.MessageState = MessageState.Created;
+                    message.MessageState = MessageState.Uploaded;
                     IEnumerable <IElement> elements = xmlParser.GetElements(message, content);
                     elements = operationalRep.CreateElements(elements);
 
@@ -88,7 +88,7 @@ namespace FIS.BL
 
                         Workflow workflow = AddWorkflow(message, workflowTemplate);
                         ValidateInput(message.MessageId, fileSpecification.FileSpecificationId);
-
+                        
                         if (message.AmountOfErrors == 0)
                         {
                             try
@@ -116,6 +116,7 @@ namespace FIS.BL
 
             IAnswerGenerator answerGenerator = new AnswerGenerator();
             Message answerMessage = answerGenerator.GenerateAnswer(message, outputFileSpecification);
+            answerMessage.MessageState = MessageState.Created;
 
             IXMLGenerator xmlGenerator = new XMLGenerator();
             string answerXmlString = xmlGenerator.GenerateXmlString(answerMessage);
@@ -123,6 +124,7 @@ namespace FIS.BL
             Directory outDirectory = outputFileSpecification.Directories.Where(d => d.Name.Equals("out")).Single();
 
             directoryHandler.CreateFile(answerMessage.Name, answerXmlString, outDirectory);
+            answerMessage.MessageState = MessageState.Exported;
 
             answerMessage.Workflow = workflow;
             workflow.Messages.Add(answerMessage);
@@ -219,6 +221,7 @@ namespace FIS.BL
             message.FileSpecification = fileSpecification;
             fileSpecification.Messages.Add(message);
             ArchiveErrorLines(message, fileSpecification, validator.Codes);
+            message.MessageState = MessageState.Validated;
             operationalRep.UpdateMessage(message);
         }
 
