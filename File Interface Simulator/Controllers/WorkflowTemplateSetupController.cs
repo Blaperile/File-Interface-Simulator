@@ -187,12 +187,15 @@ namespace File_Interface_Simulator.Controllers
         }
 
         public HttpStatusCodeResult RemoveStepFromWorkflowTemplateRPC(int workflowTemplateStepId, int workflowTemplateId) {
-            WorkflowTemplateStep workflowTemplateStep = workflowTemplateSetupManager.RemoveStepFromWorkflowTemplate(workflowTemplateStepId, workflowTemplateId);
-            if(workflowTemplateStep != null)
+            try
             {
+                WorkflowTemplateStep workflowTemplateStep = workflowTemplateSetupManager.RemoveStepFromWorkflowTemplate(workflowTemplateStepId, workflowTemplateId);
                 return new HttpStatusCodeResult(200, "Succes");
             }
-            return new HttpStatusCodeResult(500, "Workflowtemplatestep can not be deleted because workflows already exist");
+            catch (Exception ex)
+            {
+                return new HttpStatusCodeResult(500, ex.Message);
+            }
         }
 
     }

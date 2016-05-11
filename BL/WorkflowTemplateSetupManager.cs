@@ -105,12 +105,14 @@ namespace FIS.BL
 
         public WorkflowTemplateStep RemoveStepFromWorkflowTemplate(int workflowTemplateStepId, int workflowTemplateId)
         {
-            try
+            operationalManager = new OperationalManager();
+            List<Workflow> workflows = operationalManager.GetWorkflowsForTemplate(workflowTemplateId);
+
+            if (workflows.Count() > 0)
             {
-                List<Workflow> workflows = operationalManager.GetWorkflowsForTemplate(workflowTemplateId);
-                return null;
+                throw new WorkflowTemplateSetupException("The step cannot be deleted because there are " + workflows.Count() + " workflows linked to this template.");
             }
-            catch
+            else
             {
                 WorkflowTemplate workflowTemplate = workflowTemplateSetupRepo.ReadWorkflowTemplate(workflowTemplateId);
                 foreach (WorkflowTemplateStep workflowTemplateStepInWorkflow in workflowTemplate.WorkflowTemplateSteps.Where(wts => wts.StepNumber >= workflowTemplate.WorkflowTemplateSteps.Where(wfts => wfts.WorkflowTemplateStepId == workflowTemplateStepId).FirstOrDefault().StepNumber))
