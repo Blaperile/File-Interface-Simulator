@@ -34,8 +34,8 @@
 
     @foreach (var item in Model)
     {
-        <tr id="file_spec_@item.Id">
-            <td>
+        <tr id="file_spec_@item.Id" onclick="goToFileSpecification('@item.Id')" class="clickable">
+            <td onclick="event.stopPropagation()">
                 <img src="~/images/thrash_icon.png" onclick="removeFileSpecification('@item.Id')" style="cursor:pointer"/>
             </td>
             <td>
@@ -50,7 +50,7 @@
             <td>
                 @Html.DisplayFor(modelItem => item.InputOutput)
             </td>
-            <td>
+            <td onclick="event.stopPropagation()">
                 @if (File.Exists(item.Path))
                 {
                     <a href="@item.Path">

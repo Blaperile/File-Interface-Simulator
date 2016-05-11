@@ -187,7 +187,8 @@ namespace FIS.BL
             if (fileSpecification != null)
             {
                 return fileSpecification;
-            } else
+            }
+            else
             {
                 throw new SpecificationSetupException("The requested File Specification with id " + specificationId + " does not exist!");
             }
@@ -212,9 +213,9 @@ namespace FIS.BL
             return specSetupRepo.ReadFileSpecificationAtStartWorkflowTemplateWithName(specificationName);
         }
 
-        public FileSpecification GetFileSpecificationWithMessages(int specificationId)
+        public FileSpecification GetFileSpecificationWithMessagesAndWorkflowTemplateSteps(int specificationId)
         {
-            return specSetupRepo.ReadFileSpecificationWithMessages(specificationId);
+            return specSetupRepo.ReadFileSpecificationWithMessagesAndWorkflowTemplateSteps(specificationId);
         }
 
         public List<FileSpecification> GetFileSpecifications()
@@ -246,13 +247,20 @@ namespace FIS.BL
 
         public FileSpecification RemoveFileSpecification(int specificationId)
         {
-            FileSpecification fileSpecification = GetFileSpecificationWithMessages(specificationId);
-            if (fileSpecification.Messages.Count() == 0 || fileSpecification.WorkflowTemplateSteps.Count() == 0)
+            FileSpecification fileSpecification = GetFileSpecificationWithMessagesAndWorkflowTemplateSteps(specificationId);
+
+            if (fileSpecification.Messages.Count() > 0)
+            {
+                throw new SpecificationSetupException(String.Format("This file specification cannot be deleted because there are {0} messages linked to it. ", fileSpecification.Messages.Count()));
+            }
+            else if (fileSpecification.WorkflowTemplateSteps.Count() > 0)
+            {
+                throw new SpecificationSetupException(String.Format("This file specification cannot be deleted because there are {0} workflow template steps linked to it.", fileSpecification.WorkflowTemplateSteps.Count()));
+            }
+            else
             {
                 return specSetupRepo.DeleteFileSpecification(specificationId);
             }
-
-            return null;
         }
 
         public List<Directory> GetInputDirectories()

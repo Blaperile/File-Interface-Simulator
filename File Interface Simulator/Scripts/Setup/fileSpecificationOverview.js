@@ -1,4 +1,8 @@
-﻿function removeFileSpecification(id) {
+﻿function goToFileSpecification(id) {
+    window.location.href = document.location.origin + "/SpecificationSetup/FileSpecificationDetail/" + id;
+}
+
+function removeFileSpecification(id) {
     $.ajax('/SpecificationSetup/RemoveFileSpecificationRPC/', {
         type: "GET",
         data: { id: id }

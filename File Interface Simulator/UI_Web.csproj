@@ -236,6 +236,8 @@
     <Content Include="Scripts\respond.js" />
     <Content Include="Scripts\respond.min.js" />
     <Content Include="Scripts\Setup\fieldSpecificationOverview.js" />
+    <Content Include="Scripts\Setup\fileSpecificationDetail.js" />
+    <Content Include="Scripts\Setup\fileSpecificationGroupDetail.js" />
     <Content Include="Scripts\Setup\fileSpecificationOverview.js" />
     <Content Include="Scripts\Setup\uploadFileSpecification.js" />
     <Content Include="Scripts\Setup\workflowTemplateDetail.js" />

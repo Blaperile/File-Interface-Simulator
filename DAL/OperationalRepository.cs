@@ -32,13 +32,27 @@ namespace FIS.DAL
             return ctx.Messages.Find(messageId);
         }
 
+        public Message ReadMessageWithWorkflow(int messageId)
+        {
+            Message message = ReadMessage(messageId);
+            ctx.Entry<Message>(message).Reference<Workflow>(m => m.Workflow).Load();
+            return message;
+        }
+
         public Message ReadMessageWithRelatedData(int messageId)
         {
             Message message = ReadMessage(messageId);
-            ctx.Entry<Message>(message).Reference<FileSpecification>(m => m.FileSpecification).Load();
-            LoadHeaderFields(message);
-            LoadTransactions(message);
-            return message;
+
+            if (message != null)
+            {
+                ctx.Entry<Message>(message).Reference<FileSpecification>(m => m.FileSpecification).Load();
+                LoadHeaderFields(message);
+                LoadTransactions(message);
+                return message;
+            } else
+            {
+                return null;
+            }
         }
 
         private void LoadHeaderFields(Message message)
@@ -148,14 +162,27 @@ namespace FIS.DAL
         {
             Workflow workflow = ctx.Workflows.Find(workflowId);
 
-            ctx.Entry<Workflow>(workflow).Reference<WorkflowTemplate>(w => w.WorkflowTemplate).Load();
-            ctx.Entry<Workflow>(workflow).Collection<Message>(w => w.Messages).Load();
-
-            foreach (Message message in workflow.Messages)
+            if (workflow != null)
             {
-                ctx.Entry<Message>(message).Reference<FileSpecification>(m => m.FileSpecification).Load();
-            }
+                ctx.Entry<Workflow>(workflow).Reference<WorkflowTemplate>(w => w.WorkflowTemplate).Load();
+                ctx.Entry<Workflow>(workflow).Collection<Message>(w => w.Messages).Load();
 
+                foreach (Message message in workflow.Messages)
+                {
+                    ctx.Entry<Message>(message).Reference<FileSpecification>(m => m.FileSpecification).Load();
+                }
+
+                return workflow;
+            } else
+            {
+                return null;
+            }
+        }
+
+        public Workflow ReadWorkflowForMessage(int messageId)
+        {
+            Message message = ReadMessage(messageId);
+            Workflow workflow = ctx.Workflows.Where(w => w.Messages.Contains(message)).FirstOrDefault();
             return workflow;
         }
 
@@ -189,10 +216,15 @@ namespace FIS.DAL
         public Group ReadGroupWithRelatedDate(int groupId)
         {
             Group group = ctx.Groups.Find(groupId);
-            ctx.Entry<Group>(group).Reference<GroupCondition>(g => g.GroupCondition).Load();
-            ctx.Entry<Group>(group).Reference<Transaction>(g => g.Transaction).Load();
-            LoadFields(group);
-            return group;
+            if (group != null)
+            {
+                ctx.Entry<Group>(group).Reference<GroupCondition>(g => g.GroupCondition).Load();
+                ctx.Entry<Group>(group).Reference<Transaction>(g => g.Transaction).Load();
+                LoadFields(group);
+                return group;
+            }
+
+            return null;
         }
 
         public Field ReadFieldWithRelatedData(int fieldId)
@@ -202,5 +234,5 @@ namespace FIS.DAL
             ctx.Entry<FileSpecFieldCondition>(field.FileSpecFieldCondition).Reference<FieldSpecFieldCondition>(fsfc => fsfc.FieldSpecFieldCondition).Load();
             return field;
         }
-    }
+   }
 }

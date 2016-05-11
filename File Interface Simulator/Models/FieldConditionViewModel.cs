@@ -7,6 +7,7 @@ namespace File_Interface_Simulator.Models
 {
     public class FieldConditionViewModel
     {
+        public int Id { get; set; }
         public string Code { get; set; }
         public string Name { get; set; }
         public string Optional { get; set; }
@@ -16,5 +17,6 @@ namespace File_Interface_Simulator.Models
         public string Format { get; set;  }
         public string  Group { get; set; }
         public string Level { get; set; }
+        public int GroupConditionId { get; set; }
     }
 }

@@ -41,80 +41,92 @@ namespace File_Interface_Simulator.Controllers
         {
             ViewBag.error = error;
 
+            try { 
             WorkflowTemplate workflowTemplate = workflowTemplateSetupManager.GetWorkflowTemplate(workflowTemplateId);
-            WorkflowTemplateDetailViewModel model = new WorkflowTemplateDetailViewModel()
-            {
-                WorkflowTemplateId = workflowTemplateId,
-                Name = workflowTemplate.Name,
-                CreationDate = workflowTemplate.CreationDate,
-            };
 
-            if (workflowTemplate.IsChosen)
-            {
-                model.IsActive = "Yes";
-            } else
-            {
-                model.IsActive = "No";
-            }
-
-            IList<WorkflowTemplateStepDetailViewModel> workflowTemplateSteps = new List<WorkflowTemplateStepDetailViewModel>();
-
-            foreach (WorkflowTemplateStep workflowTemplateStep in workflowTemplate.WorkflowTemplateSteps)
-            {
-                WorkflowTemplateStepDetailViewModel workflowTemplateStepModel = new WorkflowTemplateStepDetailViewModel()
+                WorkflowTemplateDetailViewModel model = new WorkflowTemplateDetailViewModel()
                 {
-                    Step = workflowTemplateStep.StepNumber,
-                    Name = workflowTemplateStep.fileSpecification.Name,
-                    Type = workflowTemplateStep.fileSpecification.IsInput? "Input" : "Output",
-                    Version = workflowTemplateStep.fileSpecification.Version,
-                    Id = workflowTemplateStep.WorkflowTemplateStepId
+                    WorkflowTemplateId = workflowTemplateId,
+                    Name = workflowTemplate.Name,
+                    CreationDate = workflowTemplate.CreationDate,
                 };
 
-                workflowTemplateSteps.Add(workflowTemplateStepModel);
-            }
-
-            model.CurrentWorkflowTemplateSteps = workflowTemplateSteps;
-
-            IList<WorkflowTemplatePossibleFileSpecificationDetailViewModel> possibleFileSpecificationModels = new List<WorkflowTemplatePossibleFileSpecificationDetailViewModel>();
-            IEnumerable<FileSpecification> possibleFileSpecifications = specSetupManager.GetFileSpecifications();
-
-            foreach (FileSpecification possibleFileSpecification in possibleFileSpecifications)
-            {
-                if (workflowTemplate.WorkflowTemplateSteps.Count != 0)
+                if (workflowTemplate.IsChosen)
                 {
-                    foreach (WorkflowTemplateStep workflowtemplateStep in workflowTemplate.WorkflowTemplateSteps)
-                    {
-                        if (!workflowtemplateStep.fileSpecification.Equals(possibleFileSpecification))
-                        {
-                            WorkflowTemplatePossibleFileSpecificationDetailViewModel possibleFileSpecificationModel = new WorkflowTemplatePossibleFileSpecificationDetailViewModel()
-                            {
-                                Name = possibleFileSpecification.Name,
-                                Type = possibleFileSpecification.IsInput ? "Input" : "Output",
-                                Version = possibleFileSpecification.Version
-                            };
-
-                            possibleFileSpecificationModels.Add(possibleFileSpecificationModel);
-                        }
-                    }
+                    model.IsActive = "Yes";
                 }
                 else
                 {
-                    WorkflowTemplatePossibleFileSpecificationDetailViewModel possibleFileSpecificationModel = new WorkflowTemplatePossibleFileSpecificationDetailViewModel()
+                    model.IsActive = "No";
+                }
+
+                IList<WorkflowTemplateStepDetailViewModel> workflowTemplateSteps = new List<WorkflowTemplateStepDetailViewModel>();
+
+                foreach (WorkflowTemplateStep workflowTemplateStep in workflowTemplate.WorkflowTemplateSteps)
+                {
+                    WorkflowTemplateStepDetailViewModel workflowTemplateStepModel = new WorkflowTemplateStepDetailViewModel()
                     {
-                        Name = possibleFileSpecification.Name,
-                        Type = possibleFileSpecification.IsInput ? "Input" : "Output",
-                        Version = possibleFileSpecification.Version
+                        Step = workflowTemplateStep.StepNumber,
+                        Name = workflowTemplateStep.fileSpecification.Name,
+                        Type = workflowTemplateStep.fileSpecification.IsInput ? "Input" : "Output",
+                        Version = workflowTemplateStep.fileSpecification.Version,
+                        Id = workflowTemplateStep.WorkflowTemplateStepId
                     };
 
-                    possibleFileSpecificationModels.Add(possibleFileSpecificationModel);
+                    workflowTemplateSteps.Add(workflowTemplateStepModel);
+                }
+
+                model.CurrentWorkflowTemplateSteps = workflowTemplateSteps;
+
+                IList<WorkflowTemplatePossibleFileSpecificationDetailViewModel> possibleFileSpecificationModels = new List<WorkflowTemplatePossibleFileSpecificationDetailViewModel>();
+                IEnumerable<FileSpecification> possibleFileSpecifications = specSetupManager.GetFileSpecifications();
+
+                foreach (FileSpecification possibleFileSpecification in possibleFileSpecifications)
+                {
+                    if (workflowTemplate.WorkflowTemplateSteps.Count != 0)
+                    {
+                        foreach (WorkflowTemplateStep workflowtemplateStep in workflowTemplate.WorkflowTemplateSteps)
+                        {
+                            if (!workflowtemplateStep.fileSpecification.Equals(possibleFileSpecification))
+                            {
+                                WorkflowTemplatePossibleFileSpecificationDetailViewModel possibleFileSpecificationModel = new WorkflowTemplatePossibleFileSpecificationDetailViewModel()
+                                {
+                                    Name = possibleFileSpecification.Name,
+                                    Type = possibleFileSpecification.IsInput ? "Input" : "Output",
+                                    Version = possibleFileSpecification.Version
+                                };
+
+                                possibleFileSpecificationModels.Add(possibleFileSpecificationModel);
+                            }
+                        }
+                    }
+                    else
+                    {
+                        WorkflowTemplatePossibleFileSpecificationDetailViewModel possibleFileSpecificationModel = new WorkflowTemplatePossibleFileSpecificationDetailViewModel()
+                        {
+                            Name = possibleFileSpecification.Name,
+                            Type = possibleFileSpecification.IsInput ? "Input" : "Output",
+                            Version = possibleFileSpecification.Version
+                        };
+
+                        possibleFileSpecificationModels.Add(possibleFileSpecificationModel);
+
+                    }
 
                 }
 
+                model.PossibleFileSpecifications = possibleFileSpecificationModels;
+
+                return View("WorkflowTemplateDetail", model);
+            } catch(Exception e)
+            {
+                ErrorViewModel model = new ErrorViewModel()
+                {
+                    ErrorMessage = e.Message
+                };
+
+                return RedirectToAction("Error", "Home", model);
             }
-
-            model.PossibleFileSpecifications = possibleFileSpecificationModels;
-
-            return View("WorkflowTemplateDetail", model);
         }
 
         [HttpPost]
@@ -163,23 +175,27 @@ namespace File_Interface_Simulator.Controllers
 
         public HttpStatusCodeResult RemoveWorkflowTemplateRPC(int id)
         {
-            WorkflowTemplate workflowTemplate = workflowTemplateSetupManager.RemoveWorkflowTemplate(id);
-
-            if (workflowTemplate != null)
+            try
             {
+                WorkflowTemplate workflowTemplate = workflowTemplateSetupManager.RemoveWorkflowTemplate(id);
                 return new HttpStatusCodeResult(200, "Succes");
             }
-
-            return new HttpStatusCodeResult(500, "Workflowtemplate can not be deleted because workflows already exist.");
+            catch (Exception ex)
+            {
+                return new HttpStatusCodeResult(500, ex.Message);
+            }
         }
 
         public HttpStatusCodeResult RemoveStepFromWorkflowTemplateRPC(int workflowTemplateStepId, int workflowTemplateId) {
-            WorkflowTemplateStep workflowTemplateStep = workflowTemplateSetupManager.RemoveStepFromWorkflowTemplate(workflowTemplateStepId, workflowTemplateId);
-            if(workflowTemplateStep != null)
+            try
             {
+                WorkflowTemplateStep workflowTemplateStep = workflowTemplateSetupManager.RemoveStepFromWorkflowTemplate(workflowTemplateStepId, workflowTemplateId);
                 return new HttpStatusCodeResult(200, "Succes");
             }
-            return new HttpStatusCodeResult(500, "Workflowtemplatestep can not be deleted because workflows already exist");
+            catch (Exception ex)
+            {
+                return new HttpStatusCodeResult(500, ex.Message);
+            }
         }
 
     }

@@ -12,6 +12,7 @@ namespace FIS.DAL
     {
         Message CreateMessage(Message message);
         Message ReadMessage(int messageId);
+        Message ReadMessageWithWorkflow(int messageId);
         Message ReadMessageWithRelatedData(int messageId);
         List<Message> ReadMessages();
         IEnumerable<Message> ReadMessagesOfFileSpecification(int specificationId);
@@ -24,6 +25,7 @@ namespace FIS.DAL
         Workflow CreateWorkflow(Workflow workflow);
         Workflow UpdateWorkflow(Workflow workflow);
         Workflow ReadWorkflow(int workflowId);
+        Workflow ReadWorkflowForMessage(int messageId);
         List<Workflow> ReadWorkflows();
         IEnumerable<Workflow> ReadWorkflowsForTemplate(int workflowTemplateId);
         Workflow DeleteWorkflow(int workflowId);

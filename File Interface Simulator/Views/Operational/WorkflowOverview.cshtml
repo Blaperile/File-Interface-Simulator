@@ -22,6 +22,9 @@
             Template Name
         </th>
         <th>
+            Finished
+        </th>
+        <th>
             Successful
         </th>
     </tr>
@@ -39,6 +42,16 @@
         </td>
         <td>
             @Html.DisplayFor(modelItem => item.TemplateName)
+        </td>
+        <td>
+            @if (item.IsFinished)
+            {
+                <span style="color: green" class="glyphicon glyphicon-ok"></span>
+            }
+            else
+            {
+                <span style="color: red" class="glyphicon glyphicon-remove"></span>
+            }
         </td>
         <td>
             @if (item.IsSuccesfull)

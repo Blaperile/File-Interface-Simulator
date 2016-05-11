@@ -39,6 +39,10 @@ hr {
     border-color: #0072BA;
 }
 
+.clickable {
+    cursor: pointer;
+}
+
 .row {
     margin-top: 2%;
 }

@@ -1,5 +1,6 @@
 ﻿using FIS.BL.Domain.Operational;
 using FIS.BL.Domain.Setup;
+using FIS.BL.Exceptions;
 using FIS.BL.Util;
 using FIS.BL.Util.XML;
 using FIS.BL.Util.XML.Validation;
@@ -74,7 +75,7 @@ namespace FIS.BL
                     Message message = new Message();
                     message.Date = DateTime.Now;
                     message.Name = filename;
-                    message.MessageState = MessageState.Created;
+                    message.MessageState = MessageState.Uploaded;
                     IEnumerable <IElement> elements = xmlParser.GetElements(message, content);
                     elements = operationalRep.CreateElements(elements);
 
@@ -85,11 +86,24 @@ namespace FIS.BL
                     {
                         WorkflowTemplate workflowTemplate = fileSpecification.WorkflowTemplateSteps.Where(wt => wt.StepNumber == 1).Where(wt => wt.WorkflowTemplate.IsChosen == true).FirstOrDefault().WorkflowTemplate;
 
-                        WorkflowTemplateStep workflowTemplateStep = workflowTemplateSetupManager.GetWorkflowTemplateStep(workflowTemplate.WorkflowTemplateId, 2);
-
                         Workflow workflow = AddWorkflow(message, workflowTemplate);
                         ValidateInput(message.MessageId, fileSpecification.FileSpecificationId);
-                        GenerateAnswer(message, workflow, workflowTemplateStep, directoryHandler);
+                        
+                        if (message.AmountOfErrors == 0)
+                        {
+                            try
+                            {
+                                WorkflowTemplateStep workflowTemplateStep = workflowTemplateSetupManager.GetWorkflowTemplateStep(workflowTemplate.WorkflowTemplateId, 2);
+                                GenerateAnswer(message, workflow, workflowTemplateStep, directoryHandler);
+                            }
+                            catch (Exception e)
+                            {
+                                //An answer is not generated.
+                            }
+                        }
+
+                        workflow.IsFinished = true;
+                        operationalRep.UpdateWorkflow(workflow);
                     }
                 }
             }
@@ -102,6 +116,7 @@ namespace FIS.BL
 
             IAnswerGenerator answerGenerator = new AnswerGenerator();
             Message answerMessage = answerGenerator.GenerateAnswer(message, outputFileSpecification);
+            answerMessage.MessageState = MessageState.Created;
 
             IXMLGenerator xmlGenerator = new XMLGenerator();
             string answerXmlString = xmlGenerator.GenerateXmlString(answerMessage);
@@ -109,6 +124,7 @@ namespace FIS.BL
             Directory outDirectory = outputFileSpecification.Directories.Where(d => d.Name.Equals("out")).Single();
 
             directoryHandler.CreateFile(answerMessage.Name, answerXmlString, outDirectory);
+            answerMessage.MessageState = MessageState.Exported;
 
             answerMessage.Workflow = workflow;
             workflow.Messages.Add(answerMessage);
@@ -122,9 +138,22 @@ namespace FIS.BL
             return operationalRep.ReadMessage(messageId);
         }
 
+        public Message GetMessageWithWorkflow(int messageId)
+        {
+            return operationalRep.ReadMessageWithWorkflow(messageId);
+        }
+
         public Message GetMessageWithRelatedData(int messageId)
         {
-            return operationalRep.ReadMessageWithRelatedData(messageId);
+            Message message = operationalRep.ReadMessageWithRelatedData(messageId);
+
+            if (message != null)
+            {
+                return message;
+            } else
+            {
+                throw new OperationalException("The message with id " + messageId + " does not exist.");
+            }
         }
 
         public List<Message> GetMessages()
@@ -139,7 +168,20 @@ namespace FIS.BL
 
         public Workflow GetWorkflow(int workflowId)
         {
-            return operationalRep.ReadWorkflow(workflowId);
+            Workflow workflow = operationalRep.ReadWorkflow(workflowId);
+
+            if (workflow != null)
+            {
+                return workflow;
+            } else
+            {
+                throw new OperationalException("The workflow with id " + workflowId + " does not exist.");
+            }
+        }
+
+        public Workflow GetWorkflowForMessage(int messageId)
+        {
+            return operationalRep.ReadWorkflowForMessage(messageId);
         }
 
         public List<Workflow> GetWorkflows()
@@ -154,7 +196,15 @@ namespace FIS.BL
 
         public Message RemoveMessage(int messageId)
         {
-            return operationalRep.DeleteMessage(messageId);
+            Message message = GetMessageWithWorkflow(messageId);
+
+            if (message.Workflow == null || message.Workflow.IsFinished)
+            {
+                return operationalRep.DeleteMessage(messageId);
+            } else
+            {
+                throw new OperationalException("The message cannot be removed yet because the workflow to which it is linked is not finished yet");
+            }
         }
 
         public Workflow RemoveWorkflow(int workflowId)
@@ -171,12 +221,21 @@ namespace FIS.BL
             message.FileSpecification = fileSpecification;
             fileSpecification.Messages.Add(message);
             ArchiveErrorLines(message, fileSpecification, validator.Codes);
+            message.MessageState = MessageState.Validated;
             operationalRep.UpdateMessage(message);
         }
 
         public Group GetGroupWithRelatedDate(int groupId)
         {
-            return operationalRep.ReadGroupWithRelatedDate(groupId);
+            Group group = operationalRep.ReadGroupWithRelatedDate(groupId);
+
+            if (group != null)
+            {
+                return group;
+            } else
+            {
+                throw new OperationalException("The requested Group with id " + groupId + " does not exist!");
+            }
         }
 
         public Field GetFieldWithRelatedData(int fieldId)
