@@ -155,15 +155,21 @@ namespace FIS.DAL
         {
             Workflow workflow = ctx.Workflows.Find(workflowId);
 
-            ctx.Entry<Workflow>(workflow).Reference<WorkflowTemplate>(w => w.WorkflowTemplate).Load();
-            ctx.Entry<Workflow>(workflow).Collection<Message>(w => w.Messages).Load();
-
-            foreach (Message message in workflow.Messages)
+            if (workflow != null)
             {
-                ctx.Entry<Message>(message).Reference<FileSpecification>(m => m.FileSpecification).Load();
-            }
+                ctx.Entry<Workflow>(workflow).Reference<WorkflowTemplate>(w => w.WorkflowTemplate).Load();
+                ctx.Entry<Workflow>(workflow).Collection<Message>(w => w.Messages).Load();
 
-            return workflow;
+                foreach (Message message in workflow.Messages)
+                {
+                    ctx.Entry<Message>(message).Reference<FileSpecification>(m => m.FileSpecification).Load();
+                }
+
+                return workflow;
+            } else
+            {
+                return null;
+            }
         }
 
         public List<Workflow> ReadWorkflows()

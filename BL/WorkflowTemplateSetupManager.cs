@@ -24,9 +24,9 @@ namespace FIS.BL
 
         public WorkflowTemplate AddStepToWorkflowTemplate(int workflowTemplateId, int stepNumber, string specificationName, string specificationVersion)
         {
-             WorkflowTemplate workflowTemplate = GetWorkflowTemplate(workflowTemplateId);
-             FileSpecification fileSpecification = specSetupManager.GetFileSpecification(specificationName, specificationVersion);
-             WorkflowTemplateStep workflowTemplateStep = new WorkflowTemplateStep()
+            WorkflowTemplate workflowTemplate = GetWorkflowTemplate(workflowTemplateId);
+            FileSpecification fileSpecification = specSetupManager.GetFileSpecification(specificationName, specificationVersion);
+            WorkflowTemplateStep workflowTemplateStep = new WorkflowTemplateStep()
             {
                 StepNumber = stepNumber,
                 WorkflowTemplate = workflowTemplate,
@@ -34,17 +34,17 @@ namespace FIS.BL
             };
 
 
-             foreach(WorkflowTemplateStep workflowTemplateStepInWorkflow in workflowTemplate.WorkflowTemplateSteps.Where(wts => wts.StepNumber >= stepNumber))
-             {
-                 workflowTemplateStepInWorkflow.StepNumber++;
-             }
+            foreach (WorkflowTemplateStep workflowTemplateStepInWorkflow in workflowTemplate.WorkflowTemplateSteps.Where(wts => wts.StepNumber >= stepNumber))
+            {
+                workflowTemplateStepInWorkflow.StepNumber++;
+            }
 
-            workflowTemplateStep = workflowTemplateSetupRepo.CreateWorkflowTemplateStep(workflowTemplateStep); 
-            if(fileSpecification.WorkflowTemplateSteps == null)
+            workflowTemplateStep = workflowTemplateSetupRepo.CreateWorkflowTemplateStep(workflowTemplateStep);
+            if (fileSpecification.WorkflowTemplateSteps == null)
             {
                 fileSpecification.WorkflowTemplateSteps = new List<WorkflowTemplateStep>();
             }
-            if(workflowTemplate.WorkflowTemplateSteps == null)
+            if (workflowTemplate.WorkflowTemplateSteps == null)
             {
                 workflowTemplate.WorkflowTemplateSteps = new List<WorkflowTemplateStep>();
             }
@@ -67,7 +67,8 @@ namespace FIS.BL
                 };
 
                 return workflowTemplateSetupRepo.CreateWorkflowTemplate(workflowTemplate);
-            } else
+            }
+            else
             {
                 throw new WorkflowTemplateSetupException("A workflow with the name " + name + " already exists.");
             }
@@ -85,7 +86,8 @@ namespace FIS.BL
             if (workflowTemplate != null)
             {
                 return workflowTemplate;
-            } else
+            }
+            else
             {
                 throw new WorkflowTemplateSetupException("The workflow template with id " + workflowTemplateId + " does not exist.");
             }
@@ -111,7 +113,7 @@ namespace FIS.BL
             catch
             {
                 WorkflowTemplate workflowTemplate = workflowTemplateSetupRepo.ReadWorkflowTemplate(workflowTemplateId);
-                foreach (WorkflowTemplateStep workflowTemplateStepInWorkflow in workflowTemplate.WorkflowTemplateSteps.Where(wts => wts.StepNumber >= workflowTemplate.WorkflowTemplateSteps.Where(wfts=>wfts.WorkflowTemplateStepId == workflowTemplateStepId).FirstOrDefault().StepNumber))
+                foreach (WorkflowTemplateStep workflowTemplateStepInWorkflow in workflowTemplate.WorkflowTemplateSteps.Where(wts => wts.StepNumber >= workflowTemplate.WorkflowTemplateSteps.Where(wfts => wfts.WorkflowTemplateStepId == workflowTemplateStepId).FirstOrDefault().StepNumber))
                 {
                     workflowTemplateStepInWorkflow.StepNumber--;
                 }
@@ -121,12 +123,14 @@ namespace FIS.BL
 
         public WorkflowTemplate RemoveWorkflowTemplate(int workflowTemplateId)
         {
-            try
+            operationalManager = new OperationalManager();
+            List<Workflow> workflows = operationalManager.GetWorkflowsForTemplate(workflowTemplateId);
+
+            if (workflows.Count() > 0)
             {
-                List<Workflow> workflows = operationalManager.GetWorkflowsForTemplate(workflowTemplateId);
-                return null;
+                throw new WorkflowTemplateSetupException("The workflow template cannot be deleted because there are " + workflows.Count() + " workflows linked to it.");
             }
-            catch
+            else
             {
                 return workflowTemplateSetupRepo.DeleteWorkflowTemplate(workflowTemplateId);
             }
@@ -147,7 +151,8 @@ namespace FIS.BL
                 WorkflowTemplate newSelectedWorkflowTemplate = GetWorkflowTemplate(workflowTemplateId);
                 newSelectedWorkflowTemplate.IsChosen = true;
                 return workflowTemplateSetupRepo.UpdateWorkflowTemplate(newSelectedWorkflowTemplate);
-            } else
+            }
+            else
             {
                 return currentlySelectedWorkflowTemplate;
             }
@@ -175,7 +180,8 @@ namespace FIS.BL
             if (workflowTemplateStep != null)
             {
                 return workflowTemplateStep;
-            } else
+            }
+            else
             {
                 throw new WorkflowTemplateSetupException(String.Format("Workflow template {0} does not have a step {1}", workflowTemplateId, stepNumber));
             }

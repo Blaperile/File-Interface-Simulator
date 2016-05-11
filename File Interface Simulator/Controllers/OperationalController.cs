@@ -55,108 +55,119 @@ namespace File_Interface_Simulator.Controllers
         [HttpGet]
         public ActionResult MessageDetail(int id = 1)
         {
-            Message message = operationalManager.GetMessageWithRelatedData(id);
-
-            MessageDetailViewModel model = new MessageDetailViewModel()
+            try
             {
-                CreationDate = message.Date,
-                MessageId = id.ToString(),
-                MessageState = message.MessageState.ToString(),
-                SpecificationFile = message.FileSpecification.Name,
-                Type = message.FileSpecification.IsInput ? "Input" : "Output",
-                HeaderFields = new List<MessageHeaderFieldDetailViewModel>(),
-                Transactions = new List<MessageTransactionDetailViewModel>(),
-                HeaderError = message.HeaderErrorDescription,
-                AmountOfHeaderErrors = 0,
-                AmountOfErrors = message.AmountOfErrors
-            };
+                Message message = operationalManager.GetMessageWithRelatedData(id);
 
-            if (!String.IsNullOrEmpty(model.HeaderError))
-            {
-                model.AmountOfHeaderErrors++;
-            }
-
-            foreach (HeaderField headerField in message.HeaderFields)
-            {
-                MessageHeaderFieldDetailViewModel headerFieldModel = new MessageHeaderFieldDetailViewModel()
+                MessageDetailViewModel model = new MessageDetailViewModel()
                 {
-                    Code = headerField.HeaderFieldCode,
-                    Content = headerField.Description,
-                    Datatype = headerField.HeaderCondition.Datatype,
-                    Size = headerField.HeaderCondition.Size.ToString(),
-                    ErrorMessage = headerField.ErrorDescription
+                    CreationDate = message.Date,
+                    MessageId = id.ToString(),
+                    MessageState = message.MessageState.ToString(),
+                    SpecificationFile = message.FileSpecification.Name,
+                    Type = message.FileSpecification.IsInput ? "Input" : "Output",
+                    HeaderFields = new List<MessageHeaderFieldDetailViewModel>(),
+                    Transactions = new List<MessageTransactionDetailViewModel>(),
+                    HeaderError = message.HeaderErrorDescription,
+                    AmountOfHeaderErrors = 0,
+                    AmountOfErrors = message.AmountOfErrors
                 };
 
-                if (!String.IsNullOrEmpty(headerFieldModel.ErrorMessage))
+                if (!String.IsNullOrEmpty(model.HeaderError))
                 {
                     model.AmountOfHeaderErrors++;
                 }
 
-                model.HeaderFields.Add(headerFieldModel);
-
-            }
-
-            foreach (Transaction transaction in message.Transactions)
-            {
-                MessageTransactionDetailViewModel transactionModel = new MessageTransactionDetailViewModel()
+                foreach (HeaderField headerField in message.HeaderFields)
                 {
-                    AmountOfFieldErrors = 0,
-                    Fields = new List<MessageFieldDetailViewModel>(),
-                    AmountOfGroupErrors = 0,
-                    GroupsErrorMessage = transaction.GroupsErrorDescription,
-                    Groups = new List<MessageGroupDetailViewModel>(),
-                };
-
-                foreach (Group group in transaction.Groups)
-                {
-                    MessageGroupDetailViewModel groupModel = new MessageGroupDetailViewModel()
+                    MessageHeaderFieldDetailViewModel headerFieldModel = new MessageHeaderFieldDetailViewModel()
                     {
-                        Code = group.GroupCode,
-                        AmountOfFields = group.Fields.Count(),
-                        Count = transaction.Groups.Where(g => g.GroupCode.Equals(group.GroupCode)).Count(),
-                        Description = group.GroupCondition.Description,
-                        Level = group.Level,
-                        ErrorMessage = group.ErrorDescription
+                        Code = headerField.HeaderFieldCode,
+                        Content = headerField.Description,
+                        Datatype = headerField.HeaderCondition.Datatype,
+                        Size = headerField.HeaderCondition.Size.ToString(),
+                        ErrorMessage = headerField.ErrorDescription
                     };
 
-                    if (!String.IsNullOrEmpty(groupModel.ErrorMessage))
+                    if (!String.IsNullOrEmpty(headerFieldModel.ErrorMessage))
                     {
-                        transactionModel.AmountOfGroupErrors++;
+                        model.AmountOfHeaderErrors++;
                     }
 
-                    transactionModel.Groups.Add(groupModel);
+                    model.HeaderFields.Add(headerFieldModel);
 
-
-
-                    foreach (Field field in group.Fields)
-                    {
-                        MessageFieldDetailViewModel fieldModel = new MessageFieldDetailViewModel()
-                        {
-                            Code = field.FieldCode,
-                            Datatype = field.FileSpecFieldCondition.FieldSpecFieldCondition.Datatype,
-                            Format = field.FileSpecFieldCondition.FieldSpecFieldCondition.Format.Count() > 0 ? field.FileSpecFieldCondition.FieldSpecFieldCondition.Format : "-",
-                            Group = group.GroupCode,
-                            Level = field.Level,
-                            Name = field.FileSpecFieldCondition.Description,
-                            Size = field.FileSpecFieldCondition.FieldSpecFieldCondition.Size,
-                            Optional = field.FileSpecFieldCondition.IsOptional ? "O" : "M",
-                            Value = field.Value,
-                            ErrorMessage = field.ErrorDescription
-                        };
-
-                        if (!String.IsNullOrEmpty(fieldModel.ErrorMessage))
-                        {
-                            transactionModel.AmountOfFieldErrors++;
-                        }
-
-                        transactionModel.Fields.Add(fieldModel);
-                    }
                 }
 
-                model.Transactions.Add(transactionModel);
-            }
+                foreach (Transaction transaction in message.Transactions)
+                {
+                    MessageTransactionDetailViewModel transactionModel = new MessageTransactionDetailViewModel()
+                    {
+                        AmountOfFieldErrors = 0,
+                        Fields = new List<MessageFieldDetailViewModel>(),
+                        AmountOfGroupErrors = 0,
+                        GroupsErrorMessage = transaction.GroupsErrorDescription,
+                        Groups = new List<MessageGroupDetailViewModel>(),
+                    };
 
-            return View("MessageDetail", model);
+                    foreach (Group group in transaction.Groups)
+                    {
+                        MessageGroupDetailViewModel groupModel = new MessageGroupDetailViewModel()
+                        {
+                            Code = group.GroupCode,
+                            AmountOfFields = group.Fields.Count(),
+                            Count = transaction.Groups.Where(g => g.GroupCode.Equals(group.GroupCode)).Count(),
+                            Description = group.GroupCondition.Description,
+                            Level = group.Level,
+                            ErrorMessage = group.ErrorDescription
+                        };
+
+                        if (!String.IsNullOrEmpty(groupModel.ErrorMessage))
+                        {
+                            transactionModel.AmountOfGroupErrors++;
+                        }
+
+                        transactionModel.Groups.Add(groupModel);
+
+
+
+                        foreach (Field field in group.Fields)
+                        {
+                            MessageFieldDetailViewModel fieldModel = new MessageFieldDetailViewModel()
+                            {
+                                Code = field.FieldCode,
+                                Datatype = field.FileSpecFieldCondition.FieldSpecFieldCondition.Datatype,
+                                Format = field.FileSpecFieldCondition.FieldSpecFieldCondition.Format.Count() > 0 ? field.FileSpecFieldCondition.FieldSpecFieldCondition.Format : "-",
+                                Group = group.GroupCode,
+                                Level = field.Level,
+                                Name = field.FileSpecFieldCondition.Description,
+                                Size = field.FileSpecFieldCondition.FieldSpecFieldCondition.Size,
+                                Optional = field.FileSpecFieldCondition.IsOptional ? "O" : "M",
+                                Value = field.Value,
+                                ErrorMessage = field.ErrorDescription
+                            };
+
+                            if (!String.IsNullOrEmpty(fieldModel.ErrorMessage))
+                            {
+                                transactionModel.AmountOfFieldErrors++;
+                            }
+
+                            transactionModel.Fields.Add(fieldModel);
+                        }
+                    }
+
+                    model.Transactions.Add(transactionModel);
+                }
+
+                return View("MessageDetail", model);
+            } catch (Exception ex)
+            {
+                ErrorViewModel model = new ErrorViewModel()
+                {
+                    ErrorMessage = ex.Message
+                };
+
+                return RedirectToAction("Error", "Home", model);
+            }
         }
 
         public ActionResult GroupDetail(int id = 1)
@@ -271,33 +282,44 @@ namespace File_Interface_Simulator.Controllers
         [HttpGet]
         public ActionResult WorkflowDetail(int id = 1)
         {
-            Workflow workflow = operationalManager.GetWorkflow(id);
-
-            WorkflowDetailViewModel model = new WorkflowDetailViewModel()
+            try
             {
-                Id = workflow.WorkflowId,
-                CreationDate = workflow.Date,
-                TemplateWorkflow = workflow.WorkflowTemplate.Name,
-                ErrorCount = 0,
-                Successful = workflow.IsSuccessful ? "Yes" : "No",
-                Messages = new List<WorkflowDetailMessageDetailViewModel>()
-            };
+                Workflow workflow = operationalManager.GetWorkflow(id);
 
-            foreach (Message message in workflow.Messages)
-            {
-                model.ErrorCount += message.AmountOfErrors;
-
-                model.Messages.Add(new WorkflowDetailMessageDetailViewModel()
+                WorkflowDetailViewModel model = new WorkflowDetailViewModel()
                 {
-                    Name = message.Name,
-                    CreationDate = message.Date,
-                    Type = message.FileSpecification.IsInput ? "Input" : "Output",
-                    MessageState = message.MessageState.ToString(),
-                    ErrorCount = message.AmountOfErrors
-                });
-            }
+                    Id = workflow.WorkflowId,
+                    CreationDate = workflow.Date,
+                    TemplateWorkflow = workflow.WorkflowTemplate.Name,
+                    ErrorCount = 0,
+                    Successful = workflow.IsSuccessful ? "Yes" : "No",
+                    Messages = new List<WorkflowDetailMessageDetailViewModel>()
+                };
 
-            return View("WorkflowDetail", model);
+                foreach (Message message in workflow.Messages)
+                {
+                    model.ErrorCount += message.AmountOfErrors;
+
+                    model.Messages.Add(new WorkflowDetailMessageDetailViewModel()
+                    {
+                        Name = message.Name,
+                        CreationDate = message.Date,
+                        Type = message.FileSpecification.IsInput ? "Input" : "Output",
+                        MessageState = message.MessageState.ToString(),
+                        ErrorCount = message.AmountOfErrors
+                    });
+                }
+
+                return View("WorkflowDetail", model);
+            } catch (Exception ex)
+            {
+                ErrorViewModel model = new ErrorViewModel()
+                {
+                    ErrorMessage = ex.Message
+                };
+
+                return RedirectToAction("Error", "Home", model);
+            }
         }
 
     }

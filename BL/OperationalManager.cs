@@ -131,7 +131,15 @@ namespace FIS.BL
 
         public Message GetMessageWithRelatedData(int messageId)
         {
-            return operationalRep.ReadMessageWithRelatedData(messageId);
+            Message message = operationalRep.ReadMessageWithRelatedData(messageId);
+
+            if (message != null)
+            {
+                return message;
+            } else
+            {
+                throw new OperationalException("The message with id " + messageId + " does not exist.");
+            }
         }
 
         public List<Message> GetMessages()
@@ -146,7 +154,15 @@ namespace FIS.BL
 
         public Workflow GetWorkflow(int workflowId)
         {
-            return operationalRep.ReadWorkflow(workflowId);
+            Workflow workflow = operationalRep.ReadWorkflow(workflowId);
+
+            if (workflow != null)
+            {
+                return workflow;
+            } else
+            {
+                throw new OperationalException("The workflow with id " + workflowId + " does not exist.");
+            }
         }
 
         public List<Workflow> GetWorkflows()
