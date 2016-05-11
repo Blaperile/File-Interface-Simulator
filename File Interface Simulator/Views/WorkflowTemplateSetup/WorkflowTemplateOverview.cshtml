@@ -26,7 +26,7 @@
 
         @foreach (var item in Model)
         {
-            <tr id="workflow_templ_@item.Id">
+            <tr id="workflow_templ_@item.Id" onclick="goToWorkflowTemplate('@item.Id')" class="clickable">
                 <td>
                     <img src="~/images/thrash_icon.png" onclick="removeWorkflowTemplate('@item.Id')" style="cursor: pointer"/>
                 </td>

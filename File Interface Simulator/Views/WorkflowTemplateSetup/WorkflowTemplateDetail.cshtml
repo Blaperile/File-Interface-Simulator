@@ -55,8 +55,8 @@
 
         @foreach (var item in  Model.CurrentWorkflowTemplateSteps)
         {
-            <tr id="workflow_templ_step_@item.Id">
-                <td>
+            <tr id="workflow_templ_step_@item.Id" onclick="goToFileSpecification('@item.FileSpecificationId')" class="clickable">
+                <td onclick="event.stopPropagation()">
                     <img src="~/images/thrash_icon.png" onclick="removeStep(@item.Id, @Model.WorkflowTemplateId)" style="cursor:pointer"/>
                 </td>
                 <td>
@@ -117,6 +117,8 @@
         </div>
     </div>
             }
+
+<a href="@Url.Action("WorkflowTemplateOverview", "WorkflowTemplateSetup")" class="btn btn-default">Back to Overview</a>
 
 @section Scripts {
     <script src="~/Scripts/Setup/workflowTemplateDetail.js"></script>
